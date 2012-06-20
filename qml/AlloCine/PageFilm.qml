@@ -1,0 +1,258 @@
+import QtQuick 1.1
+import com.nokia.meego 1.0
+import "Helpers.js" as Helpers
+
+Page {
+    id: filmPage
+    tools: buttonTools
+
+    orientationLock: PageOrientation.LockPortrait
+    property int mCode
+    property string title
+    property string trailerUrlId
+
+    ToolBarLayout {
+        id: buttonTools
+
+        ToolIcon { iconId: "toolbar-back"; onClicked: {pageStack.pop(); }  }
+        //ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
+    }
+
+    WindowTitle {
+        id: windowTitleBar
+        windowTitle: title
+        windowTitleBackup: originalTitle ? originalTitle:"Pas de titre"
+    }
+
+
+
+    LoadingOverlay {
+        id: filmPageLoadingOverlay
+        onVisibleChanged: {
+            if (visible) {
+                movieListView.visible = false
+            } else {
+                movieListView.visible = true
+            }
+        }
+    }
+
+    ModelMovie {
+        id: modelMovie
+        mCode: filmPage.mCode
+        onStatusChanged: {
+            if (status == XmlListModel.Ready && count > 0){
+                filmPageLoadingOverlay.visible = false
+            }
+        }
+    }
+
+    ListView {
+        id: movieListView
+        anchors.top: parent.top
+        anchors.topMargin: windowTitleBar.height
+        anchors.margins: pageMargin
+        anchors.fill: parent
+        Component.onCompleted: {
+            filmPageLoadingOverlay.visible = true
+            filmPageLoadingOverlay.loadingText = "Chargement du film"
+        }
+        model: modelMovie
+
+        delegate: Column {
+            width: parent.width
+            spacing: pageMargin
+            Component.onCompleted: {
+                var RegularExpression = /\/(\d+)$/
+                var filteredTrailerId = RegularExpression.exec(model.trailer)
+                console.log("Filtered Trailer ID: " + model.trailer + " -> " + filteredTrailerId[1])
+                trailerUrlId = filteredTrailerId[1]          
+            }
+
+            Item {
+                width: parent.width
+                height: Math.max(posterBlackOutline.height, mainDetails.height)
+
+                // posterImage
+                Rectangle {
+                    id: posterBlackOutline
+                    width: posterImage.width + 7
+                    height: posterImage.height + 7
+                    color: "black"
+                    z:1
+
+                    Rectangle {
+                        id: posterWhiteOutline
+                        width: posterImage.width + 5
+                        height: posterImage.height + 5
+                        anchors.centerIn: parent
+                        color: "white"
+                        z:2
+
+                        Image {
+                            id: noPosterImage
+                            source: "Images/empty.png"
+                            width: 150
+                            fillMode: Image.PreserveAspectFit
+                            anchors.centerIn: parent
+                            z:3
+                        }
+
+                        Image {
+                            id: posterImage
+                            source: (model.poster? model.poster: "Images/empty.png")
+                            width: 150
+                            fillMode: Image.PreserveAspectFit
+                            anchors.centerIn: parent
+                            z:4
+                        }
+                    }
+                }
+
+                // mainDetails
+                Column{
+                    id: mainDetails
+                    anchors.left: posterBlackOutline.right
+                    anchors.leftMargin: pageMargin
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    Text {
+                        id: movieTitleYear
+                        text: model.title + " (" + model.productionYear + ")"
+                        width: parent.width
+                        wrapMode: Text.Wrap
+                        font.weight: Font.Bold
+                        font.pointSize: fontSizeLarge
+                        color: "ghostwhite"
+                    }
+
+                    Label {
+                        id: movieTypeLabel
+                        text: model.movieType
+                        color: "gold"
+                        visible: text != ""
+                    }
+
+                    // versionRuntimeLabel
+                    Row {
+                        width: parent.width
+
+                        Label {
+                            id: versionRuntimeLabelTitle
+                            text: "Durée: "
+                            color: "gold"
+                        }
+                        Label {
+                            id: versionRuntimeLabel
+                            text: Helpers.formatSecondsAsTime(model.runtime, 'hh:mm')
+                            width: parent.width - versionRuntimeLabelTitle.width
+                            color: "ghostwhite"
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
+            }
+
+            // certificateLabel
+            Text {
+                id: certificateLabel
+                text: model.certificate
+                width: parent.width
+                color: "gold"
+                wrapMode: Text.Wrap
+                font.pointSize: fontSizeMedium
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: (model.certificate ? true:false)
+            }
+
+            // directors
+            ListComponentText{
+                width: parent.width
+                title: "Réalisation"
+                content: model.directors
+            }
+
+            // actors
+            ListComponentText{
+                width: parent.width
+                title: "Acteurs"
+                content: model.actors
+            }
+
+            // completeCast
+            ListComponentLink {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                icon: "image://theme/icon-m-content-avatar-placeholder-inverse"
+                text: "Casting Complet"
+                onClicked: {
+                    var component = Qt.createComponent("PageCasting.qml")
+                    if (component.status == Component.Ready) {
+                        pageStack.push(component, {title: title});
+                    } else {
+                        console.log("Error loading component:", component.errorString());
+                    }
+                }
+            }
+
+            // synopsis           
+            ListComponentExtend {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                title: "Synopsis"
+                shortText: model.synopsisShort
+                longText: model.synopsis
+            }
+
+            // trailer
+            ListComponentLink {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                icon: "image://theme/icon-m-content-videos-inverse"
+                text: "Bande Annonce"
+                onClicked: {
+                    Qt.openUrlExternally(mobileVideoUrl + trailerUrlId)
+                    console.log("Opening URL: " + mobileVideoUrl + trailerUrlId)
+                }
+                visible: trailerUrlId
+            }
+
+            // distributor
+            ListComponentText{
+                width: parent.width
+                title: "Distributeur"
+                content: model.distributor
+                visible: model.distributor
+            }
+
+        }
+    }
+
+    ScrollDecorator {
+        flickableItem: movieListView
+    }
+
+//    Menu {
+//        id: myMenu
+//        visualParent: pageStack
+
+//        MenuLayout {
+//            MenuItem { text: "Casting Complet";
+//                onClicked: {
+//                    var component = Qt.createComponent("PageCasting.qml")
+//                    if (component.status == Component.Ready) {
+//                        pageStack.push(component, {title: title});
+//                    } else {
+//                        console.log("Error loading component:", component.errorString());
+//                    }
+//                }
+//            }
+//            MenuItem { text: "Bande annonce";
+//                onClicked: {
+//                    Qt.openUrlExternally(mobileVideoUrl + trailerUrlId)
+//                    console.log("Opening URL: " + mobileVideoUrl + trailerUrlId)
+//                }
+//            }
+//        }
+//    }
+}

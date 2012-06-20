@@ -1,0 +1,1027 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.allocine.net/v6/ns/">
+  <updated>2012-04-15</updated>
+  <page>1</page>
+  <count>10</count>
+  <totalResults>1</totalResults>
+  <theaterShowtimes>
+    <place>
+      <theater code="P0057">
+        <name>Gaumont Toulouse Wilson</name>
+        <address>3, place du President-Wilson  </address>
+        <postalCode>31000</postalCode>
+        <city>Toulouse</city>
+        <picture path="/medias/nmedia/18/72/95/10/19465657.jpg" href="http://images.allocine.fr/medias/nmedia/18/72/95/10/19465657.jpg"/>
+        <geoloc lat="43.6045390" long="1.4476060"/>
+        <linkList>
+          <link rel="aco:web" href="http://www.allocine.fr/seance/salle_gen_csalle=P0057.html"/>
+        </linkList>
+      </theater>
+    </place>
+    <movieShowtimesList>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=6410&amp;id_cinema=32&amp;numerique=1&amp;id_version=1&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="false">
+        <onShow>
+          <movie code="174738">
+            <title>Sur la piste du Marsupilami</title>
+            <castingShort>
+              <directors>Alain Chabat</directors>
+              <actors>Jamel Debbouze, Alain Chabat, Fred Testot, Géraldine Nakache, Lambert Wilson</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-04-04</releaseDate>
+            </release>
+            <runtime>6300</runtime>
+            <genreList>
+              <genre code="13005">Comédie</genre>
+              <genre code="13001">Aventure</genre>
+              <genre code="13036">Famille</genre>
+            </genreList>
+            <movieCertificate>
+              <certificate code="14030">A partir de 6 ans</certificate>
+            </movieCertificate>
+            <poster path="/medias/nmedia/18/86/13/20/20024574.jpg" href="http://images.allocine.fr/medias/nmedia/18/86/13/20/20024574.jpg"/>
+            <trailer code="19309721" href="http://www.allocine.fr/blogvision/19309721"/>
+            <statistics>
+              <pressRating>3.772727</pressRating>
+              <pressReviewCount>22</pressReviewCount>
+              <userRating>3.244938</userRating>
+              <userReviewCount>703</userReviewCount>
+              <userRatingCount>2519</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="true" code="6001" lang="6001">Français</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 11:05, 13:35, 14:20, 15:50, 16:50, 18:05, 19:25, 20:20, 21:40, 22:35
+Séances du jeudi 12 avril 2012 : 11:05, 13:35, 14:20, 15:50, 16:50, 18:05, 19:25, 20:20, 21:40, 22:35
+Séances du vendredi 13 avril 2012 : 11:05, 13:35, 14:20, 15:50, 16:50, 18:05, 19:25, 20:20, 21:40, 22:35
+Séances du samedi 14 avril 2012 : 11:05, 13:35, 14:20, 15:50, 16:50, 18:05, 19:25, 20:20, 21:40, 22:35
+Séances du dimanche 15 avril 2012 : 11:05, 13:35, 14:20, 15:50, 16:50, 18:05, 19:25, 20:20, 21:40, 22:35
+Séances du lundi 16 avril 2012 : 11:05, 13:35, 14:20, 15:50, 16:50, 18:05, 19:25, 20:20, 21:40, 22:35
+Séances du mardi 17 avril 2012 : 11:05, 13:35, 14:20, 15:50, 16:50, 18:05, 19:25, 20:20, 21:40, 22:35</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673598" p="0">19:25</t>
+            <t code="888673594" p="0">20:20</t>
+            <t code="888673599" p="0">21:40</t>
+            <t code="888673595" p="0">22:35</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673604" p="0">11:05</t>
+            <t code="888673605" p="0">13:35</t>
+            <t code="888673600" p="0">14:20</t>
+            <t code="888673606" p="0">15:50</t>
+            <t code="888673601" p="0">16:50</t>
+            <t code="888673607" p="0">18:05</t>
+            <t code="888673602" p="0">19:25</t>
+            <t code="888673608" p="0">20:20</t>
+            <t code="888673603" p="0">21:40</t>
+            <t code="888673609" p="0">22:35</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673610" p="0">11:05</t>
+            <t code="888673611" p="0">13:35</t>
+            <t code="888673616" p="0">14:20</t>
+            <t code="888673612" p="0">15:50</t>
+            <t code="888673617" p="0">16:50</t>
+            <t code="888673613" p="0">18:05</t>
+            <t code="888673618" p="0">19:25</t>
+            <t code="888673614" p="0">20:20</t>
+            <t code="888673619" p="0">21:40</t>
+            <t code="888673615" p="0">22:35</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=4770&amp;id_cinema=32&amp;numerique=1&amp;id_version=1&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="false">
+        <onShow>
+          <movie code="43118">
+            <title>Les Pirates ! Bons à rien, Mauvais en tout</title>
+            <castingShort>
+              <directors>Peter Lord</directors>
+              <actors>Hugh Grant, Salma Hayek, Russell Tovey, Brendan Gleeson, Ashley Jensen</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-03-28</releaseDate>
+            </release>
+            <runtime>5340</runtime>
+            <genreList>
+              <genre code="13026">Animation</genre>
+              <genre code="13001">Aventure</genre>
+              <genre code="13036">Famille</genre>
+            </genreList>
+            <movieCertificate>
+              <certificate code="14030">A partir de 6 ans</certificate>
+            </movieCertificate>
+            <poster path="/medias/nmedia/18/89/06/15/20022505.jpg" href="http://images.allocine.fr/medias/nmedia/18/89/06/15/20022505.jpg"/>
+            <trailer code="19280118" href="http://www.allocine.fr/blogvision/19280118"/>
+            <statistics>
+              <pressRating>4.055555</pressRating>
+              <pressReviewCount>18</pressReviewCount>
+              <userRating>3.335714</userRating>
+              <userReviewCount>120</userReviewCount>
+              <userRatingCount>490</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="false" code="6001" lang="6001">Français</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 11:05, 13:45
+Séances du jeudi 12 avril 2012 : 11:05, 13:45
+Séances du vendredi 13 avril 2012 : 11:05, 13:45
+Séances du samedi 14 avril 2012 : 11:05, 13:45
+Séances du dimanche 15 avril 2012 : 11:05, 13:45
+Séances du lundi 16 avril 2012 : 11:05, 13:45
+Séances du mardi 17 avril 2012 : 11:05, 13:45</display>
+        <screenings>
+          <scr d="2012-04-16">
+            <t code="888673462" p="0">11:05</t>
+            <t code="888673463" p="0">13:45</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673464" p="0">11:05</t>
+            <t code="888673465" p="0">13:45</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=4756&amp;id_cinema=32&amp;numerique=1&amp;id_version=1&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="true">
+        <onShow>
+          <movie code="146628">
+            <title>Battleship</title>
+            <castingShort>
+              <directors>Peter Berg</directors>
+              <actors>Taylor Kitsch, Rihanna, Liam Neeson, Alexander Skarsgård, Brooklyn Decker</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-04-11</releaseDate>
+            </release>
+            <runtime>7800</runtime>
+            <genreList>
+              <genre code="13025">Action</genre>
+              <genre code="13021">Science fiction</genre>
+              <genre code="13023">Thriller</genre>
+            </genreList>
+            <poster path="/medias/nmedia/18/74/29/79/20066543.jpg" href="http://images.allocine.fr/medias/nmedia/18/74/29/79/20066543.jpg"/>
+            <trailer code="19320036" href="http://www.allocine.fr/blogvision/19320036"/>
+            <statistics>
+              <pressRating>2.157894</pressRating>
+              <pressReviewCount>19</pressReviewCount>
+              <userRating>3.572602</userRating>
+              <userReviewCount>246</userReviewCount>
+              <userRatingCount>1095</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="false" code="6001" lang="6001">Français</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 11:00, 13:45, 16:30, 19:35
+Séances du jeudi 12 avril 2012 : 11:00, 13:45, 16:30, 19:35
+Séances du vendredi 13 avril 2012 : 11:00, 13:45, 16:30, 19:35
+Séances du samedi 14 avril 2012 : 11:00, 13:45, 16:30, 19:35
+Séances du dimanche 15 avril 2012 : 11:00, 13:45, 16:30, 19:35
+Séances du lundi 16 avril 2012 : 11:00, 13:45, 16:30, 19:35
+Séances du mardi 17 avril 2012 : 11:00, 13:45, 16:30, 19:35</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673534" p="0">19:35</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673535" p="0">11:00</t>
+            <t code="888673536" p="0">13:45</t>
+            <t code="888673537" p="0">16:30</t>
+            <t code="888673538" p="0">19:35</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673539" p="0">11:00</t>
+            <t code="888673540" p="0">13:45</t>
+            <t code="888673541" p="0">16:30</t>
+            <t code="888673542" p="0">19:35</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=4756&amp;id_cinema=32&amp;numerique=1&amp;id_version=2&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="true">
+        <onShow>
+          <movie code="146628">
+            <title>Battleship</title>
+            <castingShort>
+              <directors>Peter Berg</directors>
+              <actors>Taylor Kitsch, Rihanna, Liam Neeson, Alexander Skarsgård, Brooklyn Decker</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-04-11</releaseDate>
+            </release>
+            <runtime>7800</runtime>
+            <genreList>
+              <genre code="13025">Action</genre>
+              <genre code="13021">Science fiction</genre>
+              <genre code="13023">Thriller</genre>
+            </genreList>
+            <poster path="/medias/nmedia/18/74/29/79/20066543.jpg" href="http://images.allocine.fr/medias/nmedia/18/74/29/79/20066543.jpg"/>
+            <trailer code="19320036" href="http://www.allocine.fr/blogvision/19320036"/>
+            <statistics>
+              <pressRating>2.157894</pressRating>
+              <pressReviewCount>19</pressReviewCount>
+              <userRating>3.572602</userRating>
+              <userReviewCount>246</userReviewCount>
+              <userRatingCount>1095</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="true" code="6002" lang="6002">Anglais</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 22:15
+Séances du jeudi 12 avril 2012 : 22:15
+Séances du vendredi 13 avril 2012 : 22:15
+Séances du samedi 14 avril 2012 : 22:15
+Séances du dimanche 15 avril 2012 : 22:15
+Séances du lundi 16 avril 2012 : 22:15
+Séances du mardi 17 avril 2012 : 22:15</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673547" p="0">22:15</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673548" p="0">22:15</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673549" p="0">22:15</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=6342&amp;id_cinema=32&amp;numerique=1&amp;id_version=1&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="true">
+        <onShow>
+          <movie code="185932">
+            <title>Blanche Neige</title>
+            <castingShort>
+              <directors>Tarsem Singh</directors>
+              <actors>Julia Roberts, Lily Collins, Armie Hammer, Nathan Lane, Mare Winningham</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-04-11</releaseDate>
+            </release>
+            <runtime>6300</runtime>
+            <genreList>
+              <genre code="13012">Fantastique</genre>
+              <genre code="13001">Aventure</genre>
+              <genre code="13005">Comédie</genre>
+            </genreList>
+            <poster path="/medias/nmedia/18/86/19/61/20050064.jpg" href="http://images.allocine.fr/medias/nmedia/18/86/19/61/20050064.jpg"/>
+            <trailer code="19302849" href="http://www.allocine.fr/blogvision/19302849"/>
+            <statistics>
+              <pressRating>2.391304</pressRating>
+              <pressReviewCount>23</pressReviewCount>
+              <userRating>3.318047</userRating>
+              <userReviewCount>62</userReviewCount>
+              <userRatingCount>338</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="false" code="6001" lang="6001">Français</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 11:05, 13:30, 15:45, 18:00
+Séances du jeudi 12 avril 2012 : 11:05, 13:30, 15:45, 18:00
+Séances du vendredi 13 avril 2012 : 11:05, 13:30, 15:45, 18:00
+Séances du samedi 14 avril 2012 : 11:05, 13:30, 15:45, 18:00
+Séances du dimanche 15 avril 2012 : 11:05, 13:30, 15:45, 18:00
+Séances du lundi 16 avril 2012 : 11:05, 13:30, 15:45, 18:00
+Séances du mardi 17 avril 2012 : 11:05, 13:30, 15:45, 18:00</display>
+        <screenings>
+          <scr d="2012-04-16">
+            <t code="888673762" p="0">11:05</t>
+            <t code="888673763" p="0">13:30</t>
+            <t code="888673764" p="0">15:45</t>
+            <t code="888673765" p="0">18:00</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673766" p="0">11:05</t>
+            <t code="888673767" p="0">13:30</t>
+            <t code="888673768" p="0">15:45</t>
+            <t code="888673769" p="0">18:00</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=6342&amp;id_cinema=32&amp;numerique=1&amp;id_version=2&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="true">
+        <onShow>
+          <movie code="185932">
+            <title>Blanche Neige</title>
+            <castingShort>
+              <directors>Tarsem Singh</directors>
+              <actors>Julia Roberts, Lily Collins, Armie Hammer, Nathan Lane, Mare Winningham</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-04-11</releaseDate>
+            </release>
+            <runtime>6300</runtime>
+            <genreList>
+              <genre code="13012">Fantastique</genre>
+              <genre code="13001">Aventure</genre>
+              <genre code="13005">Comédie</genre>
+            </genreList>
+            <poster path="/medias/nmedia/18/86/19/61/20050064.jpg" href="http://images.allocine.fr/medias/nmedia/18/86/19/61/20050064.jpg"/>
+            <trailer code="19302849" href="http://www.allocine.fr/blogvision/19302849"/>
+            <statistics>
+              <pressRating>2.391304</pressRating>
+              <pressReviewCount>23</pressReviewCount>
+              <userRating>3.318047</userRating>
+              <userReviewCount>62</userReviewCount>
+              <userRatingCount>338</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="true" code="6002" lang="6002">Anglais</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 20:15, 22:30
+Séances du jeudi 12 avril 2012 : 20:15, 22:30
+Séances du vendredi 13 avril 2012 : 20:15, 22:30
+Séances du samedi 14 avril 2012 : 20:15, 22:30
+Séances du dimanche 15 avril 2012 : 20:15, 22:30
+Séances du lundi 16 avril 2012 : 20:15, 22:30
+Séances du mardi 17 avril 2012 : 20:15, 22:30</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673778" p="0">20:15</t>
+            <t code="888673779" p="0">22:30</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673780" p="0">20:15</t>
+            <t code="888673781" p="0">22:30</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673782" p="0">20:15</t>
+            <t code="888673783" p="0">22:30</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=6320&amp;id_cinema=32&amp;numerique=1&amp;id_version=1&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="false">
+        <onShow>
+          <movie code="129372">
+            <title>Mince alors !</title>
+            <castingShort>
+              <directors>Charlotte De Turckheim</directors>
+              <actors>Victoria Abril, Lola Dewaere, Catherine Hosmalin, Grégory Fitoussi, Mehdi Nebbou</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-03-28</releaseDate>
+            </release>
+            <runtime>6000</runtime>
+            <genreList>
+              <genre code="13005">Comédie</genre>
+            </genreList>
+            <poster path="/medias/nmedia/18/87/65/13/19955877.jpg" href="http://images.allocine.fr/medias/nmedia/18/87/65/13/19955877.jpg"/>
+            <trailer code="19299535" href="http://www.allocine.fr/blogvision/19299535"/>
+            <statistics>
+              <pressRating>2.545454</pressRating>
+              <pressReviewCount>11</pressReviewCount>
+              <userRating>3.409202</userRating>
+              <userReviewCount>224</userReviewCount>
+              <userRatingCount>815</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="true" code="6001" lang="6001">Français</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 11:15, 18:00
+Séances du jeudi 12 avril 2012 : 11:15, 18:00
+Séances du vendredi 13 avril 2012 : 11:15, 18:00
+Séances du samedi 14 avril 2012 : 11:15, 18:00
+Séances du dimanche 15 avril 2012 : 11:15, 18:00
+Séances du lundi 16 avril 2012 : 11:15, 18:00
+Séances du mardi 17 avril 2012 : 11:15, 18:00</display>
+        <screenings>
+          <scr d="2012-04-16">
+            <t code="888673476" p="0">11:15</t>
+            <t code="888673477" p="0">18:00</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673478" p="0">11:15</t>
+            <t code="888673479" p="0">18:00</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=6341&amp;id_cinema=32&amp;numerique=1&amp;id_version=1&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="false">
+        <onShow>
+          <movie code="145083">
+            <title>Hunger Games</title>
+            <castingShort>
+              <directors>Gary Ross</directors>
+              <actors>Jennifer Lawrence, Josh Hutcherson, Liam Hemsworth, Woody Harrelson, Elizabeth Banks</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-03-21</releaseDate>
+            </release>
+            <runtime>8520</runtime>
+            <genreList>
+              <genre code="13025">Action</genre>
+              <genre code="13008">Drame</genre>
+              <genre code="13021">Science fiction</genre>
+            </genreList>
+            <movieCertificate>
+              <certificate code="14035">Avertissement : des scènes, des propos ou des images peuvent heurter la sensibilité des spectateurs</certificate>
+            </movieCertificate>
+            <poster path="/medias/nmedia/18/85/51/91/20018884.jpg" href="http://images.allocine.fr/medias/nmedia/18/85/51/91/20018884.jpg"/>
+            <trailer code="19262809" href="http://www.allocine.fr/blogvision/19262809"/>
+            <statistics>
+              <pressRating>3.5</pressRating>
+              <pressReviewCount>20</pressReviewCount>
+              <userRating>3.819299</userRating>
+              <userReviewCount>1276</userReviewCount>
+              <userRatingCount>6508</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="false" code="6001" lang="6001">Français</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 10:50, 13:40, 16:30
+Séances du jeudi 12 avril 2012 : 10:50, 13:40, 16:30
+Séances du vendredi 13 avril 2012 : 10:50, 13:40, 16:30
+Séances du samedi 14 avril 2012 : 10:50, 13:40, 16:30
+Séances du dimanche 15 avril 2012 : 10:50, 13:40, 16:30
+Séances du lundi 16 avril 2012 : 10:50, 13:40, 16:30
+Séances du mardi 17 avril 2012 : 10:50, 13:40, 16:30</display>
+        <screenings>
+          <scr d="2012-04-16">
+            <t code="888673495" p="0">10:50</t>
+            <t code="888673496" p="0">13:40</t>
+            <t code="888673497" p="0">16:30</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673498" p="0">10:50</t>
+            <t code="888673499" p="0">13:40</t>
+            <t code="888673500" p="0">16:30</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=6341&amp;id_cinema=32&amp;numerique=1&amp;id_version=2&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="false">
+        <onShow>
+          <movie code="145083">
+            <title>Hunger Games</title>
+            <castingShort>
+              <directors>Gary Ross</directors>
+              <actors>Jennifer Lawrence, Josh Hutcherson, Liam Hemsworth, Woody Harrelson, Elizabeth Banks</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-03-21</releaseDate>
+            </release>
+            <runtime>8520</runtime>
+            <genreList>
+              <genre code="13025">Action</genre>
+              <genre code="13008">Drame</genre>
+              <genre code="13021">Science fiction</genre>
+            </genreList>
+            <movieCertificate>
+              <certificate code="14035">Avertissement : des scènes, des propos ou des images peuvent heurter la sensibilité des spectateurs</certificate>
+            </movieCertificate>
+            <poster path="/medias/nmedia/18/85/51/91/20018884.jpg" href="http://images.allocine.fr/medias/nmedia/18/85/51/91/20018884.jpg"/>
+            <trailer code="19262809" href="http://www.allocine.fr/blogvision/19262809"/>
+            <statistics>
+              <pressRating>3.5</pressRating>
+              <pressReviewCount>20</pressReviewCount>
+              <userRating>3.819299</userRating>
+              <userReviewCount>1276</userReviewCount>
+              <userRatingCount>6508</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="true" code="6002" lang="6002">Anglais</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 19:20, 22:10
+Séances du jeudi 12 avril 2012 : 19:20, 22:10
+Séances du vendredi 13 avril 2012 : 19:20, 22:10
+Séances du samedi 14 avril 2012 : 19:20, 22:10
+Séances du dimanche 15 avril 2012 : 19:20, 22:10
+Séances du lundi 16 avril 2012 : 19:20, 22:10
+Séances du mardi 17 avril 2012 : 19:20, 22:10</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673509" p="0">19:20</t>
+            <t code="888673510" p="0">22:10</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673511" p="0">19:20</t>
+            <t code="888673512" p="0">22:10</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673513" p="0">19:20</t>
+            <t code="888673514" p="0">22:10</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=5836&amp;id_cinema=32&amp;numerique=2&amp;id_version=2&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="false">
+        <onShow>
+          <movie code="5818">
+            <title>Titanic</title>
+            <castingShort>
+              <directors>James Cameron</directors>
+              <actors>Leonardo DiCaprio, Kate Winslet, Billy Zane, Kathy Bates, Bill Paxton</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-04-04</releaseDate>
+            </release>
+            <runtime>11640</runtime>
+            <genreList>
+              <genre code="13008">Drame</genre>
+              <genre code="13024">Romance</genre>
+            </genreList>
+            <poster path="/medias/nmedia/18/36/27/14/20051394.jpg" href="http://images.allocine.fr/medias/nmedia/18/36/27/14/20051394.jpg"/>
+            <trailer code="19263225" href="http://www.allocine.fr/blogvision/19263225"/>
+            <statistics>
+              <pressRating>4.857142</pressRating>
+              <pressReviewCount>7</pressReviewCount>
+              <userRating>3.954264</userRating>
+              <userReviewCount>1897</userReviewCount>
+              <userRatingCount>39231</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="true" code="6002" lang="6002">Anglais</version>
+        <screenFormat code="110003">3D</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 13:15, 17:00, 20:45
+Séances du jeudi 12 avril 2012 : 13:15, 17:00, 20:45
+Séances du vendredi 13 avril 2012 : 13:15, 17:00, 20:45
+Séances du samedi 14 avril 2012 : 13:15, 17:00, 20:45
+Séances du dimanche 15 avril 2012 : 13:15, 17:00, 20:45
+Séances du lundi 16 avril 2012 : 13:15, 17:00, 20:45
+Séances du mardi 17 avril 2012 : 13:15, 17:00, 20:45</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673375" p="0">20:45</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673376" p="0">13:15</t>
+            <t code="888673377" p="0">17:00</t>
+            <t code="888673378" p="0">20:45</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673379" p="0">13:15</t>
+            <t code="888673380" p="0">17:00</t>
+            <t code="888673381" p="0">20:45</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=2446&amp;id_cinema=32&amp;numerique=2&amp;id_version=1&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="true">
+        <onShow>
+          <movie code="10862">
+            <title>Le Roi Lion</title>
+            <castingShort>
+              <directors>Roger Allers, Rob Minkoff</directors>
+              <actors>Matthew Broderick, Jonathan Taylor, James Earl Jones, Madge Sinclair, Rowan Atkinson</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-04-11</releaseDate>
+            </release>
+            <runtime>5040</runtime>
+            <genreList>
+              <genre code="13026">Animation</genre>
+              <genre code="13001">Aventure</genre>
+              <genre code="13005">Comédie</genre>
+              <genre code="13008">Drame</genre>
+            </genreList>
+            <movieCertificate>
+              <certificate code="14029">A partir de 3 ans</certificate>
+            </movieCertificate>
+            <poster path="/medias/nmedia/18/85/97/82/19858447.jpg" href="http://images.allocine.fr/medias/nmedia/18/85/97/82/19858447.jpg"/>
+            <trailer code="19327769" href="http://www.allocine.fr/blogvision/19327769"/>
+            <statistics>
+              <pressRating>4.333333</pressRating>
+              <pressReviewCount>3</pressReviewCount>
+              <userRating>4.147753</userRating>
+              <userReviewCount>696</userReviewCount>
+              <userRatingCount>30200</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="false" code="6001" lang="6001">Français</version>
+        <screenFormat code="110003">3D</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 11:15, 14:00, 16:00, 18:00, 20:00
+Séances du jeudi 12 avril 2012 : 11:15, 14:00, 16:00, 18:00, 20:00
+Séances du vendredi 13 avril 2012 : 11:15, 14:00, 16:00, 18:00, 20:00
+Séances du samedi 14 avril 2012 : 11:15, 14:00, 16:00, 18:00, 20:00
+Séances du dimanche 15 avril 2012 : 11:15, 14:00, 16:00, 18:00, 20:00
+Séances du lundi 16 avril 2012 : 11:15, 14:00, 16:00, 18:00, 20:00
+Séances du mardi 17 avril 2012 : 11:15, 14:00, 16:00, 18:00, 20:00</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673431" p="0">20:00</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673433" p="0">11:15</t>
+            <t code="888673435" p="0">14:00</t>
+            <t code="888673437" p="0">16:00</t>
+            <t code="888673439" p="0">18:00</t>
+            <t code="888673441" p="0">20:00</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673443" p="0">11:15</t>
+            <t code="888673445" p="0">14:00</t>
+            <t code="888673447" p="0">16:00</t>
+            <t code="888673449" p="0">18:00</t>
+            <t code="888673451" p="0">20:00</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=6636&amp;id_cinema=32&amp;numerique=1&amp;id_version=1&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="false">
+        <onShow>
+          <movie code="185031">
+            <title>Projet X</title>
+            <castingShort>
+              <directors>Nima Nourizadeh</directors>
+              <actors>Thomas Mann (II), Oliver Cooper, Jonathan Daniel Brown, Dax Flame, Kirby Bliss Blanton</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-03-14</releaseDate>
+            </release>
+            <runtime>5220</runtime>
+            <genreList>
+              <genre code="13005">Comédie</genre>
+            </genreList>
+            <movieCertificate>
+              <certificate code="14035">Avertissement : des scènes, des propos ou des images peuvent heurter la sensibilité des spectateurs</certificate>
+            </movieCertificate>
+            <poster path="/medias/nmedia/18/86/82/55/20028166.jpg" href="http://images.allocine.fr/medias/nmedia/18/86/82/55/20028166.jpg"/>
+            <trailer code="19305242" href="http://www.allocine.fr/blogvision/19305242"/>
+            <statistics>
+              <pressRating>3</pressRating>
+              <pressReviewCount>11</pressReviewCount>
+              <userRating>3.790674</userRating>
+              <userReviewCount>729</userReviewCount>
+              <userRatingCount>3571</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="false" code="6001" lang="6001">Français</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 11:10, 22:00
+Séances du jeudi 12 avril 2012 : 11:10, 22:00
+Séances du vendredi 13 avril 2012 : 11:10, 22:00
+Séances du samedi 14 avril 2012 : 11:10, 22:00
+Séances du dimanche 15 avril 2012 : 11:10, 22:00
+Séances du lundi 16 avril 2012 : 11:10, 22:00
+Séances du mardi 17 avril 2012 : 11:10, 22:00</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673736" p="0">22:00</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673738" p="0">11:10</t>
+            <t code="888673739" p="0">22:00</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673741" p="0">11:10</t>
+            <t code="888673740" p="0">22:00</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=6447&amp;id_cinema=32&amp;numerique=1&amp;id_version=1&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="true">
+        <onShow>
+          <movie code="196255">
+            <title>Radiostars</title>
+            <castingShort>
+              <directors>Romain Levy</directors>
+              <actors>Manu Payet, Clovis Cornillac, Douglas Attal, Pascal Demolon, Benjamin Lavernhe</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-04-11</releaseDate>
+            </release>
+            <runtime>6000</runtime>
+            <genreList>
+              <genre code="13005">Comédie</genre>
+            </genreList>
+            <poster path="/medias/nmedia/18/85/39/18/20031934.jpg" href="http://images.allocine.fr/medias/nmedia/18/85/39/18/20031934.jpg"/>
+            <trailer code="19328362" href="http://www.allocine.fr/blogvision/19328362"/>
+            <statistics>
+              <pressRating>3.666666</pressRating>
+              <pressReviewCount>18</pressReviewCount>
+              <userRating>3.757929</userRating>
+              <userReviewCount>137</userReviewCount>
+              <userRatingCount>599</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="true" code="6001" lang="6001">Français</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 11:10, 13:30, 15:45, 17:55, 20:05, 22:15
+Séances du jeudi 12 avril 2012 : 11:10, 13:30, 15:45, 17:55, 20:05, 22:15
+Séances du vendredi 13 avril 2012 : 11:10, 13:30, 15:45, 17:55, 20:05, 22:15
+Séances du samedi 14 avril 2012 : 11:10, 13:30, 15:45, 17:55, 20:05, 22:15
+Séances du dimanche 15 avril 2012 : 11:10, 13:30, 15:45, 17:55, 20:05, 22:15
+Séances du lundi 16 avril 2012 : 11:10, 13:30, 15:45, 17:55, 20:05, 22:15
+Séances du mardi 17 avril 2012 : 11:10, 13:30, 15:45, 17:55, 20:05, 22:15</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673889" p="0">20:05</t>
+            <t code="888673890" p="0">22:15</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673891" p="0">11:10</t>
+            <t code="888673892" p="0">13:30</t>
+            <t code="888673893" p="0">15:45</t>
+            <t code="888673894" p="0">17:55</t>
+            <t code="888673895" p="0">20:05</t>
+            <t code="888673896" p="0">22:15</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673897" p="0">11:10</t>
+            <t code="888673898" p="0">13:30</t>
+            <t code="888673899" p="0">15:45</t>
+            <t code="888673900" p="0">17:55</t>
+            <t code="888673901" p="0">20:05</t>
+            <t code="888673902" p="0">22:15</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=6611&amp;id_cinema=32&amp;numerique=1&amp;id_version=2&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="false">
+        <onShow>
+          <movie code="176326">
+            <title>My Week with Marilyn</title>
+            <castingShort>
+              <directors>Simon Curtis</directors>
+              <actors>Michelle Williams, Eddie Redmayne, Julia Ormond, Kenneth Branagh, Judi Dench</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-04-04</releaseDate>
+            </release>
+            <runtime>6120</runtime>
+            <genreList>
+              <genre code="13027">Biopic</genre>
+            </genreList>
+            <poster path="/medias/nmedia/18/79/89/42/19955079.jpg" href="http://images.allocine.fr/medias/nmedia/18/79/89/42/19955079.jpg"/>
+            <trailer code="19279844" href="http://www.allocine.fr/blogvision/19279844"/>
+            <statistics>
+              <pressRating>2.76</pressRating>
+              <pressReviewCount>25</pressReviewCount>
+              <userRating>3.400997</userRating>
+              <userReviewCount>152</userReviewCount>
+              <userRatingCount>702</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="true" code="6002" lang="6002">Anglais</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 11:05, 13:35, 15:45, 17:55, 20:05, 22:15
+Séances du jeudi 12 avril 2012 : 11:05, 13:35, 15:45, 17:55, 20:05, 22:15
+Séances du vendredi 13 avril 2012 : 11:05, 13:35, 15:45, 17:55, 20:05, 22:15
+Séances du samedi 14 avril 2012 : 11:05, 13:35
+Séances du dimanche 15 avril 2012 : 11:05, 13:35, 15:45, 17:55, 20:05, 22:15
+Séances du lundi 16 avril 2012 : 11:05, 13:35, 15:45, 17:55, 20:05, 22:15
+Séances du mardi 17 avril 2012 : 11:05, 13:35, 15:45, 17:55, 20:05, 22:15</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673686" p="0">20:05</t>
+            <t code="888673687" p="0">22:15</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673688" p="0">11:05</t>
+            <t code="888673689" p="0">13:35</t>
+            <t code="888673690" p="0">15:45</t>
+            <t code="888673691" p="0">17:55</t>
+            <t code="888673692" p="0">20:05</t>
+            <t code="888673693" p="0">22:15</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673694" p="0">11:05</t>
+            <t code="888673695" p="0">13:35</t>
+            <t code="888673696" p="0">15:45</t>
+            <t code="888673697" p="0">17:55</t>
+            <t code="888673698" p="0">20:05</t>
+            <t code="888673699" p="0">22:15</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=6423&amp;id_cinema=32&amp;numerique=1&amp;id_version=2&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="false">
+        <onShow>
+          <movie code="178188">
+            <title>2 Days In New York</title>
+            <castingShort>
+              <directors>Julie Delpy</directors>
+              <actors>Julie Delpy, Chris Rock, Albert Delpy, Alexia Landeau, Alexandre Nahon</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-03-28</releaseDate>
+            </release>
+            <runtime>5700</runtime>
+            <genreList>
+              <genre code="13005">Comédie</genre>
+            </genreList>
+            <poster path="/medias/nmedia/18/77/69/94/20034907.jpg" href="http://images.allocine.fr/medias/nmedia/18/77/69/94/20034907.jpg"/>
+            <trailer code="19307907" href="http://www.allocine.fr/blogvision/19307907"/>
+            <statistics>
+              <pressRating>3.407407</pressRating>
+              <pressReviewCount>27</pressReviewCount>
+              <userRating>3.174593</userRating>
+              <userReviewCount>201</userReviewCount>
+              <userRatingCount>862</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="true" code="6002" lang="6002">Anglais</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 15:45, 17:55, 20:05, 22:10
+Séances du jeudi 12 avril 2012 : 15:45, 17:55, 20:05, 22:10
+Séances du vendredi 13 avril 2012 : 15:45, 17:55, 20:05, 22:10
+Séances du samedi 14 avril 2012 : 15:45, 17:55, 20:05, 22:10
+Séances du dimanche 15 avril 2012 : 15:45, 17:55, 20:05, 22:10
+Séances du lundi 16 avril 2012 : 15:45, 17:55, 20:05, 22:10
+Séances du mardi 17 avril 2012 : 15:45, 17:55, 20:05, 22:10</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673718" p="0">20:05</t>
+            <t code="888673719" p="0">22:10</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673720" p="0">15:45</t>
+            <t code="888673721" p="0">17:55</t>
+            <t code="888673722" p="0">20:05</t>
+            <t code="888673723" p="0">22:10</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673724" p="0">15:45</t>
+            <t code="888673725" p="0">17:55</t>
+            <t code="888673726" p="0">20:05</t>
+            <t code="888673727" p="0">22:10</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=5388&amp;id_cinema=32&amp;numerique=1&amp;id_version=2&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="false">
+        <onShow>
+          <movie code="175254">
+            <title>[REC]³ Génesis</title>
+            <castingShort>
+              <directors>Paco Plaza</directors>
+              <actors>Leticia Dolera, Diego Martín, Ismael Martínez, Àlex Monner, Claire Baschet</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-04-04</releaseDate>
+            </release>
+            <runtime>4800</runtime>
+            <genreList>
+              <genre code="13009">Epouvante-horreur</genre>
+              <genre code="13023">Thriller</genre>
+              <genre code="13008">Drame</genre>
+            </genreList>
+            <movieCertificate>
+              <certificate code="14001">Interdit aux moins de 12 ans</certificate>
+            </movieCertificate>
+            <poster path="/medias/nmedia/18/89/20/38/20031801.jpg" href="http://images.allocine.fr/medias/nmedia/18/89/20/38/20031801.jpg"/>
+            <trailer code="19309891" href="http://www.allocine.fr/blogvision/19309891"/>
+            <statistics>
+              <pressRating>2.5</pressRating>
+              <pressReviewCount>16</pressReviewCount>
+              <userRating>2.523678</userRating>
+              <userReviewCount>273</userReviewCount>
+              <userRatingCount>908</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="true" code="6003" lang="6003">Espagnol</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 11:10, 14:10, 16:10, 18:10, 20:30, 22:25
+Séances du jeudi 12 avril 2012 : 11:10, 14:10, 16:10, 18:10, 20:30, 22:25
+Séances du vendredi 13 avril 2012 : 11:10, 14:10, 16:10, 18:10, 20:30, 22:25
+Séances du samedi 14 avril 2012 : 11:10, 14:10, 16:10, 18:10, 20:30, 22:25
+Séances du dimanche 15 avril 2012 : 11:10, 14:10, 16:10, 18:10, 20:30, 22:25
+Séances du lundi 16 avril 2012 : 11:10, 14:10, 16:10, 18:10, 20:30, 22:25
+Séances du mardi 17 avril 2012 : 11:10, 14:10, 16:10, 18:10, 20:30, 22:25</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673648" p="0">20:30</t>
+            <t code="888673649" p="0">22:25</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673650" p="0">11:10</t>
+            <t code="888673651" p="0">14:10</t>
+            <t code="888673652" p="0">16:10</t>
+            <t code="888673653" p="0">18:10</t>
+            <t code="888673654" p="0">20:30</t>
+            <t code="888673655" p="0">22:25</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673656" p="0">11:10</t>
+            <t code="888673657" p="0">14:10</t>
+            <t code="888673658" p="0">16:10</t>
+            <t code="888673659" p="0">18:10</t>
+            <t code="888673660" p="0">20:30</t>
+            <t code="888673661" p="0">22:25</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=6662&amp;id_cinema=32&amp;numerique=1&amp;id_version=1&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="false">
+        <onShow>
+          <movie code="192189">
+            <title>Le Fils de l'autre</title>
+            <castingShort>
+              <directors>Lorraine Levy</directors>
+              <actors>Emmanuelle Devos, Pascal Elbé, Jules Sitruk, Mehdi Dehbi, Areen Omari</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-04-04</releaseDate>
+            </release>
+            <runtime>6300</runtime>
+            <genreList>
+              <genre code="13008">Drame</genre>
+            </genreList>
+            <poster path="/medias/nmedia/18/87/73/91/20017415.jpg" href="http://images.allocine.fr/medias/nmedia/18/87/73/91/20017415.jpg"/>
+            <trailer code="19286806" href="http://www.allocine.fr/blogvision/19286806"/>
+            <statistics>
+              <pressRating>2.916666</pressRating>
+              <pressReviewCount>24</pressReviewCount>
+              <userRating>3.84888</userRating>
+              <userReviewCount>69</userReviewCount>
+              <userRatingCount>268</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="true" code="6001" lang="6001">Français</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 11:00, 13:30, 15:45, 20:05, 22:20
+Séances du jeudi 12 avril 2012 : 11:00, 13:30, 15:45, 20:05, 22:20
+Séances du vendredi 13 avril 2012 : 11:00, 13:30, 15:45, 20:05, 22:20
+Séances du samedi 14 avril 2012 : 11:00, 13:30, 15:45, 20:05, 22:20
+Séances du dimanche 15 avril 2012 : 11:00, 13:30, 15:45, 20:05, 22:20
+Séances du lundi 16 avril 2012 : 11:00, 13:30, 15:45, 20:05, 22:20
+Séances du mardi 17 avril 2012 : 11:00, 13:30, 15:45, 20:05, 22:20</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673849" p="0">20:05</t>
+            <t code="888673850" p="0">22:20</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673851" p="0">11:00</t>
+            <t code="888673852" p="0">13:30</t>
+            <t code="888673853" p="0">15:45</t>
+            <t code="888673854" p="0">20:05</t>
+            <t code="888673855" p="0">22:20</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673856" p="0">11:00</t>
+            <t code="888673857" p="0">13:30</t>
+            <t code="888673858" p="0">15:45</t>
+            <t code="888673859" p="0">20:05</t>
+            <t code="888673860" p="0">22:20</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+      <movieShowtimes ticketing="http://www.cinemasgaumontpathe.com/index.php?do=landing&amp;id_film=6417&amp;id_cinema=32&amp;numerique=1&amp;id_version=2&amp;partenaire=allocine&amp;imax=N" preview="false" releaseWeek="true">
+        <onShow>
+          <movie code="187192">
+            <title>Twixt</title>
+            <castingShort>
+              <directors>Francis Ford Coppola</directors>
+              <actors>Val Kilmer, Bruce Dern, Elle Fanning, Ben Chaplin, Joanne Whalley</actors>
+            </castingShort>
+            <release>
+              <releaseDate>2012-04-11</releaseDate>
+            </release>
+            <runtime>5340</runtime>
+            <genreList>
+              <genre code="13009">Epouvante-horreur</genre>
+              <genre code="13023">Thriller</genre>
+              <genre code="13024">Romance</genre>
+            </genreList>
+            <movieCertificate>
+              <certificate code="14035">Avertissement : des scènes, des propos ou des images peuvent heurter la sensibilité des spectateurs</certificate>
+            </movieCertificate>
+            <poster path="/medias/nmedia/18/85/42/35/20039667.jpg" href="http://images.allocine.fr/medias/nmedia/18/85/42/35/20039667.jpg"/>
+            <trailer code="19303312" href="http://www.allocine.fr/blogvision/19303312"/>
+            <statistics>
+              <pressRating>2.935483</pressRating>
+              <pressReviewCount>31</pressReviewCount>
+              <userRating>3.048717</userRating>
+              <userReviewCount>51</userReviewCount>
+              <userRatingCount>195</userRatingCount>
+            </statistics>
+          </movie>
+        </onShow>
+        <version original="true" code="6002" lang="6002">Anglais</version>
+        <screenFormat code="110002">Numérique</screenFormat>
+        <display>Séances du mercredi 11 avril 2012 : 11:15, 14:00, 16:00, 18:00, 20:00, 22:00
+Séances du jeudi 12 avril 2012 : 11:15, 14:00, 16:00, 18:00, 20:00, 22:00
+Séances du vendredi 13 avril 2012 : 11:15, 14:00, 16:00, 18:00, 20:00, 22:00
+Séances du samedi 14 avril 2012 : 11:15, 13:30, 15:45, 18:00, 20:15, 22:30
+Séances du dimanche 15 avril 2012 : 11:15, 14:00, 16:00, 18:00, 20:00, 22:00
+Séances du lundi 16 avril 2012 : 11:15, 14:00, 16:00, 18:00, 20:00, 22:00
+Séances du mardi 17 avril 2012 : 11:15, 14:00, 16:00, 18:00, 20:00, 22:00</display>
+        <screenings>
+          <scr d="2012-04-15">
+            <t code="888673812" p="0">20:00</t>
+            <t code="888673813" p="0">22:00</t>
+          </scr>
+          <scr d="2012-04-16">
+            <t code="888673814" p="0">11:15</t>
+            <t code="888673815" p="0">14:00</t>
+            <t code="888673816" p="0">16:00</t>
+            <t code="888673817" p="0">18:00</t>
+            <t code="888673818" p="0">20:00</t>
+            <t code="888673819" p="0">22:00</t>
+          </scr>
+          <scr d="2012-04-17">
+            <t code="888673820" p="0">11:15</t>
+            <t code="888673821" p="0">14:00</t>
+            <t code="888673822" p="0">16:00</t>
+            <t code="888673823" p="0">18:00</t>
+            <t code="888673824" p="0">20:00</t>
+            <t code="888673825" p="0">22:00</t>
+          </scr>
+        </screenings>
+      </movieShowtimes>
+    </movieShowtimesList>
+  </theaterShowtimes>
+</feed>
