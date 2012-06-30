@@ -364,8 +364,8 @@ Page {
 
                 Repeater{
                     id:screening
-                    visible: false
                     Row{
+                        visible:   extender.extenderOpened
 
                         Component.onCompleted: {
                             //console.debug(code +" - "+ mCode)
@@ -397,10 +397,7 @@ Page {
 
                 ItemExtender {
                     id: extender
-                    onClicked: {
-                        //showTimesLabel.visible = !showTimesLabel.visible;
-                        screening.visible = !screening.visible;
-                    }
+
                 }
 
             }

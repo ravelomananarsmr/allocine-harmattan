@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 
 Item {
+    property bool extenderOpened:false
     anchors.left: parent.left
     anchors.right: parent.right
     height: iconImage.height + separator.height
@@ -27,7 +28,7 @@ Item {
         anchors.top: separator.bottom
         source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
         anchors.horizontalCenter: parent.horizontalCenter
-        rotation: 90
+        rotation: (extenderOpened ?270 :90  )
     }
 
     MouseArea {
@@ -36,11 +37,7 @@ Item {
     }
 
     onClicked: {
-        if (iconImage.rotation == 90) {
-            iconImage.rotation = 270
-        } else if (iconImage.rotation == 270) {
-            iconImage.rotation = 90
-        }
+       extenderOpened = ! extenderOpened
     }
 
     Component.onCompleted: {
