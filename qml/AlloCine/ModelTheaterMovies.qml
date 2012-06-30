@@ -29,6 +29,9 @@ XmlListModel {
     XmlRole { name: "runtime"; query: "onShow/movie/runtime/number()" }
     XmlRole { name: "directors"; query: "onShow/movie/castingShort/directors/string()" }
     XmlRole { name: "actors"; query: "onShow/movie/castingShort/actors/string()" }
+    XmlRole { name: "screenFormatCode"; query: "screenFormat/@code/string()" }
+    XmlRole { name: "versionCode"; query: "version/@code/string()" }
+
 
 //    onCountChanged: console.log("Count changed: " + count)
 //    onXmlChanged: console.log("XML loaded from API")

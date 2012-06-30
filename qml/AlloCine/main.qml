@@ -110,7 +110,8 @@ PageStackWindow {
         XmlListModel {
             property string theaterCode
             property string movieCode
-
+            property string versionCode
+            property string screenFormatCode
             query: "//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\"]/movieShowtimesList/movieShowtimes[onShow/movie/@code/string()='"+movieCode+"']/screenings/scr"
             namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
             XmlRole { name: "date"; query: '@d/string()' }
@@ -124,8 +125,9 @@ PageStackWindow {
             property string theaterCode
             property string movieCode
             property string screeningDate
-
-            query: "//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\"]/movieShowtimesList/movieShowtimes[onShow/movie/@code/string()='"+movieCode+"']/screenings/scr[@d=\""+screeningDate+"\"]/t"
+            property string versionCode
+            property string screenFormatCode
+            query: "//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\"]/movieShowtimesList/movieShowtimes[onShow/movie/@code/string()='"+movieCode+"' and version/@code/string()='"+versionCode+"']/screenings/scr[@d=\""+screeningDate+"\"]/t"
             namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
             XmlRole { name: "time"; query: 'string()' }
         }

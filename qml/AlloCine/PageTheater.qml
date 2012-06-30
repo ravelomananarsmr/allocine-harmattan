@@ -213,7 +213,7 @@ Page {
 
                 Component.onCompleted: {
                     //console.debug(code +" - "+ mCode)
-                    screening.model=screeningDateModel.createObject(screening,{theaterCode:code,movieCode:mCode, xml:theaterMovies.model.xml})
+                    screening.model=screeningDateModel.createObject(screening,{theaterCode:code,movieCode:mCode, xml:theaterMovies.model.xml, versionCode:versionCode, screenFormatCode:screenFormatCode})
                 }
 
                 Rectangle {
@@ -369,7 +369,7 @@ Page {
 
                         Component.onCompleted: {
                             //console.debug(code +" - "+ mCode)
-                            screeningTime.model=screeningTimeModel.createObject(screening,{theaterCode:code,movieCode:mCode,screeningDate:date, xml:theaterMovies.model.xml})
+                            screeningTime.model=screeningTimeModel.createObject(screening,{theaterCode:code,movieCode:mCode,screeningDate:date, xml:theaterMovies.model.xml, versionCode:versionCode, screenFormatCode:screenFormatCode})
                         }
 
                         width: theaterPage.width - dateLabel.width - 20
