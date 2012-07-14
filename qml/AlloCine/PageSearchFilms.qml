@@ -14,11 +14,17 @@ Page {
         searchMoviesModel.reload();
     }
 
+    property bool loading: searchMoviesModel.status == XmlListModel.Loading
+
     WindowTitle {
         id: windowTitleBar
         windowTitle: "Films"
     }
 
+    LoadingOverlay {
+        id: searchFilmsLoadingOverlay
+        visible: searchMoviesModel.status == XmlListModel.Ready ? false: true
+    }
 
     // moviesView
     ListView {
@@ -28,15 +34,15 @@ Page {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.topMargin: 16
-
         cacheBuffer: 3000
+
+        visible: searchMoviesModel.status == XmlListModel.Ready ? true: false
 
         model: searchMoviesModel
         header: Item {
             anchors.left: parent.left
             anchors.right: parent.right
             height: searchField.height + 10 + 16 *2 + currentMovies.height
-
 
             // searchField
             TextField {

@@ -9,7 +9,7 @@ Item {
     property string title
 
     property int separation: pageMargin
-    height: titleLabel.height + textLabel.height + extender.height
+    height: titleLabel.height + textItem.height + extender.height
 
     signal clicked()
 
@@ -20,25 +20,78 @@ Item {
         font.weight: Font.Bold
     }
 
-    Text {
-        id: textLabel
+    Item {
+        id: textItem
         anchors.top: titleLabel.bottom
-        text: shortText
         width: parent.width
-        color: "ghostwhite"
-        wrapMode: Text.Wrap
-        horizontalAlignment:  Text.AlignJustify
-        font.pointSize: titleLabel.font.pointSize
+
+        Text {
+            id: shortTextLabel
+            text: shortText
+            width: parent.width
+            color: "ghostwhite"
+            wrapMode: Text.Wrap
+            horizontalAlignment:  Text.AlignJustify
+            font.pointSize: titleLabel.font.pointSize
+            visible: true
+        }
+
+        Text {
+            id: longTextLabel
+            text: longText
+            width: parent.width
+            color: "ghostwhite"
+            wrapMode: Text.Wrap
+            horizontalAlignment:  Text.AlignJustify
+            font.pointSize: titleLabel.font.pointSize
+            visible: false
+            clip: true
+        }
     }
+
+    state: "SYNOPSYS_RETRACTED"
+
+    states: [
+        State {
+             name: "SYNOPSYS_RETRACTED"
+             PropertyChanges { target: shortTextLabel; visible: true }
+             PropertyChanges { target: longTextLabel; visible: false }
+             PropertyChanges { target: textItem; height: shortTextLabel.height }
+             PropertyChanges { target: longTextLabel; height: textItem.height } // Hack to not have overlap between longtext and items below
+         },
+
+        State {
+             name: "SYNOPSYS_EXTENDED"
+             PropertyChanges { target: shortTextLabel; visible: false }
+             PropertyChanges { target: longTextLabel; visible: true }
+             PropertyChanges { target: textItem; height: longTextLabel.height }
+             PropertyChanges { target: longTextLabel; height: longTextLabel.paintedHeight } // Hack to not have overlap between longtext and items below
+         }
+    ]
+
+    transitions: [
+        Transition {
+            from: "SYNOPSYS_RETRACTED"
+            to: "SYNOPSYS_EXTENDED"
+            NumberAnimation { target: textItem; property: "height"; duration: extender.animationDuration; easing.type: Easing.InOutQuad }
+            NumberAnimation { target: longTextLabel; property: "height"; duration: extender.animationDuration; easing.type: Easing.InOutQuad }
+        },
+        Transition {
+            from: "SYNOPSYS_EXTENDED"
+            to: "SYNOPSYS_RETRACTED"
+            NumberAnimation { target: textItem; property: "height"; duration: extender.animationDuration; easing.type: Easing.InOutQuad }
+            NumberAnimation { target: longTextLabel; property: "height"; duration: extender.animationDuration; easing.type: Easing.InOutQuad }
+        }
+    ]
 
     ItemExtender {
         id: extender
-        anchors.top: textLabel.bottom
+        anchors.top: textItem.bottom
         onClicked: {
-            if (textLabel.text == shortText) {
-                textLabel.text = longText;
-            } else if (textLabel.text == longText) {
-                textLabel.text = shortText;
+            if (state == "RETRACTED") {
+                myItem.state = "SYNOPSYS_RETRACTED"
+            } else if (state == "EXTENDED") {
+                myItem.state = "SYNOPSYS_EXTENDED"
             }
         }
     }

@@ -24,8 +24,6 @@ Page {
         windowTitleBackup: originalTitle ? originalTitle:"Pas de titre"
     }
 
-
-
     LoadingOverlay {
         id: filmPageLoadingOverlay
         onVisibleChanged: {
@@ -65,7 +63,7 @@ Page {
             Component.onCompleted: {
                 var RegularExpression = /\/(\d+)$/
                 var filteredTrailerId = RegularExpression.exec(model.trailer)
-                console.log("Filtered Trailer ID: " + model.trailer + " -> " + filteredTrailerId[1])
+                //console.log("Filtered Trailer ID: " + model.trailer + " -> " + filteredTrailerId[1])
                 trailerUrlId = filteredTrailerId[1]          
             }
 
@@ -80,6 +78,19 @@ Page {
                     height: posterImage.height + 7
                     color: "black"
                     z:1
+
+                    MouseArea {
+                        id: mouseArea
+                        anchors.fill: parent
+                        onClicked: {
+                            var component = Qt.createComponent("PagePicture.qml")
+                            if (component.status == Component.Ready) {
+                                pageStack.push(component, {source: model.poster? model.poster: "Images/empty.png", title: title});
+                            } else {
+                                console.log("Error loading component:", component.errorString());
+                            }
+                        }
+                    }
 
                     Rectangle {
                         id: posterWhiteOutline

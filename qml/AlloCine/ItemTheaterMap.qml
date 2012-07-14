@@ -30,14 +30,14 @@ import QtMobility.location 1.2
 
 Item {
 
-    id: thumbItem
+    id: itemTheaterMap
 
     property variant theaterName
     property variant theaterCoordinate
 
     MapImage {
-        source: "Images/pinpoint-me.png"
-        coordinate: thumbItem.theaterCoordinate
+        source: "Images/pinpoint-theater.png"
+        coordinate: itemTheaterMap.theaterCoordinate
 
         /*!
          * We want that bottom middle edge of icon points to the location, so using offset parameter
@@ -47,9 +47,7 @@ Item {
         offset.x: -34
         offset.y: -69
 
-        z:3
-
-        Component.onCompleted: console.log("Pinpoint added: " + thumbItem.theaterName + " " + coordinate.latitude + "/" + coordinate.longitude)
+        Component.onCompleted: console.log("Pinpoint added: " + itemTheaterMap.theaterName + " " + coordinate.latitude + "/" + coordinate.longitude)
     }
 
 }

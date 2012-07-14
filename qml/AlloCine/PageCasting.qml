@@ -24,7 +24,8 @@ Page {
         Component.onCompleted: castingListView.model = castingModel.createObject(castingModel,{mCode:mCode})
 
         delegate: Item {
-            height: Math.max(personDetails.height, personPictureContainer.height) + 20
+            //height: Math.max(personDetails.height, personPictureContainer.height) + 20
+            height: personPictureContainer.height + 20
             width: parent.width
 
             Rectangle {
@@ -47,7 +48,6 @@ Page {
                     anchors.top: parent.top
                     anchors.verticalCenter: parent.verticalCenter
                     color: "black"
-
                     z:1
 
                     Rectangle {
@@ -81,15 +81,6 @@ Page {
                         }
                     }
                 }
-
-//                Image {
-//                    id: personPicture
-//                    source: model.picture
-//                    width: 80
-//                    anchors.top: parent.top
-//                    anchors.verticalCenter: parent.verticalCenter
-//                    fillMode: Image.PreserveAspectFit
-//                }
 
                 Column {
                     id: personDetails

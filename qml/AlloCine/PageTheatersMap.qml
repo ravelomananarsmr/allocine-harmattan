@@ -6,6 +6,9 @@ Page {
     id: mapPage
     tools: buttonTools
 
+    property int nb_of_theaters: 0
+
+
     // buttonTools
     ToolBarLayout {
         id: buttonTools
@@ -34,7 +37,7 @@ Page {
 
     WindowTitle {
         id: windowTitleBar
-        windowTitle: "Salles " + mapPlacer.x + "/" + mapPlacer.y
+        windowTitle: nb_of_theaters + " salles dans un rayon de " + pinpointView.model.radius + " km"
     }
 
     Item {
@@ -119,43 +122,26 @@ Page {
                     }
                     onCountChanged: {
                         console.log(count + " theater found" )
+                        nb_of_theaters = count
                     }
                 }
 
-//                delegate: ThumbItem {
+                delegate: ItemTheaterMap {
 
-//                    theaterCoordinate: Coordinate {
-//                        latitude: parseFloat(tlatitude)
-//                        longitude: parseFloat(tlongitude)
-//                    }
-
-//                    theaterName: name
-
-//    //                onSelected: {
-//    //                    //theaterName = modelTheaters.get(index).name
-//    //                    console.log("Selected Theater: " + model.name)
-//    //                    //station.source = "http://www.velib.paris.fr/service/stationdetails/" + stations.get(index).number
-//    //                }
-//                }
-
-                delegate: MapImage {
-                    source: "Images/pinpoint-me.png"
-                    coordinate: Coordinate {
+                    theaterCoordinate: Coordinate {
                         latitude: parseFloat(tlatitude)
                         longitude: parseFloat(tlongitude)
                     }
 
-                    /*!
-                     * We want that bottom middle edge of icon points to the location, so using offset parameter
-                     * to change the on-screen position from coordinate. Values are calculated based on icon size,
-                     * in our case icon is 48x48.
-                     */
-                    offset.x: -34
-                    offset.y: -69
+                    theaterName: name
 
-                    z:2
+                    z: 2
 
-                    onVisibleChanged: console.log("Theater pinpoint added: " + name + " " + tlatitude + "/" + tlongitude + " visible=" + visible + " x=" + x + " y=" + y)
+    //                onSelected: {
+    //                    //theaterName = modelTheaters.get(index).name
+    //                    console.log("Selected Theater: " + model.name)
+    //                    //station.source = "http://www.velib.paris.fr/service/stationdetails/" + stations.get(index).number
+    //                }
                 }
             }
         }

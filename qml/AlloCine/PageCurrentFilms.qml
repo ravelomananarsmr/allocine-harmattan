@@ -4,14 +4,12 @@ import com.nokia.meego 1.0
 import "Helpers.js" as Helpers
 //import com.nokia.symbian 1.1
 
-
 Page {
     id: filmsPage
     tools: buttonTools
 
     function filterMovies(text) {
         console.log("Filtering movies on " + text);
-        //xmlModel.query = "/catalog/book[contains(lower-case(child::author),lower-case(\""+filter.text+"\"))]";
         currentMoviesModel.query = "/feed/movie[contains(lower-case(child::title),lower-case(\""+text+"\"))]";
         currentMoviesModel.reload();
     }
@@ -36,17 +34,17 @@ Page {
         header: Item {
             anchors.left: parent.left
             anchors.right: parent.right
-            height: filterField.height + 10
+            height: filterField.height + 2 * anchors.margins
+            anchors.margins: 16
 
             // filterField
             TextField {
                 id: filterField
-                anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.right: parent.right
-                anchors.leftMargin: 16
-                anchors.rightMargin: 16
-                placeholderText: "Recherche"
+                anchors.top: parent.top
+                //anchors.verticalCenter: parent.verticalCenter
+                placeholderText: "Filtrer"
 
                 //if user is typing fast, we don't want to search on every key-press
                 Timer{
@@ -98,7 +96,7 @@ Page {
 
         delegate:  Item {
             id: listItem
-            height: Math.max(detailsItem.height, posterImageContainer.height) + 20
+            height: posterImageContainer.height + 20
             width: parent.width
 
             Rectangle {

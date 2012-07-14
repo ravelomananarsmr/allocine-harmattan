@@ -360,12 +360,13 @@ Page {
                     text: "Séances"
                     color: "gold"
                     anchors.horizontalCenter: parent.horizontalCenter
+                    visible:   !extender.extended
                 }
 
                 Repeater{
                     id:screening
                     Row{
-                        visible:   extender.extenderOpened
+                        visible:   extender.extended
 
                         Component.onCompleted: {
                             //console.debug(code +" - "+ mCode)

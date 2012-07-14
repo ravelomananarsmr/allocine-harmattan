@@ -3,10 +3,45 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 
 Item {
-    property bool extenderOpened:false
+    property int animationDuration: 300
+    property bool extended: state == "EXTENDED" ? true: false
     anchors.left: parent.left
     anchors.right: parent.right
     height: iconImage.height + separator.height
+
+    state: "RETRACTED"
+
+    states: [
+        State {
+             name: "RETRACTED"
+             PropertyChanges { target: iconImage; rotation: 90 }
+         },
+        State {
+             name: "EXTENDED"
+             PropertyChanges { target: iconImage; rotation: 270 }
+         }
+    ]
+
+    transitions: [
+        Transition {
+            from: "RETRACTED"
+            to: "EXTENDED"
+            RotationAnimation {
+                target: iconImage
+                duration: animationDuration
+                direction: RotationAnimation.Clockwise
+            }
+        },
+        Transition {
+            from: "EXTENDED"
+            to: "RETRACTED"
+            RotationAnimation {
+                target: iconImage
+                duration: animationDuration
+                direction: RotationAnimation.Counterclockwise
+            }
+        }
+    ]
 
     signal clicked()
 
@@ -28,7 +63,6 @@ Item {
         anchors.top: separator.bottom
         source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
         anchors.horizontalCenter: parent.horizontalCenter
-        rotation: (extenderOpened ?270 :90  )
     }
 
     MouseArea {
@@ -37,7 +71,11 @@ Item {
     }
 
     onClicked: {
-       extenderOpened = ! extenderOpened
+        if (state == "RETRACTED") {
+            state = "EXTENDED"
+        } else  if (state == "EXTENDED"){
+            state = "RETRACTED"
+        }
     }
 
     Component.onCompleted: {

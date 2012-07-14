@@ -262,17 +262,17 @@ Page {
         visualParent: pageStack
 
         MenuLayout {
-//            MenuItem { text: "Voir sur la carte";
-//                       onClicked: {
-//                    var component = Qt.createComponent("PageTheatersMap.qml")
-//                    if (component.status == Component.Ready) {
-//                        console.log("Opening Map centered on lat=" + myPosition.position.coordinate.latitude + " and long = " + myPosition.position.coordinate.longitude);
-//                        pageStack.push(component);
-//                    } else {
-//                        console.log("Error loading component:", component.errorString());
-//                     }
-//                  }
-//            }
+            MenuItem { text: "Voir la carte autour de moi";
+                       onClicked: {
+                    var component = Qt.createComponent("PageTheatersMap.qml")
+                    if (component.status == Component.Ready) {
+                        console.log("Opening Map centered on lat=" + myPosition.position.coordinate.latitude + " and long = " + myPosition.position.coordinate.longitude);
+                        pageStack.push(component);
+                    } else {
+                        console.log("Error loading component:", component.errorString());
+                     }
+                  }
+            }
             MenuItem { text: "Rayon: 1 km";
                 onClicked: {
                     theaterListView.model.radius = 1
