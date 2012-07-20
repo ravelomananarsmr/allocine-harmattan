@@ -15,7 +15,7 @@ Page {
         id: modelPerson
         personCode: pagePerson.personCode
         onStatusChanged: {
-            console.log("person code = " + pagePerson.personCode)
+            //console.log("person code = " + pagePerson.personCode)
             if (status == XmlListModel.Ready && count > 0){
                 pagePersonLoadingOverlay.visible = false
             } else if (status == XmlListModel.Ready && count > 0) {
@@ -78,6 +78,21 @@ Page {
                     height: pictureImage.height + 7
                     color: "black"
                     z:1
+
+                    MouseArea {
+                        id: mouseArea
+                        anchors.fill: parent
+                        enabled: model.picture
+                        onClicked: {
+                            var component = Qt.createComponent("PagePicture.qml")
+                            if (component.status == Component.Ready) {
+                                pageStack.push(component, {imageSource: model.picture? model.picture: "Images/empty.png", title: name});
+                            } else {
+                                console.log("Error loading component:", component.errorString());
+                            }
+                        }
+                    }
+
 
                     Rectangle {
                         id: pictureWhiteOutline
@@ -161,6 +176,7 @@ Page {
                 title: "Biographie"
                 shortText: model.biographyShort
                 longText: model.biography
+                visible: model.biographyShort || model.biography
             }
 
 //            // completeFilmography

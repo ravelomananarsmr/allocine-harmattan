@@ -7,7 +7,9 @@ Item {
     property string icon
     property string text
     property int separation: pageMargin
-    height: Math.max(iconImage.height, labelText.height)
+    property int minimumHeight: 64
+
+    height: Math.max(iconImage.height, labelText.height, minimumHeight)
 
     signal clicked()
 

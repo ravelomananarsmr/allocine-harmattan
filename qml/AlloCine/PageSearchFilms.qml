@@ -1,6 +1,7 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import com.nokia.extras 1.1
 import "Helpers.js" as Helpers
 //import com.nokia.symbian 1.1
 
@@ -9,12 +10,15 @@ Page {
     tools: buttonTools
 
     function searchMovies(text) {
-        console.log("Search movies with " + text);
-        searchMoviesModel.movieQuery = text;
-        searchMoviesModel.reload();
+        //console.log("Search movies with " + text);
+        modelSearchMovies.movieQuery = text;
+        modelSearchMovies.reload();
     }
 
-    property bool loading: searchMoviesModel.status == XmlListModel.Loading
+    InfoBanner {
+        id: noResultFoundBanner
+        text: "Aucun film trouvé"
+    }
 
     WindowTitle {
         id: windowTitleBar
@@ -23,7 +27,18 @@ Page {
 
     LoadingOverlay {
         id: searchFilmsLoadingOverlay
-        visible: searchMoviesModel.status == XmlListModel.Ready ? false: true
+        visible: modelSearchMovies.status == XmlListModel.Loading
+    }
+
+    ModelSearchMovies {
+        id: modelSearchMovies
+        onStatusChanged: {
+            if (status == XmlListModel.Ready){
+                if (count == 0 && xml){
+                    noResultFoundBanner.show();
+                }
+            }
+        }
     }
 
     // moviesView
@@ -36,9 +51,10 @@ Page {
         anchors.topMargin: 16
         cacheBuffer: 3000
 
-        visible: searchMoviesModel.status == XmlListModel.Ready ? true: false
+        visible: moviesListView.model.status == XmlListModel.Ready
 
-        model: searchMoviesModel
+        model: modelSearchMovies
+
         header: Item {
             anchors.left: parent.left
             anchors.right: parent.right

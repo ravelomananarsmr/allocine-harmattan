@@ -64,7 +64,8 @@ Page {
                 var RegularExpression = /\/(\d+)$/
                 var filteredTrailerId = RegularExpression.exec(model.trailer)
                 //console.log("Filtered Trailer ID: " + model.trailer + " -> " + filteredTrailerId[1])
-                trailerUrlId = filteredTrailerId[1]          
+                if (model.trailer)
+                    trailerUrlId = filteredTrailerId[1]
             }
 
             Item {
@@ -82,10 +83,11 @@ Page {
                     MouseArea {
                         id: mouseArea
                         anchors.fill: parent
+                        enabled: model.poster
                         onClicked: {
                             var component = Qt.createComponent("PagePicture.qml")
                             if (component.status == Component.Ready) {
-                                pageStack.push(component, {source: model.poster? model.poster: "Images/empty.png", title: title});
+                                pageStack.push(component, {imageSource: model.poster? model.poster: "Images/empty.png", title: title});
                             } else {
                                 console.log("Error loading component:", component.errorString());
                             }
@@ -99,15 +101,6 @@ Page {
                         anchors.centerIn: parent
                         color: "white"
                         z:2
-
-                        Image {
-                            id: noPosterImage
-                            source: "Images/empty.png"
-                            width: 150
-                            fillMode: Image.PreserveAspectFit
-                            anchors.centerIn: parent
-                            z:3
-                        }
 
                         Image {
                             id: posterImage
@@ -152,6 +145,7 @@ Page {
                             id: versionRuntimeLabelTitle
                             text: "Durée: "
                             color: "gold"
+                            visible: model.runtime
                         }
                         Label {
                             id: versionRuntimeLabel
@@ -159,6 +153,7 @@ Page {
                             width: parent.width - versionRuntimeLabelTitle.width
                             color: "ghostwhite"
                             elide: Text.ElideRight
+                            visible: model.runtime
                         }
                     }
                 }
@@ -173,7 +168,7 @@ Page {
                 wrapMode: Text.Wrap
                 font.pointSize: fontSizeMedium
                 anchors.horizontalCenter: parent.horizontalCenter
-                visible: (model.certificate ? true:false)
+                visible: (model.certificate)
             }
 
             // directors
@@ -181,6 +176,7 @@ Page {
                 width: parent.width
                 title: "Réalisation"
                 content: model.directors
+                visible: model.directors
             }
 
             // actors
@@ -188,6 +184,7 @@ Page {
                 width: parent.width
                 title: "Acteurs"
                 content: model.actors
+                visible: model.actors
             }
 
             // completeCast
@@ -213,6 +210,7 @@ Page {
                 title: "Synopsis"
                 shortText: model.synopsisShort
                 longText: model.synopsis
+                visible: model.synopsisShort
             }
 
             // trailer

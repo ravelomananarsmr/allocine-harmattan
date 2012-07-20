@@ -330,18 +330,71 @@ Page {
                             elide: Text.ElideRight
                         }
 
-                        // versionRuntimeLabel
-                        Label {
-                            id: versionRuntimeLabel
-                            text: model.version + " - Durée: " + Helpers.formatSecondsAsTime(model.runtime, 'hh:mm')
-                            font.weight: Font.Light
-                            font.pixelSize: 22
-                            width: parent.width
-                            //width: listView.width - 110
-                            elide: Text.ElideRight
-                            color: "ghostwhite"
-                            visible: text != ""
+                        // versionRuntimeRow
+                        Row {
+                            id: versionRuntimeRow
+
+                            Label {
+                                id: versionLabel
+                                text: model.version
+                                font.weight: Font.Light
+                                font.pixelSize: 22
+                                elide: Text.ElideRight
+                                color: "ghostwhite"
+                                visible: model.version != ""
+                            }
+
+                            Label {
+                                text: " - "
+                                font.weight: Font.Light
+                                font.pixelSize: 22
+                                elide: Text.ElideRight
+                                color: "ghostwhite"
+                                visible: model.version != ""
+                            }
+
+                            Label {
+                                id: screenFormatLabel
+                                text: model.screenFormat
+                                font.weight: Font.Light
+                                font.pixelSize: 22
+                                elide: Text.ElideRight
+                                color: "ghostwhite"
+                                visible: model.screenFormat != ""
+                            }
+
+                            Label {
+                                text: " - "
+                                font.weight: Font.Light
+                                font.pixelSize: 22
+                                elide: Text.ElideRight
+                                color: "ghostwhite"
+                                visible: model.screenFormat != ""
+                            }
+
+                            Label {
+                                id: runtimeLabel
+                                text: Helpers.formatSecondsAsTime(model.runtime, 'hh:mm')
+                                font.weight: Font.Light
+                                font.pixelSize: 22
+                                elide: Text.ElideRight
+                                color: "ghostwhite"
+                                visible: model.runtime != ""
+                            }
                         }
+
+//                        // versionRuntimeLabel
+//                        Label {
+//                            id: versionRuntimeLabel
+//                            text: model.version + " - " + model.screenFormat + " " + Helpers.formatSecondsAsTime(model.runtime, 'hh:mm')
+//                            font.weight: Font.Light
+//                            font.pixelSize: 22
+//                            width: parent.width
+//                            //width: listView.width - 110
+//                            elide: Text.ElideRight
+//                            color: "ghostwhite"
+//                            visible: text != ""
+//                        }
 
                     }
 

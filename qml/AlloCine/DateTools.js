@@ -56,7 +56,7 @@
 //  "MMM dd, yyyy hh:mm:ssa" matches: "January 01, 2000 12:30:45AM"
 // ------------------------------------------------------------------
 
-var MONTH_NAMES=new Array('Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Aout','Septembre','Octobre','Novembre','Decembre','Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+var MONTH_NAMES=new Array('Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Aout','Septembre','Octobre','Novembre','Decembre','Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Dec');
 var DAY_NAMES=new Array('Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dim','Lun','Mar','Mer','Jeu','Ven','Sam');
 function LZ(x) {return(x<0||x>9?"":"0")+x}
 

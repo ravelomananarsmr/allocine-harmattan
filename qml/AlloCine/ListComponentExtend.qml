@@ -94,6 +94,7 @@ Item {
                 myItem.state = "SYNOPSYS_EXTENDED"
             }
         }
+        visible: (shortText != longText)
     }
 
     Component.onCompleted: {

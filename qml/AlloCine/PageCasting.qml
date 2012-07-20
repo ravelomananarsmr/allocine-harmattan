@@ -16,6 +16,12 @@ Page {
         id: windowTitleBar
         windowTitle: "Casting: " + title
     }
+
+    LoadingOverlay {
+        id: castingOverlay
+        visible: castingModel.status == XmlListModel.Loading
+    }
+
     ListView {
         id: castingListView
         anchors.top: parent.top
@@ -53,13 +59,13 @@ Page {
                     Rectangle {
                         id: personPictureWhiteOutline
                         width: personPicture.width + 6
-                        height: Math.max(personPicture.height, 133) + 6
+                        height: Math.max(personPictureEmpty.height, 133) + 6
                         anchors.centerIn: parent
                         color: "white"
                         z:2
 
                         Image {
-                            id: noPersonPicture
+                            id: personPictureEmpty
                             source: "Images/empty.png"
                             width: 100
                             anchors.top: parent.top

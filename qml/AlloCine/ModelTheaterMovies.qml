@@ -26,6 +26,7 @@ XmlListModel {
     XmlRole { name: "mCode"; query: 'onShow/movie/@code/string()' }
     XmlRole { name: "poster"; query: "onShow/movie/poster/@href/string()" }
     XmlRole { name: "version"; query: "version/string()" }
+    XmlRole { name: "screenFormat"; query: "screenFormat/string()" }
     XmlRole { name: "runtime"; query: "onShow/movie/runtime/number()" }
     XmlRole { name: "directors"; query: "onShow/movie/castingShort/directors/string()" }
     XmlRole { name: "actors"; query: "onShow/movie/castingShort/actors/string()" }
