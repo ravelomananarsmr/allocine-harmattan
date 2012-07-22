@@ -1,6 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 import QtMobility.location 1.2
 import "DateTools.js" as DateTools
 import "Helpers.js" as Helpers

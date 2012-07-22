@@ -1,5 +1,5 @@
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 
 
 XmlListModel {
@@ -40,4 +40,8 @@ XmlListModel {
     XmlRole { name: "theaterCount"; query: "statistics/theaterCount/number()" }
     XmlRole { name: "theaterCountOnRelease"; query: "statistics/theaterCountOnRelease/number()" }
     XmlRole { name: "releaseWeekPosition"; query: "statistics/releaseWeekPosition/number()" }
+
+    // TODO bug: returns always empty
+    XmlRole { name: "linkWeb"; query: "linkList/link[@rel=\"aco\:web\"]/@href/string()" }
+
 }

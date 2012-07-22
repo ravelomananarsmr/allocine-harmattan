@@ -1,5 +1,7 @@
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
+import com.nokia.extras 1.1
+
 import "Helpers.js" as Helpers
 
 Page {
@@ -10,12 +12,13 @@ Page {
     property int mCode
     property string title
     property string trailerUrlId
+    property string linkWeb
 
     ToolBarLayout {
         id: buttonTools
 
         ToolIcon { iconId: "toolbar-back"; onClicked: {pageStack.pop(); }  }
-        //ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
+        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
     }
 
     WindowTitle {
@@ -66,6 +69,7 @@ Page {
                 //console.log("Filtered Trailer ID: " + model.trailer + " -> " + filteredTrailerId[1])
                 if (model.trailer)
                     trailerUrlId = filteredTrailerId[1]
+                var linkWeb = model.linkWeb
             }
 
             Item {
@@ -171,6 +175,68 @@ Page {
                 visible: (model.certificate)
             }
 
+            // ratingsRow
+            Item {
+                id: ratingsRow
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: pressRatingItem.height
+
+                Item {
+                    id: pressRatingItem
+                    height: pressRatingItemLabel.height + pressRatingItemStars.height
+                    width: Math.max(pressRatingItemLabel.width, pressRatingItemStars.width)
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+
+                    Label {
+                        id: pressRatingItemLabel
+                        text: "Presse"
+                        color: "ghostwhite"
+                        font.weight: Font.Bold
+                    }
+
+                    RatingIndicator {
+                        id: pressRatingItemStars
+                        anchors.top: pressRatingItemLabel.bottom
+                        ratingValue: model.pressRating
+                        maximumValue: 5
+                        count: model.pressReviewCount
+                        objectName: "Presse"
+                    }
+
+                }
+
+                Item {
+                    id: userRatingItem
+                    anchors.left: pressRatingItem.right
+                    anchors.leftMargin: pageMargin
+                    anchors.top: parent.top
+                    height: userRatingItemLabel.height + userRatingItemStars.height
+                    width: Math.max(userRatingItemLabel.width, userRatingItemStars.width)
+
+                    Label {
+                        id: userRatingItemLabel
+                        text: "Spectateurs"
+                        color: "ghostwhite"
+                        font.weight: Font.Bold
+                    }
+
+                    RatingIndicator {
+                        id: userRatingItemStars
+                        anchors.top: userRatingItemLabel.bottom
+                        ratingValue: model.userRating
+                        maximumValue: 5
+                        count: model.userRatingCount
+
+                        Component.onCompleted: console.log("ratingvalue: " + model.userRating)
+                    }
+
+                }
+
+            }
+
+
             // directors
             ListComponentText{
                 width: parent.width
@@ -241,27 +307,23 @@ Page {
         flickableItem: movieListView
     }
 
-//    Menu {
-//        id: myMenu
-//        visualParent: pageStack
+    Menu {
+        id: myMenu
+        visualParent: pageStack
 
-//        MenuLayout {
-//            MenuItem { text: "Casting Complet";
+        MenuLayout {
+            MenuItem { text: "Ouvrir dans le navigateur";
+                onClicked: {
+                    Qt.openUrlExternally(linkWeb)
+                    console.log("Opening URL: " + linkWeb)
+                }
+            }
+//            MenuItem { text: "Partager";
 //                onClicked: {
-//                    var component = Qt.createComponent("PageCasting.qml")
-//                    if (component.status == Component.Ready) {
-//                        pageStack.push(component, {title: title});
-//                    } else {
-//                        console.log("Error loading component:", component.errorString());
-//                    }
+//                    Qt.openUrlExternally(linkWeb)
+//                    console.log("Opening URL: " + linkWeb)
 //                }
 //            }
-//            MenuItem { text: "Bande annonce";
-//                onClicked: {
-//                    Qt.openUrlExternally(mobileVideoUrl + trailerUrlId)
-//                    console.log("Opening URL: " + mobileVideoUrl + trailerUrlId)
-//                }
-//            }
-//        }
-//    }
+        }
+    }
 }
