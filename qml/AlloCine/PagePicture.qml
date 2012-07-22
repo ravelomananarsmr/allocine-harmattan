@@ -10,41 +10,6 @@ Page {
     property string imageSource
     property string title
 
-    property int animationDuration: 300
-
-    state: "DECORATED"
-
-    states: [
-        State {
-             name: "DECORATED"
-             PropertyChanges { target: windowTitleBar; opacity: 1 }
-             PropertyChanges { target: buttonTools; opacity: 1 }
-         },
-        State {
-             name: "NOT_DECORATED"
-             PropertyChanges { target: windowTitleBar; opacity: 0 }
-             PropertyChanges { target: buttonTools; opacity: 0 }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "DECORATED"
-            to: "NOT_DECORATED"
-            PropertyAnimation {
-                target: windowTitleBar
-                duration: animationDuration
-                property: "opacity"
-            }
-            PropertyAnimation {
-                target: buttonTools
-                duration: animationDuration
-                property: "opacity"
-            }
-            reversible: true
-        }
-    ]
-
     ToolBarLayout {
         id: buttonTools
 
@@ -58,41 +23,67 @@ Page {
         anchors.fill: parent
     }
 
-    WindowTitle {
-        id: windowTitleBar
-        windowTitle: title
-        windowTitleBackup: "Pas de titre"
-    }
-
     LoadingOverlay {
         id: pagePictureLoadingOverlay
     }
 
-    Item {
-        anchors.top: windowTitleBar.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+    Flickable {
+        id: flick
+        anchors.centerIn: parent
+        anchors.fill: parent
 
-        MouseArea {
-            id: pictureMouseArea
-            anchors.fill: picture
-            onClicked: {
-                if (pagePicture.state == "DECORATED") {
-                    pagePicture.state = "NOT_DECORATED"
-                } else  if (pagePicture.state == "NOT_DECORATED"){
-                    pagePicture.state = "DECORATED"
-                }
+        contentWidth: pagePicture.width
+        contentHeight: pagePicture.height
+
+        PinchArea {
+            id: picturePinchArea
+            width: Math.max(flick.contentWidth, flick.width)
+            height: Math.max(flick.contentHeight, flick.height)
+
+            property real initialWidth
+            property real initialHeight
+
+            onPinchStarted: {
+                initialWidth = flick.contentWidth
+                initialHeight = flick.contentHeight
             }
+
+            onPinchUpdated: {
+                // adjust content pos due to drag
+                flick.contentX += pinch.previousCenter.x - pinch.center.x
+                flick.contentY += pinch.previousCenter.y - pinch.center.y
+
+                // resize content
+                flick.resizeContent(initialWidth * pinch.scale, initialHeight * pinch.scale, pinch.center)
+            }
+
+            onPinchFinished: {
+                // Move its content within bounds.
+                flick.returnToBounds()
+            }
+
         }
 
-        Image {
-            id: picture
-            source: imageSource
-            anchors.fill: parent
-            fillMode: Image.PreserveAspectFit
+        Rectangle {
+
+            width: flick.contentWidth
+            height: flick.contentHeight
             anchors.centerIn: parent
-            smooth: true
+            color: "black"
+            Image {
+                id: pictureImage
+                anchors.fill: parent
+                source: imageSource
+                fillMode: Image.PreserveAspectFit
+                smooth: true
+                MouseArea {
+                    anchors.fill: parent
+                    onDoubleClicked: {
+                        flick.contentWidth = pagePicture.width
+                        flick.contentHeight = pagePicture.height
+                    }
+                }
+            }
         }
     }
 }
