@@ -30,57 +30,68 @@ Page {
         Component.onCompleted: castingListView.model = castingModel.createObject(castingModel,{mCode:mCode})
 
         delegate: Item {
-            //height: Math.max(personDetails.height, personPictureContainer.height) + 20
-            height: personPictureContainer.height + 20
+            id: listItem
+            height: posterImageContainer.height + 20
             width: parent.width
 
             Rectangle {
                 id: background
-                anchors.fill: parent
-                // Fill page borders
-                anchors.leftMargin: -listPage.anchors.leftMargin
-                anchors.rightMargin: -listPage.anchors.rightMargin
-                visible: mouseArea.pressed
-                color: "#202020"
-            }
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: Math.max(detailsItem.height,posterImageContainer.height)
+                color: "transparent"
 
-            Row {
-                spacing: 10
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: background
+                    onClicked: {
+                        var component = Qt.createComponent("PagePerson.qml")
+                        if (component.status == Component.Ready) {
+                            console.log("Selected person: ", model.personCode);
+                            pageStack.push(component, {
+                                personCode: model.personCode,
+                                name: model.name
+                             });
+                        } else {
+                            console.log("Error loading component:", component.errorString());
+                        }
+                        background.color = "transparent"
+                     }
+                    onPressed: background.color = "#202020"
+                    onCanceled: background.color = "transparent"
+                }
 
+                //posterImageContainer
                 Rectangle {
-                    id: personPictureContainer
-                    width: personPicture.width + 8
-                    height: Math.max(personPicture.height, 133) + 8
+                    id: posterImageContainer
+                    width: posterImage.width + 8
+                    height: Math.max(posterImage.height, 133) + 8
                     anchors.top: parent.top
                     anchors.verticalCenter: parent.verticalCenter
                     color: "black"
                     z:1
 
                     Rectangle {
-                        id: personPictureWhiteOutline
-                        width: personPicture.width + 6
-                        height: Math.max(personPictureEmpty.height, 133) + 6
+                        id: posterWhiteOutline
+                        width: posterImage.width + 6
+                        height: Math.max(posterImage.height, 133) + 6
                         anchors.centerIn: parent
                         color: "white"
                         z:2
 
                         Image {
-                            id: personPictureEmpty
+                            id: noPosterImage
                             source: "Images/empty.png"
                             width: 100
-                            anchors.top: parent.top
-                            anchors.verticalCenter: parent.verticalCenter
                             fillMode: Image.PreserveAspectFit
                             anchors.centerIn: parent
                             z:3
                         }
 
                         Image {
-                            id: personPicture
+                            id: posterImage
                             source: (model.picture? model.picture: "Images/empty.png")
                             width: 100
-                            anchors.top: parent.top
-                            anchors.verticalCenter: parent.verticalCenter
                             fillMode: Image.PreserveAspectFit
                             anchors.centerIn: parent
                             z:4
@@ -88,60 +99,55 @@ Page {
                     }
                 }
 
+                // detailsItem
                 Column {
-                    id: personDetails
-                    width: castingPage.width - personPictureContainer.width - /*arrow.width*/ - 20
+                    id: detailsItem
+                    anchors.leftMargin: 10
+                    anchors.left: posterImageContainer.right
+                    width: castingPage.width - posterImageContainer.width - arrow.width - 20
 
+                    // nameLabel
                     Label {
-                        id: personLabelActivity
+                        id: nameLabel
                         text: model.name
                         font.weight: Font.Bold
                         font.pixelSize: 26
                         width: parent.width
-                        maximumLineCount: 1
-                        elide: Text.ElideRight
                         color: "gold"
+                        elide: Text.ElideRight
+                        visible: model.name
                     }
+
+                    // activityLabel
                     Label {
-                        id: personLabelName
+                        id: activityLabel
                         text: model.activity
                         width: parent.width
-                        elide: Text.ElideRight
                         color: "ghostwhite"
+                        elide: Text.ElideRight
+                        visible: model.activity
                     }
+
+                    // roleLabel
                     Label {
-                        id: personLabelRole
-                        text: (model.role ? "Rôle: " + model.role : "")
+                        id: roleLabel
+                        text: "Rôle: " + model.role
                         width: parent.width
-                        elide: Text.ElideRight
+                        //width: listView.width - 110
                         color: "ghostwhite"
+                        elide: Text.ElideRight
+                        visible: model.role
                     }
                 }
-            }
 
+                // arrow
+                Image {
+                    id: arrow
+                    anchors.right: parent.right
+                    source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
+                    anchors.verticalCenter: parent.verticalCenter
+                }
 
-            Image {
-                id: arrow
-                source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
-                anchors.right: parent.right;
-                anchors.verticalCenter: parent.verticalCenter
-            }
-
-            MouseArea {
-                id: mouseArea
-                anchors.fill: background
-                onClicked: {
-                    var component = Qt.createComponent("PagePerson.qml")
-                    if (component.status == Component.Ready) {
-                        console.log("Selected person: ", model.personCode);
-                        pageStack.push(component, {
-                            personCode: model.personCode,
-                            name: model.name
-                         });
-                    } else {
-                        console.log("Error loading component:", component.errorString());
-                     }
-                 }
             }
         }
     }

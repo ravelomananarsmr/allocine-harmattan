@@ -19,6 +19,11 @@ Page {
         windowTitle: "Films à l'affiche"
     }
 
+    LoadingOverlay {
+        id: pageCurrentFilmsLoadingOverlay
+        visible: (currentMoviesModel.status == XmlListModel.Loading)
+        loadingText: "Recherche des films à l'affiche"
+    }
 
     // moviesView
     ListView {
@@ -100,18 +105,33 @@ Page {
             width: parent.width
 
             Rectangle {
-                id: background
-                anchors.fill: parent
-                // Fill page borders
-                anchors.leftMargin: -listPage.anchors.leftMargin
-                anchors.rightMargin: -listPage.anchors.rightMargin
-                visible: mouseArea.pressed
-                color: "#202020"
-            }
+                id: detailsRow
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: Math.max(detailsItem.height,posterImageContainer.height)
+                color: "transparent"
 
-            Row {
-                spacing: 10
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: detailsRow
+                    onClicked: {
+                        var component = Qt.createComponent("PageFilm.qml")
+                        if (component.status == Component.Ready) {
+                            console.log("Selected movie: ", model.code);
+                            pageStack.push(component, {
+                                mCode: model.code,
+                                title: model.title
+                             });
+                        } else {
+                            console.log("Error loading component:", component.errorString());
+                        }
+                        detailsRow.color = "transparent"
+                     }
+                    onPressed: detailsRow.color = "#202020"
+                    onCanceled: detailsRow.color = "transparent"
+                }
 
+                //posterImageContainer
                 Rectangle {
                     id: posterImageContainer
                     width: posterImage.width + 8
@@ -149,37 +169,47 @@ Page {
                     }
                 }
 
+                // detailsItem
                 Column {
                     id: detailsItem
+                    anchors.leftMargin: 10
+                    anchors.left: posterImageContainer.right
                     width: filmsPage.width - posterImageContainer.width - arrow.width - 20
 
+                    // titleLabel
                     Label {
                         id: titleLabel
                         text: model.title
                         font.weight: Font.Bold
                         font.pixelSize: 26
                         width: parent.width
-                        maximumLineCount: 1
+                        //width: listView.width - 110
+                        //maximumLineCount: 1
+                        color: "gold"
                         elide: Text.ElideRight
-                        color: "ghostwhite"
                     }
 
+                    // directorsLabel
                     Label {
                         id: directorsLabel
                         text: "De " + model.directors
+                        //width: listView.width - 110
                         width: parent.width
-                        elide: Text.ElideRight
                         color: "ghostwhite"
+                        elide: Text.ElideRight
                     }
 
+                    // actorsLabel
                     Label {
                         id: actorsLabel
                         text: "Avec " + model.actors
                         width: parent.width
-                        elide: Text.ElideRight
+                        //width: listView.width - 110
                         color: "ghostwhite"
+                        elide: Text.ElideRight
                     }
 
+                    // movieTypeProductionYearRuntimeLabel
                     Label {
                         id: movieTypeProductionYearRuntimeLabel
                         text: model.movieType + " - "+ model.productionYear + " - " + Helpers.formatSecondsAsTime(model.runtime, 'hh:mm')
@@ -191,31 +221,17 @@ Page {
                         visible: text != ""
                     }
                 }
+
+                // arrow
+                Image {
+                    id: arrow
+                    anchors.right: parent.right
+                    source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
             }
 
-            Image {
-                id: arrow
-                source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
-                anchors.right: parent.right;
-                anchors.verticalCenter: parent.verticalCenter
-            }
-
-            MouseArea {
-                id: mouseArea
-                anchors.fill: background
-                onClicked: {
-                    var component = Qt.createComponent("PageFilm.qml")
-                    if (component.status == Component.Ready) {
-                        console.log("Selected movie: ", model.code);
-                        pageStack.push(component, {
-                            mCode: model.code,
-                            title: model.title
-                         });
-                    } else {
-                        console.log("Error loading component:", component.errorString());
-                     }
-                 }
-            }
         }
     }
 
@@ -228,14 +244,4 @@ Page {
         ToolIcon { iconId: "toolbar-back"; onClicked: { /*myMenu.close();*/ pageStack.pop(); }  }
         //ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
     }
-
-
-//    Menu {
-//        id: myMenu
-//        visualParent: pageStack
-
-//        MenuLayout {
-//            MenuItem { text: "Test"; }
-//        }
-//    }
 }

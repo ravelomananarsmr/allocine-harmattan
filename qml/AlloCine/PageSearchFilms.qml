@@ -265,7 +265,6 @@ Page {
 
 //    Menu {
 //        id: myMenu
-//        visualParent: pageStack
 
 //        MenuLayout {
 //            MenuItem { text: "Test"; }

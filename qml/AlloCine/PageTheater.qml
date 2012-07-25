@@ -15,18 +15,7 @@ Page {
 
     ToolBarLayout {
         id: buttonTools
-
         ToolIcon { iconId: "toolbar-back"; onClicked: { myPosition.stop(); myMenu.close(); pageStack.pop(); }  }
-
-//        ToolButtonRow {
-//            ToolButton {
-//                id: dayButton
-//                text: "Aujourd'hui";
-//                onClicked: {}
-//            }
-//        }
-
-        //ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
     }
 
     WindowTitle {
@@ -171,7 +160,7 @@ Page {
                 //console.log("Model Loading")
             } else if (status == XmlListModel.Ready){
                 showDate = new Date();
-                console.log("Model Ready, today=" + Qt.formatDateTime(showDate, "yyyy-MM-dd"))
+                //console.log("Model Ready, today=" + Qt.formatDateTime(showDate, "yyyy-MM-dd"))
                 //console.log("//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\" and movieShowtimesList/movieShowtimes/screenings/scr/@d/string()=\""+ Qt.formatDateTime(showDate, "yyyy-MM-dd") + "\"]/movieShowtimesList/movieShowtimes")
                 if (theaterMovies.model.xml){ // To be sure there is somthing loaded
                     if (count > 0){
@@ -179,7 +168,7 @@ Page {
                         noShow.visible = false
                         //theaterMovies.visible = true
                     } else {
-                        console.log("No movie for this theater")
+                        //console.log("No movie for this theater")
                         noShow.visible = true
                         theaterMovies.visible = false
                         theaterPageLoadingOverlay.visible = false
@@ -194,7 +183,6 @@ Page {
 
     ListView {
         id:theaterMovies
-        //visible: false
         anchors.top:windowTitleBar.bottom
         anchors.left: parent.left
         anchors.right: parent.right
@@ -243,16 +231,7 @@ Page {
                         onCanceled: detailsRow.color = "transparent"
                     }
 
-                    // posterImage
-//                    Image {
-//                        id: posterImage
-//                        source:model.poster
-//                        width: 100
-//                        fillMode: Image.PreserveAspectFit
-//                        anchors.top: parent.top
-//                        anchors.verticalCenter: parent.verticalCenter
-//                    }
-
+                    //posterImageContainer
                     Rectangle {
                         id: posterImageContainer
                         width: posterImage.width + 8
@@ -408,6 +387,7 @@ Page {
 
                 }
 
+                //showTimesLabel
                 Label {
                     id: showTimesLabel
                     text: "Séances"
@@ -416,6 +396,7 @@ Page {
                     visible:   !extender.extended
                 }
 
+                //screening
                 Repeater{
                     id:screening
                     Row{
@@ -451,14 +432,13 @@ Page {
 
                 ItemExtender {
                     id: extender
-
                 }
 
             }
-
         }
     }
 
+    // noShow
     Item {
         id: noShow
         visible: false

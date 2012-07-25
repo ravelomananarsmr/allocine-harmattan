@@ -44,6 +44,17 @@ PageStackWindow {
         }
     }
 
+    //genreModel
+    Component{
+        id: genreModel
+        XmlListModel {
+            query: "//movie/genreList/genre"
+            namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
+            XmlRole { name: "genreText"; query: 'string()' }
+            XmlRole { name: "genreCode"; query: '@code/string()' }
+        }
+    }
+
     //currentMoviesModel
     XmlListModel {
         id: currentMoviesModel

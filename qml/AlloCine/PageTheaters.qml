@@ -259,7 +259,6 @@ Page {
 
     Menu {
         id: myMenu
-        visualParent: pageStack
 
         MenuLayout {
             MenuItem { text: "Voir la carte autour de moi";

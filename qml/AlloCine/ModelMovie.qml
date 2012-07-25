@@ -3,6 +3,19 @@ import com.nokia.meego 1.1
 
 
 XmlListModel {
+    Component.onCompleted: {
+        console.log("Calling API to update modelMovie: " + source)
+        var movieFile = new XMLHttpRequest();
+        movieFile.onreadystatechange = function() {
+            if (movieFile.readyState == XMLHttpRequest.DONE) {
+                xml = movieFile.responseText
+
+            }
+        }
+        movieFile.open("GET", source);
+        movieFile.send();
+    }
+
     property string mCode
 
     source: "http://api.allocine.fr/rest/v3/movie?partner="+partner+"&q=61282&format=xml&code="+mCode

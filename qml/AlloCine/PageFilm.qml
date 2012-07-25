@@ -70,6 +70,9 @@ Page {
                 if (model.trailer)
                     trailerUrlId = filteredTrailerId[1]
                 var linkWeb = model.linkWeb
+
+                genreRepeater.model=genreModel.createObject(genreRepeater,{xml:movieListView.model.xml})
+
             }
 
             Item {
@@ -139,7 +142,7 @@ Page {
                         text: model.movieType
                         color: "gold"
                         visible: text != ""
-                    }
+                    }                  
 
                     // versionRuntimeLabel
                     Row {
@@ -162,6 +165,31 @@ Page {
                     }
                 }
             }
+
+            Row {
+                Repeater{
+                    id:genreRepeater
+                    width: parent.width
+
+                    Row {
+                        Label {
+                            id: genreLabel
+                            text: model.genreText
+                            elide: Text.ElideRight
+                            color: "ghostwhite"
+                        }
+                        Label {
+                            id: commaLabel
+                            text: ", "
+                            elide: Text.ElideRight
+                            color: "ghostwhite"
+                            visible: (index + 1 != genreRepeater.count)
+                        }
+                    }
+
+                }
+            }
+
 
             // certificateLabel
             Text {
@@ -202,7 +230,7 @@ Page {
                         ratingValue: model.pressRating
                         maximumValue: 5
                         count: model.pressReviewCount
-                        objectName: "Presse"
+                        inverted: false
                     }
 
                 }
@@ -228,8 +256,7 @@ Page {
                         ratingValue: model.userRating
                         maximumValue: 5
                         count: model.userRatingCount
-
-                        Component.onCompleted: console.log("ratingvalue: " + model.userRating)
+                        inverted: false
                     }
 
                 }
@@ -309,7 +336,6 @@ Page {
 
     Menu {
         id: myMenu
-        visualParent: pageStack
 
         MenuLayout {
             MenuItem { text: "Ouvrir dans le navigateur";

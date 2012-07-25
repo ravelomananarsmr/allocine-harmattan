@@ -27,7 +27,6 @@ Page {
     }
     Menu {
         id: myMenu
-        visualParent: pageStack
 
         MenuLayout {
             MenuItem { text: "Carte"; onClicked: map.mapType = Map.StreetMap }

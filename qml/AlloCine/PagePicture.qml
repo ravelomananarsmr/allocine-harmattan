@@ -14,7 +14,7 @@ Page {
         id: buttonTools
 
         ToolIcon { iconId: "toolbar-back"; onClicked: {pageStack.pop(); }  }
-        //ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
+//        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
     }
 
     Rectangle {
@@ -85,5 +85,22 @@ Page {
                 }
             }
         }
+
+//        Menu {
+//            id: myMenu
+
+//            MenuLayout {
+//                MenuItem { text: "Enregistrer l'image";
+//                    onClicked: {
+
+//                    }
+//                }
+//    //            MenuItem { text: "Partager";
+//    //                onClicked: {
+//    //                    Qt.openUrlExternally(linkWeb)
+//    //                    console.log("Opening URL: " + linkWeb)
+//    //                }
+//    //            }
+//            }
     }
 }
