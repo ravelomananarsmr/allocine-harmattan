@@ -53,26 +53,26 @@ Page {
                     coordinate: theaterCoordinate
                 }
 
-//                MapCircle {
-//                    id: theaterPositionExternalLine
-//                    color: "black"
-//                    radius: 20
-//                    center: theaterCoordinate
-//                }
+                //                MapCircle {
+                //                    id: theaterPositionExternalLine
+                //                    color: "black"
+                //                    radius: 20
+                //                    center: theaterCoordinate
+                //                }
 
-//                MapCircle {
-//                    id: theaterPositionExternal
-//                    color: "white"
-//                    radius: 19
-//                    center: theaterCoordinate
-//                }
+                //                MapCircle {
+                //                    id: theaterPositionExternal
+                //                    color: "white"
+                //                    radius: 19
+                //                    center: theaterCoordinate
+                //                }
 
-//                MapCircle {
-//                    id: theaterPositionInternal
-//                    color: "gold"
-//                    radius: 15
-//                    center: theaterCoordinate
-//                }
+                //                MapCircle {
+                //                    id: theaterPositionInternal
+                //                    color: "gold"
+                //                    radius: 15
+                //                    center: theaterCoordinate
+                //                }
 
                 MapCircle {
                     id: myPositionExternalLine
@@ -100,14 +100,14 @@ Page {
                     anchors.fill: parent
                     onPressed: {
                         Qt.openUrlExternally("geo:" + theaterCoordinate.latitude + "," + theaterCoordinate.longitude)
-//                        var component = Qt.createComponent("PageTheatersMap.qml")
-//                        if (component.status == Component.Ready) {
-//                            console.log("Opening Map centered on lat=" + theaterCoordinate.latitude + " and long = " + theaterCoordinate.longitude);
-//                            pageStack.push(component, {centerCoordinate: theaterCoordinate});
-//                        } else {
-//                            console.log("Error loading component:", component.errorString());
-//                         }
-                      }
+                        //                        var component = Qt.createComponent("PageTheatersMap.qml")
+                        //                        if (component.status == Component.Ready) {
+                        //                            console.log("Opening Map centered on lat=" + theaterCoordinate.latitude + " and long = " + theaterCoordinate.longitude);
+                        //                            pageStack.push(component, {centerCoordinate: theaterCoordinate});
+                        //                        } else {
+                        //                            console.log("Error loading component:", component.errorString());
+                        //                         }
+                    }
                 }
 
             }
@@ -219,14 +219,14 @@ Page {
                             if (component.status == Component.Ready) {
                                 console.log("Selected movie: ", model.mCode);
                                 pageStack.push(component, {
-                                    mCode: model.mCode,
-                                    title: model.title
-                                 });
+                                                   mCode: model.mCode,
+                                                   title: model.title
+                                               });
                             } else {
                                 console.log("Error loading component:", component.errorString());
                             }
                             detailsRow.color = "transparent"
-                         }
+                        }
                         onPressed: detailsRow.color = "#202020"
                         onCanceled: detailsRow.color = "transparent"
                     }
@@ -362,18 +362,18 @@ Page {
                             }
                         }
 
-//                        // versionRuntimeLabel
-//                        Label {
-//                            id: versionRuntimeLabel
-//                            text: model.version + " - " + model.screenFormat + " " + Helpers.formatSecondsAsTime(model.runtime, 'hh:mm')
-//                            font.weight: Font.Light
-//                            font.pixelSize: 22
-//                            width: parent.width
-//                            //width: listView.width - 110
-//                            elide: Text.ElideRight
-//                            color: "ghostwhite"
-//                            visible: text != ""
-//                        }
+                        //                        // versionRuntimeLabel
+                        //                        Label {
+                        //                            id: versionRuntimeLabel
+                        //                            text: model.version + " - " + model.screenFormat + " " + Helpers.formatSecondsAsTime(model.runtime, 'hh:mm')
+                        //                            font.weight: Font.Light
+                        //                            font.pixelSize: 22
+                        //                            width: parent.width
+                        //                            //width: listView.width - 110
+                        //                            elide: Text.ElideRight
+                        //                            color: "ghostwhite"
+                        //                            visible: text != ""
+                        //                        }
 
                     }
 
@@ -400,6 +400,8 @@ Page {
                 Repeater{
                     id:screening
                     Row{
+                        height: dateLabel.height
+                        width : theaterPage.width
                         visible:   extender.extended
 
                         Component.onCompleted: {
@@ -407,25 +409,36 @@ Page {
                             screeningTime.model=screeningTimeModel.createObject(screening,{theaterCode:code,movieCode:mCode,screeningDate:date, xml:theaterMovies.model.xml, versionCode:versionCode, screenFormatCode:screenFormatCode})
                         }
 
-                        width: theaterPage.width - dateLabel.width - 20
 
-                        Label {
-                            id: dateLabel
-                            text: DateTools.formatDate(new Date(DateTools.getDateFromFormat(model.date, "yyyy-MM-d")), "EE")
-                            elide: Text.ElideRight
-                            color: "gold"
-                            width: 120
-                        }
-                        Repeater{
-                            id:screeningTime
-                            Column {
-                                Label {
-                                    text: "   "+model.time
-                                    color: "ghostwhite"
-                                    //elide: Text.ElideRight
-                                }
+                        Item{
+                            height: dateLabel.height
+                            width: parent.width
+
+                            Label {
+                                id: dateLabel
+                                text: DateTools.formatDate(new Date(DateTools.getDateFromFormat(model.date, "yyyy-MM-d")), "EE")
+                                elide: Text.ElideRight
+                                color: "gold"
+                                width: 120
                             }
 
+                            ListView{
+                                clip:true
+                                height: dateLabel.height
+                                orientation: Qt.Horizontal
+                                anchors{left:dateLabel.right;right: parent.right; rightMargin:20}
+                                id:screeningTime
+                                delegate:Component{Row {
+
+                                        Label{
+                                            text: "   "+time
+                                            color: "ghostwhite"
+                                            //elide: Text.ElideRight
+
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
