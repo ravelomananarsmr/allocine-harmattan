@@ -36,7 +36,7 @@ Page {
 
     WindowTitle {
         id: windowTitleBar
-        windowTitle: nb_of_theaters + " salles dans un rayon de " + pinpointView.model.radius + " km"
+        windowTitle: nb_of_theaters + " salles dans un rayon de " + pinpointModel.radius + " km"
     }
 
     Item {
@@ -58,7 +58,7 @@ Page {
                 parameters: [
                     PluginParameter { name: "app_id"; value: "H3qCZPYFilcJr1GvtqDc" },
                     PluginParameter { name: "token"; value: "izFGwW9LLoKmqUOMmjpJMQ" }
-               ]
+                ]
             }
             center: me.position.coordinate
             mapType: Map.StreetMap
@@ -105,43 +105,40 @@ Page {
 
             }
 
-            Repeater {
-                id: pinpointView
-                anchors.fill: parent
-                model: ModelTheaters {
+            ModelTheaters {
+                id:pinpointModel
+                query : "/feed/theater"
 
-                    query : "/feed/theater"
+                onStatusChanged: {
+                    if (status == XmlListModel.Loading){
+                        console.log("Model Loading")
+                    } else if (status == XmlListModel.Ready){
+                        console.log("Model Ready")
 
-                    onStatusChanged: {
-                        if (status == XmlListModel.Loading){
-                            console.log("Model Loading")
-                        } else if (status == XmlListModel.Ready){
-                            console.log("Model Ready")
+                        for(var i=0; i<count;i++)
+                        {
+                            // Direct list access
+                            var component = Qt.createComponent("ItemTheaterMap.qml");
+                            if (component.status == Component.Ready) {
+                                 var pin =component.createObject(map);
+                                pin.coordinate.latitude=parseFloat(get(i).tlatitude)
+                                pin.coordinate.longitude=parseFloat(get(i).tlongitude)
+                                pin.theaterName=get(i).name
+                                map.addMapObject(pin)
+                            }
                         }
-                    }
-                    onCountChanged: {
-                        console.log(count + " theater found" )
-                        nb_of_theaters = count
+
+
                     }
                 }
-
-                delegate: ItemTheaterMap {
-
-                    theaterCoordinate: Coordinate {
-                        latitude: parseFloat(tlatitude)
-                        longitude: parseFloat(tlongitude)
-                    }
-
-                    theaterName: name
-
-                    z: 2
-
-    //                onSelected: {
-    //                    //theaterName = modelTheaters.get(index).name
-    //                    console.log("Selected Theater: " + model.name)
-    //                    //station.source = "http://www.velib.paris.fr/service/stationdetails/" + stations.get(index).number
-    //                }
+                onCountChanged: {
+                    console.log(count + " theater found" )
+                    nb_of_theaters = count
                 }
+
+
+
+
             }
         }
 
@@ -236,9 +233,11 @@ Page {
         onPositionChanged: {
             console.log("My position changed")
             if (aroundMeButton.checked) {
+                //            map.center.latitude = 43.59830824658275
+                //            map.center.longitude =  1.4449450559914112
                 map.center = me.position.coordinate
             }
-            pinpointView.model.searchQuery = "lat=" + map.center.latitude + "&long=" + map.center.longitude
+            pinpointModel.searchQuery = "lat=" + map.center.latitude + "&long=" + map.center.longitude
 
         }
     }

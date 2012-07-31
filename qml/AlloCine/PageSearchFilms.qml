@@ -18,6 +18,7 @@ Page {
     InfoBanner {
         id: noResultFoundBanner
         text: "Aucun film trouvé"
+        timeout: 1000
     }
 
     WindowTitle {
@@ -35,7 +36,8 @@ Page {
         onStatusChanged: {
             if (status == XmlListModel.Ready){
                 if (count == 0 && xml){
-                    noResultFoundBanner.show();
+                    noResultFoundBanner.open() ;
+                    console.debug("No result")
                 }
             }
         }

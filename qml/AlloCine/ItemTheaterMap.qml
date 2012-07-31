@@ -28,26 +28,22 @@ import QtMobility.location 1.2
 //    }
 //}
 
-Item {
+MapImage {
 
     id: itemTheaterMap
 
     property variant theaterName
-    property variant theaterCoordinate
 
-    MapImage {
-        source: "Images/pinpoint-theater.png"
-        coordinate: itemTheaterMap.theaterCoordinate
-
-        /*!
+    source: "Images/pinpoint-theater.png"
+    coordinate: Coordinate{}
+    /*!
          * We want that bottom middle edge of icon points to the location, so using offset parameter
          * to change the on-screen position from coordinate. Values are calculated based on icon size,
          * in our case icon is 48x48.
          */
-        offset.x: -34
-        offset.y: -69
-
-        Component.onCompleted: console.log("Pinpoint added: " + itemTheaterMap.theaterName + " " + coordinate.latitude + "/" + coordinate.longitude)
-    }
+    offset.x: -34
+    offset.y: -69
+    visible:true
+    //        Component.onCompleted: console.log("Pinpoint added: " + itemTheaterMap.theaterName + " " + coordinate.latitude + "/" + coordinate.longitude+"   "+status)
 
 }

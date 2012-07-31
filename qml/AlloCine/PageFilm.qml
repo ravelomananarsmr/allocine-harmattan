@@ -230,7 +230,7 @@ Page {
                         ratingValue: model.pressRating
                         maximumValue: 5
                         count: model.pressReviewCount
-                        inverted: false
+//                        inverted: false
                     }
 
                 }
@@ -256,7 +256,7 @@ Page {
                         ratingValue: model.userRating
                         maximumValue: 5
                         count: model.userRatingCount
-                        inverted: false
+//                        inverted: false
                     }
 
                 }
