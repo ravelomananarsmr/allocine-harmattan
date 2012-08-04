@@ -18,7 +18,7 @@ Page {
     InfoBanner {
         id: noResultFoundBanner
         text: "Aucun film trouvé"
-        timeout: 1000
+//        timeout: 1000
     }
 
     WindowTitle {

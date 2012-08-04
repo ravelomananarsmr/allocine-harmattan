@@ -1,6 +1,5 @@
 import QtQuick 1.1
 import com.nokia.meego 1.1
-import com.nokia.extras 1.1
 
 import "Helpers.js" as Helpers
 
@@ -230,8 +229,7 @@ Page {
                         ratingValue: model.pressRating
                         maximumValue: 5
                         count: model.pressReviewCount
-//                        inverted: false
-                    }
+                     }
 
                 }
 
@@ -253,11 +251,11 @@ Page {
                     RatingIndicator {
                         id: userRatingItemStars
                         anchors.top: userRatingItemLabel.bottom
+
                         ratingValue: model.userRating
                         maximumValue: 5
                         count: model.userRatingCount
-//                        inverted: false
-                    }
+                     }
 
                 }
 
