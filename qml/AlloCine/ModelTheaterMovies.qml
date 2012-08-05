@@ -2,8 +2,11 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 
 XmlListModel {
-    Component.onCompleted: {
-        console.log("Calling API to update modelTheaterMovies: " + "http://api.allocine.fr/rest/v3/showtimelist?partner="+partner+"&q=61282&format=xml&theaters="+theaterCode)
+    property string theaterCode
+    property date showDate // Not Implemented
+
+    function performTheaterMoviesQuery(){
+        console.log("Calling API to update ModelTheaterMovies: " + "http://api.allocine.fr/rest/v3/showtimelist?partner="+partner+"&q=61282&format=xml&theaters="+theaterCode)
         var showtimelistFile = new XMLHttpRequest();
         showtimelistFile.onreadystatechange = function() {
             if (showtimelistFile.readyState == XMLHttpRequest.DONE) {
@@ -14,9 +17,6 @@ XmlListModel {
         showtimelistFile.open("GET", "http://api.allocine.fr/rest/v3/showtimelist?partner="+partner+"&q=61282&format=xml&theaters="+theaterCode);
         showtimelistFile.send();
     }
-
-    property string theaterCode
-    property date showDate // Not Implemented
 
     //query: "//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\" and movieShowtimesList/movieShowtimes/screenings/scr/@d/string()=\""+ Qt.formatDateTime(showDate, "yyyy-MM-dd") + "\"]/movieShowtimesList/movieShowtimes"
     query: "//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\"]/movieShowtimesList/movieShowtimes"
@@ -44,4 +44,5 @@ XmlListModel {
 //        }
 //    }
 //    onProgressChanged: console.log("Progress: " + progress)
+
 }

@@ -24,4 +24,12 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         text: loadingText
     }
+
+    function show(){
+        visible = true
+    }
+
+    function hide(){
+        visible = false
+    }
 }

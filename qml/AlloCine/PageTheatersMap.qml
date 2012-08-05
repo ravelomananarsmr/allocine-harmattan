@@ -7,7 +7,8 @@ Page {
     tools: buttonTools
 
     property int nb_of_theaters: 0
-
+    property Coordinate centerCoordinate
+    property bool aroundMe: true
 
     // buttonTools
     ToolBarLayout {
@@ -18,9 +19,21 @@ Page {
             ToolButton {
                 id: aroundMeButton
                 checkable: true
-                checked: true
+                checked: aroundMe
                 text: "Centrer sur moi";
-                onCheckedChanged: {console.log("Auto center: " + aroundMeButton.checked); me.active = aroundMeButton.checked}
+                onCheckedChanged: {
+                    console.log("Auto center: " + aroundMeButton.checked);
+                    me.active = aroundMeButton.checked
+                    if (checked) {
+                        aroundMe = true
+                        if (me.active && !me.position){
+                            theatersMapPageLoadingOverlay.show()
+                        }
+                    } else {
+                        aroundMe = false
+                        theatersMapPageLoadingOverlay.hide()
+                    }
+                }
             }
         }
         ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
@@ -31,12 +44,33 @@ Page {
         MenuLayout {
             MenuItem { text: "Carte"; onClicked: map.mapType = Map.StreetMap }
             MenuItem { text: "Satellite"; onClicked: map.mapType = Map.SatelliteMapDay }
+            MenuItem { text: "Rayon: 1 km";
+                onClicked: {
+                    pinpointModel.searchRadius = 1
+                }
+            }
+            MenuItem { text: "Rayon: 10 km";
+                onClicked: {
+                    pinpointModel.searchRadius = 10
+                }
+            }
+            MenuItem { text: "Rayon: 100 km";
+                onClicked: {
+                    pinpointModel.searchRadius = 100
+                }
+            }
         }
     }
 
     WindowTitle {
         id: windowTitleBar
-        windowTitle: nb_of_theaters + " salles dans un rayon de " + pinpointModel.radius + " km"
+        windowTitle: aroundMe ? "Salles à proximité" : "Carte des salles"
+    }
+
+    LoadingOverlay {
+        id: theatersMapPageLoadingOverlay
+        visible: aroundMe
+        loadingText: "Recherche de ma position"
     }
 
     Item {
@@ -44,6 +78,8 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+        id: mapItem
+        visible: !theatersMapPageLoadingOverlay.visible
 
         Map {
             anchors.fill: parent
@@ -60,9 +96,15 @@ Page {
                     PluginParameter { name: "token"; value: "izFGwW9LLoKmqUOMmjpJMQ" }
                 ]
             }
-            center: me.position.coordinate
+            center: centerCoordinate
             mapType: Map.StreetMap
             zoomLevel: 14
+
+            onCenterChanged: {
+                // To update the pinpoints when the user drag the map
+//                pinpointModel.searchLat = map.center.latitude
+//                pinpointModel.searchLong = map.center.longitude
+            }
 
             ZoomButton {
                 anchors.margins: 16
@@ -90,6 +132,7 @@ Page {
                 id: mapPlacer
                 source: "Images/pinpoint-me.png"
                 coordinate: me.position.coordinate
+                visible: aroundMe
 
                 /*!
                  * We want that bottom middle edge of icon points to the location, so using offset parameter
@@ -112,8 +155,11 @@ Page {
                 onStatusChanged: {
                     if (status == XmlListModel.Loading){
                         console.log("Model Loading")
-                    } else if (status == XmlListModel.Ready){
+                    } else if (status == XmlListModel.Ready && xml){
                         console.log("Model Ready")
+                        theatersMapPageLoadingOverlay.visible = false
+                        mapItem.visible = true
+                        windowTitleBar.windowTitle = nb_of_theaters + " salles dans un rayon de " + pinpointModel.searchRadius + " km"
 
                         for(var i=0; i<count;i++)
                         {
@@ -123,7 +169,7 @@ Page {
                                  var pin =component.createObject(map);
                                 pin.coordinate.latitude=parseFloat(get(i).tlatitude)
                                 pin.coordinate.longitude=parseFloat(get(i).tlongitude)
-                                pin.theaterName=get(i).name
+                                pin.theaterCode=get(i).code
                                 map.addMapObject(pin)
                             }
                         }
@@ -135,10 +181,6 @@ Page {
                     console.log(count + " theater found" )
                     nb_of_theaters = count
                 }
-
-
-
-
             }
         }
 
@@ -227,17 +269,25 @@ Page {
 
         //! Desired interval between updates in milliseconds
         updateInterval: 10000
-        active: true
+        active: false
+
+        Component.onCompleted: {
+            pinpointModel.searchLat = centerCoordinate.latitude
+            pinpointModel.searchLong = centerCoordinate.longitude
+        }
 
         //! When position changed, update the location strings
         onPositionChanged: {
             console.log("My position changed")
+            theatersMapPageLoadingOverlay.loadingText = "Recherche de salle à proximité"
             if (aroundMeButton.checked) {
                 //            map.center.latitude = 43.59830824658275
                 //            map.center.longitude =  1.4449450559914112
                 map.center = me.position.coordinate
             }
-            pinpointModel.searchQuery = "lat=" + map.center.latitude + "&long=" + map.center.longitude
+            // To be removed if we want to activate refresh on dragging the map
+            pinpointModel.searchLat = me.position.coordinate.latitude
+            pinpointModel.searchLong = me.position.coordinate.longitude
 
         }
     }

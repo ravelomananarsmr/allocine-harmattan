@@ -23,7 +23,7 @@ Page {
     WindowTitle {
         id: windowTitleBar
         windowTitle: title
-        windowTitleBackup: originalTitle ? originalTitle:"Pas de titre"
+        windowTitleBackup: "Pas de titre"
     }
 
     LoadingOverlay {
