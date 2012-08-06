@@ -493,6 +493,11 @@ Page {
         id: myPosition
         updateInterval: 30000
         active: true
-        onPositionChanged: active = false
+        onPositionChanged: {
+            if (position) {
+                console.log("lat=" + position.coordinate.latitude)
+                active = false
+            }
+        }
     }
 }
