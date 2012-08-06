@@ -49,14 +49,17 @@ MapImage {
     MapMouseArea {
         anchors.fill: parent
         onClicked: {
+            enabled = false
             var component = Qt.createComponent("PageTheater.qml")
             if (component.status == Component.Ready) {
                 console.log("Selected theater: ", theaterCode);
                 pageStack.push(component, {
                      theaterCode: theaterCode,
                  });
+                enabled = true
             } else {
                 console.log("Error loading component:", component.errorString());
+                enabled = true
              }
         }
     }

@@ -134,9 +134,8 @@ Page {
                 }
                 Label {
                     id: distanceLabel
-                    text: Helpers.formatdistance(theaterCoordinate.distanceTo(myPosition.position.coordinate)) + " de moi"
+                    text: (myPosition.position.coordinate.latitude || myPosition.position.coordinate.longitude) ? Helpers.formatdistance(theaterCoordinate.distanceTo(myPosition.position.coordinate)) + " de moi" : "Calcul de la distance..."
                     color: "gold"
-                    visible: myPosition.position.coordinate.latitude || myPosition.position.coordinate.longitude
                 }
 
                 Label {
