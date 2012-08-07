@@ -3,45 +3,31 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 
 Item {
-     property  int count:-1
+    property  int count:-1
     property int ratingValue:0
     property int maximumValue: 0
-    property string unfilledColor:"ghostwhite"
-    property string filledColor:"gold"
-    width: rating.width+title.paintedWidth
+
+    width: rating.width
     height: Math.max(title.paintedHeight,rating.height)
-     Row {
-             id: column1
-
-             width: rating.width+title.width
-             height: Math.max(title.height,rating.height)
-        Rectangle{
-            color:unfilledColor
-            width: rating.width
-            height: rating.height
-            Rectangle{
-                height: rating.height
-                width:ratingValue*rating.width/maximumValue
-                color:filledColor
-            }
-
+    Row {
+        id: rating
+        Repeater{
+            model: 5
             Image {
-            id: rating
-            sourceSize.width: 75
-            sourceSize.height: 20
-            width: sourceSize.width
-            height: sourceSize.height
-            source: "Images/ratingIndicator.svg"
-            fillMode: Image.PreserveAspectCrop
+                width: sourceSize.width
+                height: sourceSize.height
+                source: (ratingValue*5/maximumValue>index ? "Images/ratingIndicator-selected.svg":"Images/ratingIndicator.svg")
+                fillMode: Image.PreserveAspectCrop
             }
         }
         Label{
             id: title
+            anchors.verticalCenter: parent.verticalCenter
             visible: count >= 0
             text: "(" + count + ")"
-             font.weight: Font.Light
+            font.weight: Font.Light
             font.pixelSize: 18
             font.italic: true
         }
-       }
+    }
 }
