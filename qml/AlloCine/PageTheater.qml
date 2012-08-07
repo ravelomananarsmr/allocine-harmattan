@@ -9,9 +9,45 @@ Page {
     id: theaterPage
     tools: buttonTools
 
-    property string name: ""
-    property string theaterCode: ""
+    property string theaterCode
     property date showDate
+
+    property variant theaterLatitude: 0
+    property variant theaterLongitude: 0
+    property string theaterName
+    property string theaterAddress
+    property string theaterPostalCode
+    property string theaterCity
+    property string theaterCinemaChain
+    property string theaterScreenCount
+
+    ModelTheaters {
+        id: modelTheater
+        searchCode:  theaterCode
+
+        onStatusChanged: {
+            if (status == XmlListModel.Loading){
+                //console.log("modelTheater loading")
+                windowTitleBar.visible = false
+                theaterMovies.visible = false
+                //theaterPageLoadingOverlay.show()
+                theaterPageLoadingOverlay.loadingText = "Chargement du cinéma"
+            } else if (status == XmlListModel.Ready && count > 0){
+                theaterName = get(0).name
+                theaterAddress = get(0).address
+                theaterLatitude = get(0).tlatitude
+                theaterLongitude = get(0).tlongitude
+                theaterPostalCode = get(0).postalCode
+                theaterCity = get(0).city
+                theaterCinemaChain = get(0).cinemaChain
+                theaterScreenCount = get(0).screenCount
+                windowTitleBar.visible = true
+                modelTheaterMovies.theaterCode = theaterCode
+                modelTheaterMovies.performTheaterMoviesQuery()
+                //console.log("modelTheater ready, count=" + count + ", name=" + theaterName)
+            }
+        }
+    }
 
     ToolBarLayout {
         id: buttonTools
@@ -20,12 +56,11 @@ Page {
 
     WindowTitle {
         id: windowTitleBar
-        windowTitle: "Cinéma " + name
+        windowTitle: "Cinéma " + theaterName
     }
 
     Component {
         id: theaterDetails
-        //onCompleted: myPosition.start()
 
         Row {
             anchors.bottomMargin: 16
@@ -39,8 +74,8 @@ Page {
                 zoomLevel: 15
                 center: Coordinate {
                     id: theaterCoordinate
-                    latitude: tlatitude
-                    longitude: tlongitude
+                    latitude: theaterLatitude
+                    longitude: theaterLongitude
                 }
 
                 MapImage {
@@ -49,64 +84,35 @@ Page {
                     //height: 50
                     offset.x: -71/2
                     offset.y: -71
-                    source: "Images/marker.png"
+                    source: "Images/pinpoint-theater.png"
                     coordinate: theaterCoordinate
                 }
 
-                //                MapCircle {
-                //                    id: theaterPositionExternalLine
-                //                    color: "black"
-                //                    radius: 20
-                //                    center: theaterCoordinate
-                //                }
-
-                //                MapCircle {
-                //                    id: theaterPositionExternal
-                //                    color: "white"
-                //                    radius: 19
-                //                    center: theaterCoordinate
-                //                }
-
-                //                MapCircle {
-                //                    id: theaterPositionInternal
-                //                    color: "gold"
-                //                    radius: 15
-                //                    center: theaterCoordinate
-                //                }
-
-                MapCircle {
-                    id: myPositionExternalLine
-                    color: "black"
-                    radius: 20
-                    center: myPosition.position.coordinate
-                }
-
-                MapCircle {
-                    id: myPositionExternal
-                    color: "white"
-                    radius: 19
-                    center: myPosition.position.coordinate
-                }
-
-                MapCircle {
-                    id: myPositionInternal
-                    color: "green"
-                    radius: 15
-                    center: myPosition.position.coordinate
+                MapImage {
+                    id: meMarker
+                    //width: 50
+                    //height: 50
+                    offset.x: -71/2
+                    offset.y: -71
+                    source: "Images/pinpoint-me.png"
+                    coordinate: myPosition.position.coordinate
                 }
 
                 MouseArea {
                     id: mapMouseArea
                     anchors.fill: parent
                     onPressed: {
-                        Qt.openUrlExternally("geo:" + theaterCoordinate.latitude + "," + theaterCoordinate.longitude)
-                        //                        var component = Qt.createComponent("PageTheatersMap.qml")
-                        //                        if (component.status == Component.Ready) {
-                        //                            console.log("Opening Map centered on lat=" + theaterCoordinate.latitude + " and long = " + theaterCoordinate.longitude);
-                        //                            pageStack.push(component, {centerCoordinate: theaterCoordinate});
-                        //                        } else {
-                        //                            console.log("Error loading component:", component.errorString());
-                        //                         }
+                        //Qt.openUrlExternally("geo:" + theaterCoordinate.latitude + "," + theaterCoordinate.longitude)
+                        var component = Qt.createComponent("PageTheatersMap.qml")
+                        if (component.status == Component.Ready) {
+                            console.log("Opening Map centered on lat=" + theaterCoordinate.latitude + " and long = " + theaterCoordinate.longitude);
+                            pageStack.push(component, {
+                                 aroundMe: false,
+                                 centerCoordinate: theaterCoordinate
+                             });
+                        } else {
+                            console.log("Error loading component:", component.errorString());
+                         }
                     }
                 }
 
@@ -118,26 +124,26 @@ Page {
 
                 Label {
                     id: theaterAddressLabel
-                    text: address
+                    text: theaterAddress
                     color: "ghostwhite"
                 }
                 Label {
                     id: cityLabel
-                    text: postalCode + " " + city
+                    text: theaterPostalCode + " " + theaterCity
                     color: "ghostwhite"
                 }
                 Label {
                     id: distanceLabel
-                    text: Helpers.formatdistance(theaterCoordinate.distanceTo(myPosition.position.coordinate)) + " de moi"
+                    text: (myPosition.position.coordinate.latitude || myPosition.position.coordinate.longitude) ? Helpers.formatdistance(theaterCoordinate.distanceTo(myPosition.position.coordinate)) + " de moi" : "Calcul de la distance..."
                     color: "gold"
                 }
 
                 Label {
-                    text: "Type: " + cinemaChain
+                    text: "Type: " + theaterCinemaChain
                     color: "ghostwhite"
                 }
                 Label {
-                    text: "Ecrans: " + screenCount
+                    text: "Ecrans: " + theaterScreenCount
                     color: "ghostwhite"
                 }
             }
@@ -153,26 +159,27 @@ Page {
 
     ModelTheaterMovies {
         id: modelTheaterMovies
-        theaterCode: code
+        theaterCode: theaterCode
         showDate: showDate
         onStatusChanged: {
             if (status == XmlListModel.Loading){
-                //console.log("Model Loading")
+                //console.log("modelTheaterMovies loading")
+                theaterPageLoadingOverlay.loadingText = "Chargement des séances"
             } else if (status == XmlListModel.Ready){
+                //console.log("modelTheaterMovies ready")
                 showDate = new Date();
                 //console.log("Model Ready, today=" + Qt.formatDateTime(showDate, "yyyy-MM-dd"))
                 //console.log("//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\" and movieShowtimesList/movieShowtimes/screenings/scr/@d/string()=\""+ Qt.formatDateTime(showDate, "yyyy-MM-dd") + "\"]/movieShowtimesList/movieShowtimes")
                 if (theaterMovies.model.xml){ // To be sure there is somthing loaded
                     if (count > 0){
-                        theaterPageLoadingOverlay.visible = false
                         noShow.visible = false
-                        //theaterMovies.visible = true
+                        theaterMovies.visible = true
                     } else {
                         //console.log("No movie for this theater")
                         noShow.visible = true
                         theaterMovies.visible = false
-                        theaterPageLoadingOverlay.visible = false
                     }
+                    theaterPageLoadingOverlay.hide()
                 }
             }
         }
@@ -201,7 +208,7 @@ Page {
 
                 Component.onCompleted: {
                     //console.debug(code +" - "+ mCode)
-                    screening.model=screeningDateModel.createObject(screening,{theaterCode:code,movieCode:mCode, xml:theaterMovies.model.xml, versionCode:versionCode, screenFormatCode:screenFormatCode})
+                    screening.model=screeningDateModel.createObject(screening,{theaterCode:theaterCode,movieCode:mCode, xml:theaterMovies.model.xml, versionCode:versionCode, screenFormatCode:screenFormatCode})
                 }
 
                 Rectangle {
@@ -406,7 +413,7 @@ Page {
 
                         Component.onCompleted: {
                             //console.debug(code +" - "+ mCode)
-                            screeningTime.model=screeningTimeModel.createObject(screening,{theaterCode:code,movieCode:mCode,screeningDate:date, xml:theaterMovies.model.xml, versionCode:versionCode, screenFormatCode:screenFormatCode})
+                            screeningTime.model=screeningTimeModel.createObject(screening,{theaterCode:theaterCode,movieCode:mCode,screeningDate:date, xml:theaterMovies.model.xml, versionCode:versionCode, screenFormatCode:screenFormatCode})
                         }
 
 
@@ -481,4 +488,16 @@ Page {
 
     }
 
+
+    PositionSource {
+        id: myPosition
+        updateInterval: 30000
+        active: true
+        onPositionChanged: {
+            if (position) {
+                console.log("lat=" + position.coordinate.latitude)
+                active = false
+            }
+        }
+    }
 }

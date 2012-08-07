@@ -24,8 +24,8 @@ Page {
         updateInterval: 30000
         active: false
         onPositionChanged: positionUpdated()
-        position.coordinate.longitude: 1.4449450559914112
-        position.coordinate.latitude: 43.59830824658275
+//        position.coordinate.longitude: 1.4449450559914112
+//        position.coordinate.latitude: 43.59830824658275
     }
 
     property bool loading: modelTheaters.status == XmlListModel.Loading
@@ -46,7 +46,8 @@ Page {
         myPosition.stop()
         latitude = myPosition.position.coordinate.latitude
         longitude = myPosition.position.coordinate.longitude
-        theaterListView.model.searchQuery = "lat="+latitude+"&long="+longitude
+        theaterListView.model.searchLat = latitude
+        theaterListView.model.searchLong = longitude
         theatersPageLoadingOverlay.loadingText = "Recherche de salle à proximité"
         aroundMeButton.enabled = true
     }
@@ -62,9 +63,9 @@ Page {
     function searchPosition(query){
         console.log("Location searched: " + query)
         if((parseFloat(query) == parseInt(query)) && !isNaN(query)){
-            modelTheaters.searchQuery = "zip="+query
+            modelTheaters.searchZip = query
         } else {
-            modelTheaters.searchQuery = "location="+query
+            modelTheaters.searchLocation = query
         }
     }
 
@@ -209,7 +210,7 @@ Page {
                         width: listView.width - 30
                         elide: Text.ElideRight
                         color: "ghostwhite"
-                        visible: text != ""
+                        visible: myPosition.position.coordinate.latitude || myPosition.position.coordinate.longitude
                     }
 
                     Label {
@@ -240,7 +241,6 @@ Page {
                    if (component.status == Component.Ready) {
                        console.log("Selected theater: ", model.code);
                        pageStack.push(component, {
-                            name: model.name,
                             theaterCode: model.code,
                         });
                        enabled = true
@@ -274,17 +274,17 @@ Page {
             }
             MenuItem { text: "Rayon: 1 km";
                 onClicked: {
-                    theaterListView.model.radius = 1
+                    theaterListView.model.searchRadius = 1
                 }
             }
             MenuItem { text: "Rayon: 10 km";
                 onClicked: {
-                    theaterListView.model.radius = 10
+                    theaterListView.model.searchRadius = 10
                 }
             }
             MenuItem { text: "Rayon: 100 km";
                 onClicked: {
-                    theaterListView.model.radius = 100
+                    theaterListView.model.searchRadius = 100
                 }
             }
         }

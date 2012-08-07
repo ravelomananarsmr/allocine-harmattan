@@ -32,7 +32,7 @@ MapImage {
 
     id: itemTheaterMap
 
-    property variant theaterName
+    property variant theaterCode
 
     source: "Images/pinpoint-theater.png"
     coordinate: Coordinate{}
@@ -44,6 +44,24 @@ MapImage {
     offset.x: -34
     offset.y: -69
     visible:true
-    //        Component.onCompleted: console.log("Pinpoint added: " + itemTheaterMap.theaterName + " " + coordinate.latitude + "/" + coordinate.longitude+"   "+status)
+    //Component.onCompleted: console.log("Pinpoint added: " + itemTheaterMap.theaterName + " " + coordinate.latitude + "/" + coordinate.longitude+"   "+status)
+
+    MapMouseArea {
+        anchors.fill: parent
+        onClicked: {
+            enabled = false
+            var component = Qt.createComponent("PageTheater.qml")
+            if (component.status == Component.Ready) {
+                console.log("Selected theater: ", theaterCode);
+                pageStack.push(component, {
+                     theaterCode: theaterCode,
+                 });
+                enabled = true
+            } else {
+                console.log("Error loading component:", component.errorString());
+                enabled = true
+             }
+        }
+    }
 
 }
