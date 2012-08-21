@@ -117,140 +117,14 @@ Page {
 
         }
 
-        delegate:  Item {
-            id: listItem
-            height: Math.max(detailsItem.height, posterImageContainer.height) + 20
-            width: parent.width
-
-            Rectangle {
-                id: background
-                anchors.fill: parent
-                // Fill page borders
-                anchors.leftMargin: -listPage.anchors.leftMargin
-                anchors.rightMargin: -listPage.anchors.rightMargin
-                visible: mouseArea.pressed
-                color: "#202020"
-            }
-
-            Row {
-                spacing: 10
-
-                Rectangle {
-                    id: posterImageContainer
-                    width: posterImage.width + 8
-                    height: Math.max(posterImage.height, 133) + 8
-                    anchors.top: parent.top
-                    anchors.verticalCenter: parent.verticalCenter
-                    color: "black"
-                    z:1
-
-                    Rectangle {
-                        id: posterWhiteOutline
-                        width: posterImage.width + 6
-                        height: Math.max(posterImage.height, 133) + 6
-                        anchors.centerIn: parent
-                        color: "white"
-                        z:2
-
-                        Image {
-                            id: noPosterImage
-                            source: "Images/empty.png"
-                            width: 100
-                            fillMode: Image.PreserveAspectFit
-                            anchors.centerIn: parent
-                            z:3
-                        }
-
-                        Image {
-                            id: posterImage
-                            source: (model.poster? model.poster: "Images/empty.png")
-                            width: 100
-                            fillMode: Image.PreserveAspectFit
-                            anchors.centerIn: parent
-                            z:4
-                        }
-                    }
-                }
-
-                Column {
-                    id: detailsItem
-                    width: filmsPage.width - posterImageContainer.width - arrow.width - 20
-
-                    Label {
-                        id: titleLabel
-                        text: model.title
-                        font.weight: Font.Bold
-                        font.pixelSize: 26
-                        width: parent.width
-                        maximumLineCount: 1
-                        elide: Text.ElideRight
-                        color: "ghostwhite"
-                        visible: text != ""
-
-                    }
-                    Label {
-                        id: originalTitleLabel
-                        text: model.originalTitle
-                        font.weight: Font.Bold
-                        font.pixelSize: 26
-                        width: parent.width
-                        maximumLineCount: 1
-                        elide: Text.ElideRight
-                        color: "ghostwhite"
-                        visible: titleLabel.text == ""
-                    }
-                    Label {
-                        id: directorsLabel
-                        text: "De " + model.directors
-                        width: parent.width
-                        elide: Text.ElideRight
-                        color: "ghostwhite"
-                    }
-
-                    Label {
-                        id: actorsLabel
-                        text: "Avec " + model.actors
-                        width: parent.width
-                        elide: Text.ElideRight
-                        color: "ghostwhite"
-                    }
-
-                    Label {
-                        id: movieTypeProductionYearRuntimeLabel
-                        text: "Sorti en "+ model.productionYear
-                        font.weight: Font.Light
-                        font.pixelSize: 22
-                        color: "gold"
-                        width: parent.width
-                        elide: Text.ElideRight
-                        visible: text != ""
-                    }
-                }
-            }
-
-            Image {
-                id: arrow
-                source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
-                anchors.right: parent.right;
-                anchors.verticalCenter: parent.verticalCenter
-            }
-
-            MouseArea {
-                id: mouseArea
-                anchors.fill: background
-                onClicked: {
-                    var component = Qt.createComponent("PageFilm.qml")
-                    if (component.status == Component.Ready) {
-                        console.log("Selected movie: ", model.code);
-                        pageStack.push(component, {
-                            mCode: model.code,
-                            title: model.title
-                         });
-                    } else {
-                        console.log("Error loading component:", component.errorString());
-                     }
-                 }
-            }
+        delegate: ListComponentMovie {
+            movieActors: model.actors
+            movieCode: model.code
+            movieDirectors: model.directors
+            movieOriginalTitle: model.originalTitle
+            movieReleaseDate: model.releaseDate
+            movieTitle: model.title
+            moviePoster: model.poster
         }
     }
 

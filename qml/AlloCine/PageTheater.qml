@@ -211,196 +211,52 @@ Page {
                     screening.model=screeningDateModel.createObject(screening,{theaterCode:theaterCode,movieCode:mCode, xml:theaterMovies.model.xml, versionCode:versionCode, screenFormatCode:screenFormatCode})
                 }
 
-                Rectangle {
-                    id: detailsRow
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    height: Math.max(detailsItem.height,posterImageContainer.height)
-                    color: "transparent"
-
-                    MouseArea {
-                        id: mouseArea
-                        anchors.fill: detailsRow
-                        onClicked: {
-                            var component = Qt.createComponent("PageFilm.qml")
-                            if (component.status == Component.Ready) {
-                                console.log("Selected movie: ", model.mCode);
-                                pageStack.push(component, {
-                                                   mCode: model.mCode,
-                                                   title: model.title
-                                               });
-                            } else {
-                                console.log("Error loading component:", component.errorString());
-                            }
-                            detailsRow.color = "transparent"
-                        }
-                        onPressed: detailsRow.color = "#202020"
-                        onCanceled: detailsRow.color = "transparent"
-                    }
-
-                    //posterImageContainer
-                    Rectangle {
-                        id: posterImageContainer
-                        width: posterImage.width + 8
-                        height: Math.max(posterImage.height, 133) + 8
-                        anchors.top: parent.top
-                        anchors.verticalCenter: parent.verticalCenter
-                        color: "black"
-                        z:1
-
-                        Rectangle {
-                            id: posterWhiteOutline
-                            width: posterImage.width + 6
-                            height: Math.max(posterImage.height, 133) + 6
-                            anchors.centerIn: parent
-                            color: "white"
-                            z:2
-
-                            Image {
-                                id: noPosterImage
-                                source: "Images/empty.png"
-                                width: 100
-                                fillMode: Image.PreserveAspectFit
-                                anchors.centerIn: parent
-                                z:3
-                            }
-
-                            Image {
-                                id: posterImage
-                                source: (model.poster? model.poster: "Images/empty.png")
-                                width: 100
-                                fillMode: Image.PreserveAspectFit
-                                anchors.centerIn: parent
-                                z:4
-                            }
-                        }
-                    }
-
-                    // detailsItem
-                    Column {
-                        id: detailsItem
-                        anchors.leftMargin: 10
-                        anchors.left: posterImageContainer.right
-                        width: theaterPage.width - posterImageContainer.width - arrow.width - 20
-
-                        // titleLabel
-                        Label {
-                            id: titleLabel
-                            text: model.title
-                            font.weight: Font.Bold
-                            font.pixelSize: 26
-                            width: parent.width
-                            //width: listView.width - 110
-                            //maximumLineCount: 1
-                            color: "gold"
-                            elide: Text.ElideRight
-                        }
-
-                        // directorsLabel
-                        Label {
-                            id: directorsLabel
-                            text: "De " + model.directors
-                            //width: listView.width - 110
-                            width: parent.width
-                            color: "ghostwhite"
-                            elide: Text.ElideRight
-                        }
-
-                        // actorsLabel
-                        Label {
-                            id: actorsLabel
-                            text: "Avec " + model.actors
-                            width: parent.width
-                            //width: listView.width - 110
-                            color: "ghostwhite"
-                            elide: Text.ElideRight
-                        }
-
-                        // versionRuntimeRow
-                        Row {
-                            id: versionRuntimeRow
-
-                            Label {
-                                id: versionLabel
-                                text: model.version
-                                font.weight: Font.Light
-                                font.pixelSize: 22
-                                elide: Text.ElideRight
-                                color: "ghostwhite"
-                                visible: model.version != ""
-                            }
-
-                            Label {
-                                text: " - "
-                                font.weight: Font.Light
-                                font.pixelSize: 22
-                                elide: Text.ElideRight
-                                color: "ghostwhite"
-                                visible: model.version != ""
-                            }
-
-                            Label {
-                                id: screenFormatLabel
-                                text: model.screenFormat
-                                font.weight: Font.Light
-                                font.pixelSize: 22
-                                elide: Text.ElideRight
-                                color: "ghostwhite"
-                                visible: model.screenFormat != ""
-                            }
-
-                            Label {
-                                text: " - "
-                                font.weight: Font.Light
-                                font.pixelSize: 22
-                                elide: Text.ElideRight
-                                color: "ghostwhite"
-                                visible: model.screenFormat != ""
-                            }
-
-                            Label {
-                                id: runtimeLabel
-                                text: Helpers.formatSecondsAsTime(model.runtime, 'hh:mm')
-                                font.weight: Font.Light
-                                font.pixelSize: 22
-                                elide: Text.ElideRight
-                                color: "ghostwhite"
-                                visible: model.runtime != ""
-                            }
-                        }
-
-                        //                        // versionRuntimeLabel
-                        //                        Label {
-                        //                            id: versionRuntimeLabel
-                        //                            text: model.version + " - " + model.screenFormat + " " + Helpers.formatSecondsAsTime(model.runtime, 'hh:mm')
-                        //                            font.weight: Font.Light
-                        //                            font.pixelSize: 22
-                        //                            width: parent.width
-                        //                            //width: listView.width - 110
-                        //                            elide: Text.ElideRight
-                        //                            color: "ghostwhite"
-                        //                            visible: text != ""
-                        //                        }
-
-                    }
-
-                    // arrow
-                    Image {
-                        id: arrow
-                        anchors.right: parent.right
-                        source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
+                ListComponentMovie {
+                    movieActors: model.actors
+                    movieCode: model.mCode
+                    movieDirectors: model.directors
+                    movieReleaseDate: model.releaseDate
+                    movieTitle: model.title
+                    moviePoster: model.poster
                 }
 
-                //showTimesLabel
-                Label {
-                    id: showTimesLabel
-                    text: "Séances"
-                    color: "gold"
+                // versionRow
+                Row {
+                    id: versionRow
                     anchors.horizontalCenter: parent.horizontalCenter
-                    visible:   !extender.extended
+
+                    //showTimesLabel
+                    Label {
+                        id: showTimesLabel
+                        text: "Séances "
+                        color: "ghostwhite"
+                    }
+
+                    Label {
+                        id: versionLabel
+                        text: model.version
+                        font.weight: Font.Light
+                        elide: Text.ElideRight
+                        color: "ghostwhite"
+                        visible: model.version != ""
+                    }
+
+                    Label {
+                        text: " - "
+                        font.weight: Font.Light
+                        elide: Text.ElideRight
+                        color: "ghostwhite"
+                        visible: model.screenFormat != ""
+                    }
+
+                    Label {
+                        id: screenFormatLabel
+                        text: model.screenFormat
+                        font.weight: Font.Light
+                        elide: Text.ElideRight
+                        color: "ghostwhite"
+                        visible: model.screenFormat != ""
+                    }
                 }
 
                 //screening
@@ -495,6 +351,7 @@ Page {
         active: true
         onPositionChanged: {
             if (position) {
+                console.log("lat=" + position.coordinate.latitude)
                 active = false
             }
         }

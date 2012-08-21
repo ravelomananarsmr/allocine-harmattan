@@ -1,6 +1,6 @@
 import QtQuick 1.1
 import com.nokia.meego 1.1
-
+import "DateTools.js" as DateTools
 import "Helpers.js" as Helpers
 
 Page {
@@ -17,7 +17,7 @@ Page {
         id: buttonTools
 
         ToolIcon { iconId: "toolbar-back"; onClicked: {pageStack.pop(); }  }
-        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
+        //ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
     }
 
     WindowTitle {
@@ -261,6 +261,13 @@ Page {
 
             }
 
+            // release date
+            ListComponentText{
+                width: parent.width
+                title: "Sortie"
+                content: DateTools.formatDate(new Date(DateTools.getDateFromFormat(model.releaseDate, "yyyy-MM-d")), "dd MMM yyyy")
+                visible: model.releaseDate
+            }
 
             // directors
             ListComponentText{

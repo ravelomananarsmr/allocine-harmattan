@@ -32,7 +32,7 @@ XmlListModel {
     XmlRole { name: "actors"; query: "onShow/movie/castingShort/actors/string()" }
     XmlRole { name: "screenFormatCode"; query: "screenFormat/@code/string()" }
     XmlRole { name: "versionCode"; query: "version/@code/string()" }
-
+    XmlRole { name: "releaseDate"; query: "release/releaseDate/string()" }
 
 //    onCountChanged: console.log("Count changed: " + count)
 //    onXmlChanged: console.log("XML loaded from API")

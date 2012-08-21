@@ -99,139 +99,14 @@ Page {
             }
         }
 
-        delegate:  Item {
-            id: listItem
-            height: posterImageContainer.height + 20
-            width: parent.width
-
-            Rectangle {
-                id: detailsRow
-                anchors.left: parent.left
-                anchors.right: parent.right
-                height: Math.max(detailsItem.height,posterImageContainer.height)
-                color: "transparent"
-
-                MouseArea {
-                    id: mouseArea
-                    anchors.fill: detailsRow
-                    onClicked: {
-                        var component = Qt.createComponent("PageFilm.qml")
-                        if (component.status == Component.Ready) {
-                            console.log("Selected movie: ", model.code);
-                            pageStack.push(component, {
-                                mCode: model.code,
-                                title: model.title
-                             });
-                        } else {
-                            console.log("Error loading component:", component.errorString());
-                        }
-                        detailsRow.color = "transparent"
-                     }
-                    onPressed: detailsRow.color = "#202020"
-                    onCanceled: detailsRow.color = "transparent"
-                }
-
-                //posterImageContainer
-                Rectangle {
-                    id: posterImageContainer
-                    width: posterImage.width + 8
-                    height: Math.max(posterImage.height, 133) + 8
-                    anchors.top: parent.top
-                    anchors.verticalCenter: parent.verticalCenter
-                    color: "black"
-                    z:1
-
-                    Rectangle {
-                        id: posterWhiteOutline
-                        width: posterImage.width + 6
-                        height: Math.max(posterImage.height, 133) + 6
-                        anchors.centerIn: parent
-                        color: "white"
-                        z:2
-
-                        Image {
-                            id: noPosterImage
-                            source: "Images/empty.png"
-                            width: 100
-                            fillMode: Image.PreserveAspectFit
-                            anchors.centerIn: parent
-                            z:3
-                        }
-
-                        Image {
-                            id: posterImage
-                            source: (model.poster? model.poster: "Images/empty.png")
-                            width: 100
-                            fillMode: Image.PreserveAspectFit
-                            anchors.centerIn: parent
-                            z:4
-                        }
-                    }
-                }
-
-                // detailsItem
-                Column {
-                    id: detailsItem
-                    anchors.leftMargin: 10
-                    anchors.left: posterImageContainer.right
-                    width: filmsPage.width - posterImageContainer.width - arrow.width - 20
-
-                    // titleLabel
-                    Label {
-                        id: titleLabel
-                        text: model.title
-                        font.weight: Font.Bold
-                        font.pixelSize: 26
-                        width: parent.width
-                        //width: listView.width - 110
-                        //maximumLineCount: 1
-                        color: "gold"
-                        elide: Text.ElideRight
-                    }
-
-                    // directorsLabel
-                    Label {
-                        id: directorsLabel
-                        text: "De " + model.directors
-                        //width: listView.width - 110
-                        width: parent.width
-                        color: "ghostwhite"
-                        elide: Text.ElideRight
-                    }
-
-                    // actorsLabel
-                    Label {
-                        id: actorsLabel
-                        text: "Avec " + model.actors
-                        width: parent.width
-                        //width: listView.width - 110
-                        color: "ghostwhite"
-                        elide: Text.ElideRight
-                    }
-
-                    // movieTypeProductionYearRuntimeLabel
-                    Label {
-                        id: movieTypeProductionYearRuntimeLabel
-                        text: model.movieType + " - "+ model.productionYear + " - " + Helpers.formatSecondsAsTime(model.runtime, 'hh:mm')
-                        font.weight: Font.Light
-                        font.pixelSize: 22
-                        color: "gold"
-                        width: parent.width
-                        elide: Text.ElideRight
-                        visible: text != ""
-                    }
-                }
-
-                // arrow
-                Image {
-                    id: arrow
-                    anchors.right: parent.right
-                    source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-            }
-
+        delegate: ListComponentMovie {
+            movieActors: model.actors
+            movieCode: model.code
+            movieDirectors: model.directors
+            movieOriginalTitle: model.originalTitle
+            movieTitle: model.title
+            moviePoster: model.poster
+            movieReleaseDate: model.releaseDate
         }
     }
 
