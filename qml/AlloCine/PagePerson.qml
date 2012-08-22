@@ -140,6 +140,15 @@ Page {
                     }
 
                     Label {
+                        id: personGender
+                        text: (model.gender == "1") ? "Homme" : "Femme"
+                        width: parent.width
+                        wrapMode: Text.Wrap
+                        color: "gold"
+                        visible: model.gender
+                    }
+
+                    Label {
                         id: personActivityShort
                         text: model.activityShort
                         width: parent.width
@@ -154,16 +163,23 @@ Page {
 
                         Label {
                             id: personBirthDateTitle
-                            text: "Né le: "
-
+                            text: model.gender == "1" ? "Né le: " : "Née le: "
+                            visible: model.birthDate
                             color: "gold"
                         }
                         Label {
                             id: personBirthDate
                             text: DateTools.formatDate(new Date(DateTools.getDateFromFormat(model.birthDate, "yyyy-MM-d")), "dd NNN yyyy")
-                            width: parent.width - versionRuntimeLabelTitle.width
+                            width: parent.width - personBirthDateTitle.width
                             color: "ghostwhite"
                             elide: Text.ElideRight
+                            visible: model.birthDate
+                        }
+                        Label {
+                            id: unknownBirthDate
+                            text : "Date de naissance inconnue"
+                            color: "ghostwhite"
+                            visible: !model.birthDate
                         }
                     }
                 }
@@ -177,6 +193,13 @@ Page {
                 shortText: model.biographyShort
                 longText: model.biography
                 visible: model.biographyShort || model.biography
+            }
+
+            ListComponentText {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                content: "Pas de biographie"
+                visible: !model.biographyShort && !model.biography
             }
 
 //            // completeFilmography

@@ -120,46 +120,12 @@ Page {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         model: modelTheaters
-        header: Item {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            //anchors.top: parent.top
-            //anchors.margins: rootWindow.pageMargin
-            //anchors.topMargin: 500
-            //anchors.fill: parent
-            height: 80
-
-            // searchField
-            TextField {
-                id: searchField
-                anchors.fill: parent
-                anchors.margins: 16
-                placeholderText: "Ville ou code postal"
-
-                //platformRightMargin: clearText.width + platformStyle.paddingMedium * 2
-                Image {
-                    anchors { verticalCenter: parent.verticalCenter; right: parent.right; rightMargin: 16 }
-                    id: clearText
-                    fillMode: Image.PreserveAspectFit
-                    smooth: true;
-                    source: "image://theme/icon-m-toolbar-search"
-                    height: parent.height - platformStyle.paddingMedium * 2
-                    width: parent.height - platformStyle.paddingMedium * 2
-
-                    MouseArea {
-                        id: searchMouseArea
-                        anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
-                        height: searchField.height; width: searchField.height
-                        onClicked: {
-                            searchPosition(searchField.text)
-                        }
-                    }
-                }
-
-                onAccepted: {
-                    searchPosition(searchField.text)
-                    focus = false
-                }
+        header: ListComponentSearchField {
+            id: searchField
+            placeholderText: "Ville ou code postal"
+            onAccepted: {
+                searchPosition(text)
+                focus = false
             }
         }
 

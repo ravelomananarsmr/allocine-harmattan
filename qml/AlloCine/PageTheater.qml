@@ -103,7 +103,6 @@ Page {
                     anchors.fill: parent
                     onPressed: {
                         //Qt.openUrlExternally("geo:" + theaterCoordinate.latitude + "," + theaterCoordinate.longitude)
-                        console.log("pageStack depth: " + pageStack.depth)
                         var component = Qt.createComponent("PageTheatersMap.qml")
                         if (component.status == Component.Ready) {
                             console.log("Opening Map centered on lat=" + theaterCoordinate.latitude + " and long = " + theaterCoordinate.longitude);
@@ -120,7 +119,6 @@ Page {
                          }
                     }
                 }
-
             }
 
             Column {

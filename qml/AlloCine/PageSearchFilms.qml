@@ -36,7 +36,7 @@ Page {
         onStatusChanged: {
             if (status == XmlListModel.Ready){
                 if (count == 0 && xml){
-                    noResultFoundBanner.open() ;
+                    noResultFoundBanner.show() ;
                     console.debug("No result")
                 }
             }
@@ -50,7 +50,6 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.topMargin: 16
         cacheBuffer: 3000
 
         visible: moviesListView.model.status == XmlListModel.Ready
@@ -58,41 +57,15 @@ Page {
         model: modelSearchMovies
 
         header: Item {
+
             anchors.left: parent.left
             anchors.right: parent.right
-            height: searchField.height + 10 + 16 *2 + currentMovies.height
+            height: searchField.height + currentMovies.height
 
-            // searchField
-            TextField {
+            ListComponentSearchField {
                 id: searchField
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.leftMargin: 16
-                anchors.rightMargin: 16
-                placeholderText: "Recherche"
-
-                Image {
-                    anchors { verticalCenter: parent.verticalCenter; right: parent.right; rightMargin: 16 }
-                    id: clearText
-                    fillMode: Image.PreserveAspectFit
-                    smooth: true;
-                    source: "image://theme/icon-m-toolbar-search"
-                    height: parent.height - platformStyle.paddingMedium * 2
-                    width: parent.height - platformStyle.paddingMedium * 2
-
-                    MouseArea {
-                        id: searchMouseArea
-                        anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
-                        height: searchField.height; width: searchField.height
-                        onClicked: {
-                            searchMovies(searchField.text)
-                        }
-                    }
-                }
-
                 onAccepted: {
-                    searchMovies(searchField.text)
+                    searchMovies(text)
                 }
             }
 
@@ -102,7 +75,6 @@ Page {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: searchField.bottom
-                anchors.topMargin: 16
                 icon: "image://theme/icon-m-toolbar-addressbook-selected"
                 text: "Tous les films à l'affiche"
                 onClicked: {
