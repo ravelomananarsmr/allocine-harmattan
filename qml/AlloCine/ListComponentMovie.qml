@@ -7,9 +7,9 @@ Item {
 
     property string movieCode
     property string movieTitle
-    property string movieOriginalTitle : "Titre inconnu"
-    property string movieDirectors : "Réalisateur inconnu"
-    property string movieActors : "Acteurs inconnus"
+    property string movieOriginalTitle
+    property string movieDirectors
+    property string movieActors
     property string moviePoster
     property string movieReleaseDate
 
@@ -82,30 +82,30 @@ Item {
                 maximumLineCount: 1
                 elide: Text.ElideRight
                 color: "gold"
-                visible: text != ""
+                visible: movieTitle != ""
 
             }
             Label {
                 id: originalTitleLabel
-                text: movieOriginalTitle
+                text: movieOriginalTitle ? movieOriginalTitle : "Titre inconnu"
                 font.weight: Font.Bold
                 font.pixelSize: 26
                 width: parent.width
                 maximumLineCount: 1
                 elide: Text.ElideRight
                 color: "gold"
-                visible: titleLabel.text == ""
+                visible: movieTitle == ""
             }
             Label {
                 id: directorsLabel
-                text: "De " + movieDirectors
+                text: movieDirectors ? "De " + movieDirectors : "Réalisateur inconnu"
                 width: parent.width
                 elide: Text.ElideRight
                 color: "ghostwhite"
             }
             Label {
                 id: actorsLabel
-                text: "Avec " + movieActors
+                text: movieActors ? "Avec " + movieActors : "Acteurs inconnus"
                 width: parent.width
                 elide: Text.ElideRight
                 color: "ghostwhite"
@@ -139,7 +139,7 @@ Item {
                 console.log("Selected movie: ", movieCode);
                 pageStack.push(component, {
                     mCode: movieCode,
-                    title: movieTitle
+                    title: movieTitle ? movieTitle : movieOriginalTitle
                  });
             } else {
                 console.log("Error loading component:", component.errorString());
