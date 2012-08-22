@@ -112,7 +112,7 @@ Item {
             }
             Label {
                 id: movieReleaseDateLabel
-                text: "Sorti le "+ DateTools.formatDate(new Date(DateTools.getDateFromFormat(movieReleaseDate, "yyyy-MM-d")), "dd MMM yyyy")
+                text: movieReleaseDate ? "Sorti le "+ DateTools.formatDate(new Date(DateTools.getDateFromFormat(movieReleaseDate, "yyyy-MM-d")), "dd MMM yyyy") : "Date de sortie inconnue"
                 font.weight: Font.Light
                 font.pixelSize: 22
                 color: "ghostwhite"

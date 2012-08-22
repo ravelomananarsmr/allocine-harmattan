@@ -25,6 +25,7 @@ XmlListModel {
     XmlRole { name: "title"; query: 'onShow/movie/title/string()' }
     XmlRole { name: "mCode"; query: 'onShow/movie/@code/string()' }
     XmlRole { name: "poster"; query: "onShow/movie/poster/@href/string()" }
+    XmlRole { name: "releaseDate"; query: "onShow/movie/release/releaseDate/string()" }
     XmlRole { name: "version"; query: "version/string()" }
     XmlRole { name: "screenFormat"; query: "screenFormat/string()" }
     XmlRole { name: "runtime"; query: "onShow/movie/runtime/number()" }
@@ -32,7 +33,6 @@ XmlListModel {
     XmlRole { name: "actors"; query: "onShow/movie/castingShort/actors/string()" }
     XmlRole { name: "screenFormatCode"; query: "screenFormat/@code/string()" }
     XmlRole { name: "versionCode"; query: "version/@code/string()" }
-    XmlRole { name: "releaseDate"; query: "release/releaseDate/string()" }
 
 //    onCountChanged: console.log("Count changed: " + count)
 //    onXmlChanged: console.log("XML loaded from API")
