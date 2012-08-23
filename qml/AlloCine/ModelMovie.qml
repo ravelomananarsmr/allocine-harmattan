@@ -4,7 +4,7 @@ import com.nokia.meego 1.0
 
 XmlListModel {
     Component.onCompleted: {
-        console.log("Calling API to update modelMovie: " + source)
+        console.log(source)
         var movieFile = new XMLHttpRequest();
         movieFile.onreadystatechange = function() {
             if (movieFile.readyState == XMLHttpRequest.DONE) {
@@ -55,6 +55,6 @@ XmlListModel {
     XmlRole { name: "releaseWeekPosition"; query: "statistics/releaseWeekPosition/number()" }
 
     // TODO bug: returns always empty
-    XmlRole { name: "linkWeb"; query: "linkList/link[@rel=\"aco\:web\"]/@href/string()" }
+    XmlRole { name: "linkWeb"; query: "linkList/link[@rel='aco:web']/@href/string()"}
 
 }

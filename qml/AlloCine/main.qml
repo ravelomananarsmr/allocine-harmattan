@@ -10,9 +10,13 @@ PageStackWindow {
 
     property string colorSelectedListItem: "#202020"
 
-    property int fontSizeLarge: 25
-    property int fontSizeMedium: 20
-    property int fontSizeSmall: 15
+    Label {
+        id: dummyLabel
+    }
+
+    property int fontSizeLarge: fontSizeSmall * 1.5
+    property int fontSizeMedium: fontSizeSmall * 1.25
+    property int fontSizeSmall: dummyLabel.font.pointSize
 
 
     showStatusBar: rootWindow.inPortrait

@@ -18,5 +18,7 @@ XmlListModel {
     XmlRole { name: "birthDate"; query: "birthDate/string()" }
     XmlRole { name: "birthPlace"; query: "birthPlace/string()" }
     XmlRole { name: "picture"; query: "picture/@href/string()" }
+    XmlRole { name: "code"; query: "@code/string()" }
 
+    onSourceChanged: console.log(source)
 }

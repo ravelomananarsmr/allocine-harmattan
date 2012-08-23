@@ -20,21 +20,21 @@ Item {
         anchors.fill: parent
     }
 
-    Text {
+    Label {
         id: windowTitleTextLabel
         anchors.left: parent.left
         anchors.leftMargin: 16
         anchors.verticalCenter: parent.verticalCenter
         text: windowTitle
         font.weight: Font.Light
-        font.pixelSize: fontSizeLarge
+        font.pointSize: fontSizeMedium
         color: "white"
         width: parent.width - 2*anchors.leftMargin
         elide: Text.ElideRight
         visible: windowTitle != ""
     }
 
-    Text {
+    Label {
         id: windowTitleBackupTextLabel
         anchors.left: parent.left
         anchors.leftMargin: 16

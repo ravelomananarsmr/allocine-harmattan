@@ -9,10 +9,15 @@ Item {
     property string movieTitle
     property string movieOriginalTitle
     property string movieDirectors
-    property string movieActors
     property string moviePoster
     property string movieReleaseDate
+    property string movieReleaseStateCode
+    property string movieReleaseState
     property string movieProductionYear
+    property string activity
+
+    property string releaseStateCode_RELEASED : "3004"
+    property string releaseStateCode_PLANNED_RELEASED_UNKNOWN_DATE : "3011"
 
     height: Math.max(detailsItem.height, posterImageContainer.height) + 20
     width: parent.width
@@ -98,18 +103,12 @@ Item {
                 visible: movieTitle == ""
             }
             Label {
-                id: directorsLabel
-                text: movieDirectors ? "De " + movieDirectors : "Réalisateur inconnu"
+                id: activityLabel
+                text: activity
                 width: parent.width
                 elide: Text.ElideRight
                 color: "ghostwhite"
-            }
-            Label {
-                id: actorsLabel
-                text: movieActors ? "Avec " + movieActors : "Acteurs inconnus"
-                width: parent.width
-                elide: Text.ElideRight
-                color: "ghostwhite"
+                visible: activity
             }
             Label {
                 id: movieProductionYearLabel
@@ -122,14 +121,24 @@ Item {
                 visible: movieProductionYear
             }
             Label {
-                id: movieReleaseDateLabel
-                text: movieReleaseDate ? "Sortie le "+ DateTools.formatDate(new Date(DateTools.getDateFromFormat(movieReleaseDate, "yyyy-MM-d")), "dd MMM yyyy") : "Date de sortie inconnue"
+                id: movieReleaseDateLabel_RELEASED
+                text: movieReleaseDate ? "Sortie en salle: "+ DateTools.formatDate(new Date(DateTools.getDateFromFormat(movieReleaseDate, "yyyy-MM-d")), "dd MMM yyyy") : "Date de sortie inconnue"
                 font.weight: Font.Light
                 font.pixelSize: 22
                 color: "ghostwhite"
                 width: parent.width
                 elide: Text.ElideRight
-                visible: movieReleaseDate
+                visible: movieReleaseStateCode == releaseStateCode_RELEASED || (!movieReleaseStateCode && movieReleaseDate)
+            }
+            Label {
+                id: movieReleaseDateLabel_PLANNED_RELEASED
+                text: "Sortie en salle: "+ movieReleaseState
+                font.weight: Font.Light
+                font.pixelSize: 22
+                color: "ghostwhite"
+                width: parent.width
+                elide: Text.ElideRight
+                visible: movieReleaseStateCode == releaseStateCode_PLANNED_RELEASED_UNKNOWN_DATE
             }
         }
     }

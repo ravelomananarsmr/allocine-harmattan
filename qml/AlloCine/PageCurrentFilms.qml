@@ -57,6 +57,7 @@ Page {
             movieTitle: model.title
             moviePoster: model.poster
             movieReleaseDate: model.releaseDate
+            movieProductionYear: model.productionYear
         }
     }
 

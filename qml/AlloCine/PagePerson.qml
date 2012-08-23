@@ -169,7 +169,7 @@ Page {
                         }
                         Label {
                             id: personBirthDate
-                            text: DateTools.formatDate(new Date(DateTools.getDateFromFormat(model.birthDate, "yyyy-MM-d")), "dd NNN yyyy")
+                            text: (DateTools.formatDate(new Date(DateTools.getDateFromFormat(model.birthDate, "yyyy-MM-d")), "dd NNN yyyy")) + (model.birthPlace ? " à " + model.birthPlace : "")
                             width: parent.width - personBirthDateTitle.width
                             color: "ghostwhite"
                             elide: Text.ElideRight
@@ -202,13 +202,21 @@ Page {
                 visible: !model.biographyShort && !model.biography
             }
 
-//            // completeFilmography
-//            ListComponentLink {
-//                anchors.left: parent.left
-//                anchors.right: parent.right
-//                icon: "image://theme/icon-m-content-videos-inverse"
-//                text: "Filmographie"
-//            }
+            // completeFilmography
+            ListComponentLink {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                icon: "image://theme/icon-m-content-videos-inverse"
+                text: "Filmographie"
+                onClicked: {
+                    var component = Qt.createComponent("PageFilmography.qml")
+                    if (component.status == Component.Ready) {
+                        pageStack.push(component, {code: model.code, name: model.givenName + " " + model.familyName});
+                    } else {
+                        console.log("Error loading component:", component.errorString());
+                    }
+                }
+            }
 
         }
     }

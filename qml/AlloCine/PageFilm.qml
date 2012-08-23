@@ -17,7 +17,8 @@ Page {
         id: buttonTools
 
         ToolIcon { iconId: "toolbar-back"; onClicked: {pageStack.pop(); }  }
-        //ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
+        ToolIcon { iconId: "toolbar-share"; onClicked: {console.log("Sharing " + linkWeb); }  }
+        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
     }
 
     WindowTitle {
@@ -349,12 +350,6 @@ Page {
                     console.log("Opening URL: " + linkWeb)
                 }
             }
-//            MenuItem { text: "Partager";
-//                onClicked: {
-//                    Qt.openUrlExternally(linkWeb)
-//                    console.log("Opening URL: " + linkWeb)
-//                }
-//            }
         }
     }
 }
