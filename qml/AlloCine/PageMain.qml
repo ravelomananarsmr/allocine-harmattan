@@ -50,7 +50,7 @@ Page {
             color: "red"
             MouseArea{
                 anchors.fill: parent
-                onClicked: shareString.share("eeee")
+                onClicked: shareString.share("http://google.fr")
             }
         }
     /*************************/
