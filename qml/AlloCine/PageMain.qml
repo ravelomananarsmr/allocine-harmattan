@@ -44,22 +44,7 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
         model: pagesModel
-       /*  TO BE REMOVED */
-        Rectangle {
-            anchors.fill: parent
-            color: "red"
-            MouseArea{
-                anchors.fill: parent
-                onClicked:{
-                    shareString.title="TITRE DU ..."
-                    shareString.description="DESCRIPTION DU MACHIN"
-                    shareString.mimeType="text/html"
-                    shareString.text="<h1> mon truc</h1> est <i> PPPP</i>"
-                    shareString.share();
 
-                }
-            }
-        }
     /*************************/
          header: Image {
              id: allocineLogo

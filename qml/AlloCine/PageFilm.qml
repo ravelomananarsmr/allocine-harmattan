@@ -17,7 +17,16 @@ Page {
         id: buttonTools
 
         ToolIcon { iconId: "toolbar-back"; onClicked: {pageStack.pop(); }  }
-        ToolIcon { iconId: "toolbar-share"; onClicked: {console.log("Sharing " + linkWeb); }  }
+        ToolIcon { iconId: "toolbar-share";
+             onClicked: {
+                console.log("Sharing " + linkWeb);
+                shareString.title=title
+                 shareString.description="Film sur AlloCiné"
+                shareString.mimeType="text/x-url"
+                shareString.text="http://www.allocine.fr"
+                shareString.share();
+            }
+        }
         ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
     }
 
