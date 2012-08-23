@@ -1,5 +1,5 @@
 import QtQuick 1.1
-import com.nokia.meego 1.1
+import com.nokia.meego 1.0
 import QtMobility.location 1.2
 
 PageStackWindow {
@@ -42,6 +42,7 @@ PageStackWindow {
             iconId: "toolbar-view-menu";
             onClicked: (myMenu.status == DialogStatus.Closed) ? myMenu.open() : myMenu.close()
         }
+
     }
 
     //genreModel

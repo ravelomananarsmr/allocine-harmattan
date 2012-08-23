@@ -1,7 +1,9 @@
 #include <QTranslator>
 #include <QLocale>
 #include <QtGui/QApplication>
+#include <QDeclarativeContext>
 #include "qmlapplicationviewer.h"
+#include "sharestring.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
@@ -16,6 +18,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     if (!(translator.load("tr_"+locale, ":/")))
         translator.load("tr_en", ":/");
 
+    ShareString shareString;
+    viewer->rootContext()->setContextProperty("shareString", &shareString);
     app->installTranslator(&translator);
 
     viewer->setOrientation(QmlApplicationViewer::ScreenOrientationAuto);

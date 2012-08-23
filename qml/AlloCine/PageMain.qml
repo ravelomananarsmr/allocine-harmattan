@@ -1,5 +1,5 @@
 import QtQuick 1.1
-import com.nokia.meego 1.1
+import com.nokia.meego 1.0
 
 Page {
     id: listPage
@@ -45,11 +45,14 @@ Page {
         flickableDirection: Flickable.VerticalFlick
         anchors.fill: parent
 
-//        Rectangle {
-//            anchors.fill: parent
-//            color: "black"
-//        }
-
+        Rectangle {
+            anchors.fill: parent
+            color: "red"
+            MouseArea{
+                anchors.fill: parent
+                onClicked: shareString.share("eeee")
+            }
+        }
         Image {
             id: allocineLogo
             anchors.top: parent.top
