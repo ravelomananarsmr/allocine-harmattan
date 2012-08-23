@@ -23,7 +23,7 @@ Page {
     WindowTitle {
         id: windowTitleBar
         windowTitle: title
-        windowTitleBackup: "Pas de titre"
+        windowTitleBackup: "Titre inconnu"
     }
 
     LoadingOverlay {
@@ -226,9 +226,9 @@ Page {
                     RatingIndicator {
                         id: pressRatingItemStars
                         anchors.top: pressRatingItemLabel.bottom
-                        ratingValue: model.pressRating
+                        ratingValue: model.pressRating ? model.pressRating : 0
                         maximumValue: 5
-                        count: model.pressReviewCount
+                        count: model.pressReviewCount ? model.pressReviewCount : 0
                      }
 
                 }
@@ -252,9 +252,9 @@ Page {
                         id: userRatingItemStars
                         anchors.top: userRatingItemLabel.bottom
 
-                        ratingValue: model.userRating
+                        ratingValue: model.userRating ? model.userRating : 0
                         maximumValue: 5
-                        count: model.userRatingCount
+                        count: model.userRatingCount ? model.userRatingCount : 0
                      }
 
                 }

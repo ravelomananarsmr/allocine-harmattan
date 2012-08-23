@@ -1,17 +1,15 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 import "DateTools.js" as DateTools
 
 Item {
 
-    property string movieCode
-    property string movieTitle
-    property string movieOriginalTitle
-    property string movieDirectors
-    property string movieActors
-    property string moviePoster
-    property string movieReleaseDate
+    property string personCode
+    property string personName: "Inconnu"
+    property int personGender
+    property string personBirthDate
+    property string personPicture
 
     height: Math.max(detailsItem.height, posterImageContainer.height) + 20
     width: parent.width
@@ -60,7 +58,7 @@ Item {
 
                 Image {
                     id: posterImage
-                    source: (moviePoster? moviePoster: "Images/empty.png")
+                    source: (personPicture? personPicture: "Images/empty.png")
                     width: 100
                     fillMode: Image.PreserveAspectFit
                     anchors.centerIn: parent
@@ -74,45 +72,26 @@ Item {
             width: parent.width - posterImageContainer.width - arrow.width - 20
 
             Label {
-                id: titleLabel
-                text: movieTitle
+                id: nameLabel
+                text: personName
                 font.weight: Font.Bold
                 font.pixelSize: 26
                 width: parent.width
                 maximumLineCount: 1
                 elide: Text.ElideRight
                 color: "gold"
-                visible: movieTitle != ""
+            }
+            Label {
+                id: genderLabel
+                text: personGender == "1" ? "Homme" : "Femme"
+                width: parent.width
+                elide: Text.ElideRight
+                color: "ghostwhite"
+            }
 
-            }
-            Label {
-                id: originalTitleLabel
-                text: movieOriginalTitle ? movieOriginalTitle : "Titre inconnu"
-                font.weight: Font.Bold
-                font.pixelSize: 26
-                width: parent.width
-                maximumLineCount: 1
-                elide: Text.ElideRight
-                color: "gold"
-                visible: movieTitle == ""
-            }
-            Label {
-                id: directorsLabel
-                text: movieDirectors ? "De " + movieDirectors : "Réalisateur inconnu"
-                width: parent.width
-                elide: Text.ElideRight
-                color: "ghostwhite"
-            }
-            Label {
-                id: actorsLabel
-                text: movieActors ? "Avec " + movieActors : "Acteurs inconnus"
-                width: parent.width
-                elide: Text.ElideRight
-                color: "ghostwhite"
-            }
             Label {
                 id: movieReleaseDateLabel
-                text: movieReleaseDate ? "Sortie le "+ DateTools.formatDate(new Date(DateTools.getDateFromFormat(movieReleaseDate, "yyyy-MM-d")), "dd MMM yyyy") : "Date de sortie inconnue"
+                text: personBirthDate ? (personGender == "1" ? "Né" : "Née") + " le "+ DateTools.formatDate(new Date(DateTools.getDateFromFormat(personBirthDate, "yyyy-MM-d")), "dd MMM yyyy") : "Date de naissance inconnue"
                 font.weight: Font.Light
                 font.pixelSize: 22
                 color: "ghostwhite"
@@ -134,12 +113,12 @@ Item {
         id: mouseArea
         anchors.fill: background
         onClicked: {
-            var component = Qt.createComponent("PageFilm.qml")
+            var component = Qt.createComponent("PagePerson.qml")
             if (component.status == Component.Ready) {
-                console.log("Selected movie: ", movieCode);
+                console.log("Selected person: ", personCode);
                 pageStack.push(component, {
-                    mCode: movieCode,
-                    title: movieTitle ? movieTitle : movieOriginalTitle
+                   personCode: personCode,
+                   name: personName
                  });
             } else {
                 console.log("Error loading component:", component.errorString());

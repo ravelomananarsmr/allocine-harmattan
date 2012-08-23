@@ -10,6 +10,7 @@ XmlListModel {
     namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
 
     XmlRole { name: "givenName"; query: "name/@given/string()" }
+    XmlRole { name: "gender"; query: "gender/number()" }
     XmlRole { name: "familyName"; query: "name/@family/string()" }
     XmlRole { name: "activityShort"; query: "activityShort/string()" }
     XmlRole { name: "biographyShort"; query: "biographyShort/string()" }

@@ -28,23 +28,23 @@ Page {
         ListElement {
             page: "PageSearchFilms.qml"
             title: "Films"
-            subtitle: "Rechercher des films"
+            subtitle: "Rechercher un film"
         }
-//        ListElement {
-//            page: "PageSeries.qml"
-//            title: "Séries"
-//            subtitle: "Rechercher des séries"
-//        }
+        ListElement {
+            page: "PageSearchPersons.qml"
+            title: "Personnes"
+            subtitle: "Rechercher une personne"
+        }
     }
 
-    Flickable {
-
-        id: flickArea
-        anchors.top: parent.top
-        anchors.topMargin: windowTitleBar.height
-        flickableDirection: Flickable.VerticalFlick
-        anchors.fill: parent
-
+     ListView {
+        id: listView
+        anchors.top: windowTitleBar.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        model: pagesModel
+       /*  TO BE REMOVED */
         Rectangle {
             anchors.fill: parent
             color: "red"
@@ -53,84 +53,73 @@ Page {
                 onClicked: shareString.share("eeee")
             }
         }
-        Image {
-            id: allocineLogo
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
+    /*************************/
+         header: Image {
+             id: allocineLogo
+            width: listPage.width * 0.9
+            smooth: true
+            fillMode: Image.PreserveAspectFit
+//            anchors.top: parent.top
+//            anchors.horizontalCenter: parent.horizontalCenter
             source: "Images/allocine.png"
         }
 
-        ListView {
-            id: listView
-            //anchors.fill: parent
-            //anchors.margins: 16
-            anchors.top: allocineLogo.bottom
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            model: pagesModel
-            interactive: false
+        delegate:  Item {
+            id: listItem
+            height: 88
+            width: parent.width
 
-            delegate:  Item {
-                id: listItem
-                height: 88
-                width: parent.width
+            Rectangle {
+                id: background
+                anchors.fill: parent
+                // Fill page borders
+                anchors.leftMargin: -listPage.anchors.leftMargin
+                anchors.rightMargin: -listPage.anchors.rightMargin
+                visible: mouseArea.pressed
+                color: "#202020"
+            }
 
-                Rectangle {
-                    id: background
-                    anchors.fill: parent
-                    // Fill page borders
-                    anchors.leftMargin: -listPage.anchors.leftMargin
-                    anchors.rightMargin: -listPage.anchors.rightMargin
-                    visible: mouseArea.pressed
-                    color: "#202020"
-                }
+            Row {
+                anchors.fill: parent
+                anchors.margins: 16
 
-                Row {
-                    anchors.fill: parent
-                    anchors.margins: 16
-
-                    Column {
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        Label {
-                            id: mainText
-                            color: "ghostwhite"
-                            text: model.title
-                            font.weight: Font.Bold
-                            font.pixelSize: 26
-                        }
-
-                        Label {
-                            id: subText
-                            text: model.subtitle
-                            font.weight: Font.Light
-                            font.pixelSize: 22
-                            color: "gold"
-
-                            visible: text != ""
-                        }
-                    }
-                }
-
-                Image {
-                    source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
-                    anchors.right: parent.right;
+                Column {
                     anchors.verticalCenter: parent.verticalCenter
-                }
 
-                MouseArea {
-                    id: mouseArea
-                    anchors.fill: background
-                    onClicked: {
-                        listPage.openFile(page)
+                    Label {
+                        id: mainText
+                        color: "ghostwhite"
+                        text: model.title
+                        font.weight: Font.Bold
+                        font.pixelSize: 26
+                    }
+
+                    Label {
+                        id: subText
+                        text: model.subtitle
+                        font.weight: Font.Light
+                        font.pixelSize: 22
+                        color: "gold"
+
+                        visible: text != ""
                     }
                 }
             }
-        }
-    }
 
-    ScrollDecorator {
-        flickableItem: flickArea
+            Image {
+                source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
+                anchors.right: parent.right;
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            MouseArea {
+                id: mouseArea
+                anchors.fill: background
+                onClicked: {
+                    listPage.openFile(page)
+                }
+            }
     }
+}
+
 }
