@@ -11,23 +11,25 @@ Page {
     property int mCode
     property string title
     property string trailerUrlId
-    property string linkWeb
+    property string movieLinkWeb
 
     ToolBarLayout {
         id: buttonTools
 
         ToolIcon { iconId: "toolbar-back"; onClicked: {pageStack.pop(); }  }
-        ToolIcon { iconId: "toolbar-share";
-             onClicked: {
-                console.log("Sharing " + linkWeb);
+        ToolIcon {
+            iconSource: enabled ? "image://theme/icon-m-toolbar-share-white" : "image://theme/icon-m-toolbar-share-dimmed-white"
+            onClicked: {
+                console.log("Sharing " + movieLinkWeb);
                 shareString.title=title
-                 shareString.description="Film sur AlloCiné"
+                shareString.description="Film sur AlloCiné"
                 shareString.mimeType="text/x-url"
-                shareString.text="http://www.allocine.fr"
+                shareString.text=movieLinkWeb
                 shareString.share();
             }
+            enabled: movieLinkWeb
         }
-        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
+        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); enabled: movieLinkWeb}
     }
 
     WindowTitle {
@@ -78,7 +80,7 @@ Page {
                 //console.log("Filtered Trailer ID: " + model.trailer + " -> " + filteredTrailerId[1])
                 if (model.trailer)
                     trailerUrlId = filteredTrailerId[1]
-                var linkWeb = model.linkWeb
+                    movieLinkWeb = model.linkWeb
 
                 genreRepeater.model=genreModel.createObject(genreRepeater,{xml:movieListView.model.xml})
 
@@ -355,8 +357,8 @@ Page {
         MenuLayout {
             MenuItem { text: "Ouvrir dans le navigateur";
                 onClicked: {
-                    Qt.openUrlExternally(linkWeb)
-                    console.log("Opening URL: " + linkWeb)
+                    Qt.openUrlExternally(movieLinkWeb)
+                    console.log("Opening URL: " + movieLinkWeb)
                 }
             }
         }
