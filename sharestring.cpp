@@ -1,6 +1,11 @@
+
+#include<qglobal.h>
+#include "sharestring.h"
+#ifndef QT_SIMULATOR
 #include <MDataUri>
 #include <shareuiinterface.h>
-#include "sharestring.h"
+#endif
+
 
 ShareString::ShareString(QObject *parent) :
    QObject(parent)
@@ -45,6 +50,7 @@ void ShareString::setTitle(const QString title)
 void ShareString::share()
 {
 
+#ifndef QT_SIMULATOR
 
    QStringList items;
 
@@ -69,4 +75,6 @@ void ShareString::share()
    }
    else
        qDebug() << "Invalid ShareUi";
+#endif
 }
+

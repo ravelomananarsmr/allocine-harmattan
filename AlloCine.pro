@@ -30,8 +30,8 @@ CONFIG += qdeclarative-boostable
 # CONFIG += qt-components
 
 # The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += main.cpp \
-    sharestring.cpp
+SOURCES += main.cpp
+SOURCES += sharestring.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -49,5 +49,4 @@ OTHER_FILES += \
 RESOURCES +=
 CONFIG += shareuiinterface-maemo-meegotouch share-ui-plugin share-ui-common
 
-HEADERS += \
-    sharestring.h
+HEADERS +=     sharestring.h
