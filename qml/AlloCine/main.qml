@@ -18,7 +18,9 @@ PageStackWindow {
     property int fontSizeMedium: fontSizeSmall * 1.25
     property int fontSizeSmall: dummyLabel.font.pointSize
 
-
+    InfoBanner{
+        id:banner
+    }
     showStatusBar: rootWindow.inPortrait
 
     Component.onCompleted: theme.inverted = true

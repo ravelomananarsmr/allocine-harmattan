@@ -54,6 +54,10 @@ Page {
 //            anchors.top: parent.top
 //            anchors.horizontalCenter: parent.horizontalCenter
             source: "Images/allocine.png"
+            MouseArea{
+                anchors.fill:parent
+                onClicked: banner.show(listView.y,"MaHOLYaeraerazraerazer\nddd")
+            }
         }
 
         delegate:  Item {
