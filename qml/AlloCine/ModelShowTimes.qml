@@ -32,19 +32,28 @@ import com.nokia.meego 1.1
 
 XmlListModel {
     property string theaterCode
-    property date showDate // Not Implemented
+    property date showDate
+    property string searchLat
+    property string searchLong
+    property string searchRadius: "10"
+    property string mCode
+    property string searchZip
+    property string searchLocation
 
-    function performTheaterMoviesQuery(){
-        console.log("Calling API to update ModelTheaterMovies: " + "http://api.allocine.fr/rest/v3/showtimelist?partner="+partner+"&q=61282&format=xml&theaters="+theaterCode)
-        var showtimelistFile = new XMLHttpRequest();
-        showtimelistFile.onreadystatechange = function() {
-            if (showtimelistFile.readyState == XMLHttpRequest.DONE) {
-                xml = showtimelistFile.responseText
+    property string showTimeQuery
+    property string source: showTimeQuery ? "http://api.allocine.fr/rest/v3/showtimelist?partner="+partner+"&format=xml&"+showTimeQuery+"&movie="+mCode : ""
+
+    onSourceChanged: {
+        console.log(source)
+        var file = new XMLHttpRequest();
+        file.onreadystatechange = function() {
+            if (file.readyState == XMLHttpRequest.DONE) {
+                xml = file.responseText
 
             }
         }
-        showtimelistFile.open("GET", "http://api.allocine.fr/rest/v3/showtimelist?partner="+partner+"&q=61282&format=xml&theaters="+theaterCode);
-        showtimelistFile.send();
+        file.open("GET", source);
+        file.send();
     }
 
     query: "//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\"]/movieShowtimesList/movieShowtimes"
@@ -62,4 +71,30 @@ XmlListModel {
     XmlRole { name: "screenFormatCode"; query: "screenFormat/@code/string()" }
     XmlRole { name: "versionCode"; query: "version/@code/string()" }
 
+    onStatusChanged: {
+        if (status == XmlListModel.Error) {
+            banner.show(windowTitleBar.y,"Erreur:\nImpossible de charger la liste des séances")
+        }
+    }
+
+    onSearchLatChanged: {
+        if (searchLat && searchLong)
+            showTimeQuery = "lat="+searchLat+"&long="+searchLong+"&radius="+searchRadius
+    }
+    onSearchLongChanged: {
+        if (searchLat && searchLong)
+            showTimeQuery = "lat="+searchLat+"&long="+searchLong+"&radius="+searchRadius
+    }
+    onTheaterCodeChanged: {
+        if (theaterCode)
+            showTimeQuery = "theaters=" + theaterCode
+    }
+    onSearchZipChanged: {
+        if (searchZip)
+            showTimeQuery = "zip=" + searchZip
+    }
+    onSearchLocationChanged: {
+        if (searchLocation)
+            showTimeQuery = "location=" + searchLocation
+    }
 }

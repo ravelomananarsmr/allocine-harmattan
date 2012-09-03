@@ -1,5 +1,34 @@
+/*************************************************************************************
+                AlloCine application for Harmattan
+         This application is released under BSD-2 license
+                   -------------------------
+
+Copyright (c) 2012, Antoine Vacher, Sahobimaholy Ravelomanana
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+  * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+  * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation and/or
+    other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*************************************************************************************/
+
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 import "Helpers.js" as Helpers
 import "DateTools.js" as DateTools
 
@@ -7,30 +36,41 @@ Page {
     id: pagePerson
     tools: buttonTools
 
-    orientationLock: PageOrientation.LockPortrait
     property int personCode
     property string name
+    property string personLinkWeb
 
     ModelPerson {
         id: modelPerson
         personCode: pagePerson.personCode
         onStatusChanged: {
-            //console.log("person code = " + pagePerson.personCode)
-            if (status == XmlListModel.Ready && count > 0){
-                pagePersonLoadingOverlay.visible = false
-            } else if (status == XmlListModel.Ready && count > 0) {
-                console.log("Model ready but count = 0")
+            if (status == XmlListModel.Ready){
+                modelNationality.xml = xml
             }
         }
     }
 
+    ModelNationality {
+        id: modelNationality
+    }
 
     ToolBarLayout {
         id: buttonTools
 
         ToolIcon { iconId: "toolbar-back"; onClicked: {pageStack.pop(); }  }
-        //ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
-    }
+        ToolIcon {
+            iconSource: enabled ? "image://theme/icon-m-toolbar-share-white" : "image://theme/icon-m-toolbar-share-dimmed-white"
+            onClicked: {
+                console.log("Sharing " + personLinkWeb);
+                shareString.title=name
+                shareString.description="Profil sur AlloCiné"
+                shareString.mimeType="text/x-url"
+                shareString.text=personLinkWeb
+                shareString.share();
+            }
+            enabled: personLinkWeb
+        }
+        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); enabled: personLinkWeb}    }
 
     WindowTitle {
         id: windowTitleBar
@@ -42,13 +82,8 @@ Page {
 
     LoadingOverlay {
         id: pagePersonLoadingOverlay
-        onVisibleChanged: {
-            if (visible) {
-                personListView.visible = false
-            } else {
-                personListView.visible = true
-            }
-        }
+        loadingText: "Chargement du profil"
+        visible: modelPerson.xml == "" || !(posterImage.status == Image.Ready && modelPerson.status == XmlListModel.Ready && modelNationality.status == XmlListModel.Ready)
     }
 
     ListView {
@@ -57,27 +92,23 @@ Page {
         anchors.topMargin: windowTitleBar.height
         anchors.margins: pageMargin
         anchors.fill: parent
-        Component.onCompleted: {
-            pagePersonLoadingOverlay.visible = true
-            pagePersonLoadingOverlay.loadingText = "Chargement du profil"
-        }
         model: modelPerson
+        visible: !pagePersonLoadingOverlay.visible
 
         delegate: Column {
             width: parent.width
             spacing: pageMargin
 
+            Component.onCompleted: personLinkWeb = model.linkWeb
+
             Item {
                 width: parent.width
-                height: Math.max(pictureBlackOutline.height, mainDetails.height)
+                height: Math.max(itemPoster.height, mainDetails.height)
 
-                // posterImage
-                Rectangle {
-                    id: pictureBlackOutline
-                    width: pictureImage.width + 7
-                    height: pictureImage.height + 7
-                    color: "black"
-                    z:1
+                // poster
+                ItemPoster {
+                    id:itemPoster
+                    url: model.picture
 
                     MouseArea {
                         id: mouseArea
@@ -86,46 +117,17 @@ Page {
                         onClicked: {
                             var component = Qt.createComponent("PagePicture.qml")
                             if (component.status == Component.Ready) {
-                                pageStack.push(component, {imageSource: model.picture? model.picture: "Images/empty.png", title: name});
+                                pageStack.push(component, {imageSource: model.picture? model.picture: "Images/empty.png", title: model.name});
                             } else {
                                 console.log("Error loading component:", component.errorString());
                             }
                         }
                     }
-
-
-                    Rectangle {
-                        id: pictureWhiteOutline
-                        width: pictureImage.width + 5
-                        height: pictureImage.height + 5
-                        anchors.centerIn: parent
-                        color: "white"
-                        z:2
-
-                        Image {
-                            id: noPictureImage
-                            source: "Images/empty.png"
-                            width: 150
-                            fillMode: Image.PreserveAspectFit
-                            anchors.centerIn: parent
-                            z:3
-                        }
-
-                        Image {
-                            id: pictureImage
-                            source: (model.picture? model.picture: "Images/empty.png")
-                            width: 150
-                            fillMode: Image.PreserveAspectFit
-                            anchors.centerIn: parent
-                            z:4
-                        }
-                    }
                 }
-
                 // mainDetails
                 Column{
                     id: mainDetails
-                    anchors.left: pictureBlackOutline.right
+                    anchors.left: itemPoster.right
                     anchors.leftMargin: pageMargin
                     anchors.right: parent.right
                     anchors.top: parent.top
@@ -137,6 +139,15 @@ Page {
                         font.weight: Font.Bold
                         font.pointSize: fontSizeLarge
                         color: "ghostwhite"
+                    }
+
+                    Label {
+                        id: personRealName
+                        text: "(" + model.realName + ")"
+                        width: parent.width
+                        wrapMode: Text.Wrap
+                        color: "ghostwhite"
+                        visible: model.realName
                     }
 
                     Label {
@@ -185,6 +196,45 @@ Page {
                 }
             }
 
+            // nationality
+            Item {
+                height: nationalityLabelTitle.height + nationalityRow.height
+                width: parent.width
+                visible: modelNationality.count > 0
+
+                Label {
+                    id: nationalityLabelTitle
+                    text: "Pays"
+                    color: "ghostwhite"
+                    font.weight: Font.Bold
+                }
+
+                Row {
+                    id: nationalityRow
+                    anchors.top: nationalityLabelTitle.bottom
+                    Repeater{
+                        id:nationalityRepeater
+                        width: parent.width
+                        model: modelNationality
+                        Row {
+                            Label {
+                                id: nationalityLabel
+                                text: model.nationality
+                                elide: Text.ElideRight
+                                color: "ghostwhite"
+                            }
+                            Label {
+                                text: ", "
+                                elide: Text.ElideRight
+                                color: "ghostwhite"
+                                visible: (index + 1 != nationalityRepeater.count)
+                            }
+                        }
+
+                    }
+                }
+            }
+
             // Biography
             ListComponentExtend {
                 anchors.left: parent.left
@@ -223,5 +273,17 @@ Page {
 
     ScrollDecorator {
         flickableItem: personListView
+    }
+
+    Menu {
+        id: myMenu
+        MenuLayout {
+            MenuItem { text: "Ouvrir dans le navigateur";
+                onClicked: {
+                    Qt.openUrlExternally(personLinkWeb)
+                    console.log("Opening URL: " + personLinkWeb)
+                }
+            }
+        }
     }
 }

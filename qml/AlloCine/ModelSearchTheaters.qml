@@ -30,9 +30,17 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import QtQuick 1.1
 import com.nokia.meego 1.1
 
+
 XmlListModel {
-    property string movieQuery
-    property string source: movieQuery ? "http://api.allocine.fr/rest/v3/search?partner="+partner+"&count=50&filter=movie&page=1&format=xml&q=" + movieQuery : ""
+
+    property string searchLat
+    property string searchLong
+    property string searchCode
+    property string searchZip
+    property string searchLocation
+    property int searchRadius: 10
+    property string source: searchQuery ? "http://api.allocine.fr/rest/v3/theaterlist?partner="+partner+"&count=200&page=1&format=xml&"+searchQuery+"&radius="+searchRadius : ""
+    property string searchQuery
 
     onSourceChanged: {
         console.log(source)
@@ -40,27 +48,47 @@ XmlListModel {
         file.onreadystatechange = function() {
             if (file.readyState == XMLHttpRequest.DONE) {
                 xml = file.responseText
+
             }
         }
         file.open("GET", source);
         file.send();
     }
 
-    query: "/feed/movie"
+    query: searchCode ? "/feed/theater[@code=\""+ searchCode + "\"]" : "/feed/theater"
     namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
 
-    XmlRole { name: "originalTitle"; query: "originalTitle/string()" }
-    XmlRole { name: "title"; query: "title/string()" }
-    XmlRole { name: "productionYear"; query: "productionYear/string()" }
-    XmlRole { name: "releaseDate"; query: "release/releaseDate/string()" }
-    XmlRole { name: "poster"; query: "poster/@href/string()" }
-    XmlRole { name: "directors"; query: "castingShort/directors/string()" }
-    XmlRole { name: "actors"; query: "castingShort/actors/string()" }
+    XmlRole { name: "name"; query: "name/string()" }
+    XmlRole { name: "address"; query: "address/string()" }
+    XmlRole { name: "city"; query: "city/string()" }
+    XmlRole { name: "postalCode"; query: "postalCode/string()" }
+    XmlRole { name: "cinemaChain"; query: "cinemaChain/string()" }
+    XmlRole { name: "screenCount"; query: "screenCount/string()" }
+    XmlRole { name: "tlatitude"; query: "geoloc/@lat/number()" }
+    XmlRole { name: "tlongitude"; query: "geoloc/@long/number()" }
     XmlRole { name: "code"; query: "@code/string()" }
+
+    onSearchLatChanged: {
+        if (searchLat && searchLong)
+            searchQuery = "lat="+searchLat+"&long="+searchLong
+    }
+    onSearchLongChanged: {
+        if (searchLat && searchLong)
+            searchQuery = "lat="+searchLat+"&long="+searchLong
+    }
+    onSearchCodeChanged: {
+        searchQuery = "theater="+searchCode
+    }
+    onSearchLocationChanged: {
+        searchQuery = "location="+searchLocation
+    }
+    onSearchZipChanged: {
+        searchQuery = "zip="+searchZip
+    }
 
     onStatusChanged: {
         if (status == XmlListModel.Error) {
-            banner.show(windowTitleBar.y,"Erreur:\nImpossible de charger la liste des films")
+            banner.show(windowTitleBar.y,"Erreur:\nImpossible de charger la liste des cinémas")
         }
     }
 }

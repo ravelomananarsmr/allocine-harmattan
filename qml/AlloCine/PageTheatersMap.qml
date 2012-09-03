@@ -1,38 +1,59 @@
+/*************************************************************************************
+                AlloCine application for Harmattan
+         This application is released under BSD-2 license
+                   -------------------------
+
+Copyright (c) 2012, Antoine Vacher, Sahobimaholy Ravelomanana
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+  * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+  * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation and/or
+    other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*************************************************************************************/
+
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 import QtMobility.location 1.2
 
 Page {
-    id: mapPage
+    id: pageTheatersMap
     tools: buttonTools
 
     property int nb_of_theaters: 0
-    property Coordinate centerCoordinate
-    property bool aroundMe: true
+    property Coordinate centerCoordinate : myPositionSource.position.coordinate// Coordinate to open the map centered on. If not defined, my position
+    property string searchLat : searchLat ? searchLat :  ""
+    property string searchLong : searchLong ? searchLong : ""
 
     // buttonTools
     ToolBarLayout {
         id: buttonTools
 
-        ToolIcon { iconId: "toolbar-back"; onClicked: { me.stop(); myMenu.close(); pageStack.pop(); }  }
+        ToolIcon { iconId: "toolbar-back"; onClicked: { myPositionSource.stop(); myMenu.close(); pageStack.pop(); }  }
         ToolButtonRow {
             ToolButton {
                 id: aroundMeButton
-                checkable: true
-                checked: aroundMe
+                checkable: myPositionSource.position.coordinate.latitude && myPositionSource.position.coordinate.longitude
+                checked: false
                 text: "Centrer sur moi";
                 onCheckedChanged: {
                     console.log("Auto center: " + aroundMeButton.checked);
-                    me.active = aroundMeButton.checked
-                    if (checked) {
-                        aroundMe = true
-                        if (me.active && !me.position){
-                            theatersMapPageLoadingOverlay.show()
-                        }
-                    } else {
-                        aroundMe = false
-                        theatersMapPageLoadingOverlay.hide()
-                    }
+                    myPositionSource.active = checked
                 }
             }
         }
@@ -64,13 +85,20 @@ Page {
 
     WindowTitle {
         id: windowTitleBar
-        windowTitle: aroundMe ? "Salles à proximité" : "Carte des salles"
+        windowTitle: aroundMeButton.checked ? "Salles à proximité" : "Carte des salles"
+        busy: !theatersMapPageLocatingOverlay.visible && myPositionSource.active
     }
 
     LoadingOverlay {
-        id: theatersMapPageLoadingOverlay
-        visible: aroundMe
+        id: theatersMapPageLocatingOverlay
+        visible: (myPositionSource.active && (!myPositionSource.position.coordinate.latitude || !myPositionSource.position.coordinate.longitude))
         loadingText: "Recherche de ma position"
+    }
+
+    LoadingOverlay {
+        id: theatersMapPageSearchingOverlay
+        visible: pinpointModel.status == XmlListModel.Loading
+        loadingText: "Recherche de salles à proximité"
     }
 
     Item {
@@ -79,7 +107,7 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
         id: mapItem
-        visible: !theatersMapPageLoadingOverlay.visible
+        visible: !theatersMapPageLocatingOverlay.visible && !theatersMapPageSearchingOverlay.visible
 
         Map {
             anchors.fill: parent
@@ -131,8 +159,8 @@ Page {
             MapImage {
                 id: mapPlacer
                 source: "Images/pinpoint-me.png"
-                coordinate: me.position.coordinate
-                visible: aroundMe
+                coordinate: myPositionSource.position.coordinate
+                visible: myPositionSource.position.coordinate.latitude && myPositionSource.position.coordinate.longitude
 
                 /*!
                  * We want that bottom middle edge of icon points to the location, so using offset parameter
@@ -148,17 +176,18 @@ Page {
 
             }
 
-            ModelTheaters {
+            ModelSearchTheaters {
                 id:pinpointModel
                 query : "/feed/theater"
+
+                searchLat: (myPositionSource.position.coordinate.latitude && !pageTheatersMap.searchLat) ? myPositionSource.position.coordinate.latitude : pageTheatersMap.searchLat
+                searchLong: (myPositionSource.position.coordinate.longitude && !pageTheatersMap.searchLong) ? myPositionSource.position.coordinate.longitude : pageTheatersMap.searchLong
 
                 onStatusChanged: {
                     if (status == XmlListModel.Loading){
                         console.log("Model Loading")
                     } else if (status == XmlListModel.Ready && xml){
                         console.log("Model Ready")
-                        theatersMapPageLoadingOverlay.visible = false
-                        mapItem.visible = true
                         windowTitleBar.windowTitle = nb_of_theaters + " salles dans un rayon de " + pinpointModel.searchRadius + " km"
 
                         for(var i=0; i<count;i++)
@@ -170,6 +199,7 @@ Page {
                                 pin.coordinate.latitude=parseFloat(get(i).tlatitude)
                                 pin.coordinate.longitude=parseFloat(get(i).tlongitude)
                                 pin.theaterCode=get(i).code
+                                pin.theaterName=get(i).name
                                 map.addMapObject(pin)
                             }
                         }
@@ -260,35 +290,6 @@ Page {
                 map.center = map.toCoordinate(Qt.point(__lastX,__lastY))
                 map.zoomLevel += 1
             }
-        }
-    }
-
-    //! Source for retrieving the positioning information
-    PositionSource {
-        id: me
-
-        //! Desired interval between updates in milliseconds
-        updateInterval: 10000
-        active: false
-
-        Component.onCompleted: {
-            pinpointModel.searchLat = centerCoordinate.latitude
-            pinpointModel.searchLong = centerCoordinate.longitude
-        }
-
-        //! When position changed, update the location strings
-        onPositionChanged: {
-            console.log("My position changed")
-            theatersMapPageLoadingOverlay.loadingText = "Recherche de salle à proximité"
-            if (aroundMeButton.checked) {
-                //            map.center.latitude = 43.59830824658275
-                //            map.center.longitude =  1.4449450559914112
-                map.center = me.position.coordinate
-            }
-            // To be removed if we want to activate refresh on dragging the map
-            pinpointModel.searchLat = me.position.coordinate.latitude
-            pinpointModel.searchLong = me.position.coordinate.longitude
-
         }
     }
 }

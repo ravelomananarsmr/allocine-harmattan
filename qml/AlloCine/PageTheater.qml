@@ -1,12 +1,40 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
+/*************************************************************************************
+                AlloCine application for Harmattan
+         This application is released under BSD-2 license
+                   -------------------------
+
+Copyright (c) 2012, Antoine Vacher, Sahobimaholy Ravelomanana
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+  * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+  * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation and/or
+    other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*************************************************************************************/
+
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 import QtMobility.location 1.2
 import "DateTools.js" as DateTools
 import "Helpers.js" as Helpers
 
 Page {
-    id: theaterPage
+    id: pageTheater
     tools: buttonTools
 
     property string theaterCode
@@ -21,19 +49,12 @@ Page {
     property string theaterCinemaChain
     property string theaterScreenCount
 
-    ModelTheaters {
-        id: modelTheater
+    ModelSearchTheaters {
+        id: modelSearchTheaters
         searchCode:  theaterCode
 
         onStatusChanged: {
-            if (status == XmlListModel.Loading){
-                //console.log("modelTheater loading")
-                windowTitleBar.visible = false
-                theaterMovies.visible = false
-                //theaterPageLoadingOverlay.show()
-                theaterPageLoadingOverlay.loadingText = "Chargement du cinéma"
-            } else if (status == XmlListModel.Ready && count > 0){
-                theaterName = get(0).name
+            if (status == XmlListModel.Ready && count > 0){
                 theaterAddress = get(0).address
                 theaterLatitude = get(0).tlatitude
                 theaterLongitude = get(0).tlongitude
@@ -41,155 +62,41 @@ Page {
                 theaterCity = get(0).city
                 theaterCinemaChain = get(0).cinemaChain
                 theaterScreenCount = get(0).screenCount
-                windowTitleBar.visible = true
-                modelTheaterMovies.theaterCode = theaterCode
-                modelTheaterMovies.performTheaterMoviesQuery()
-                //console.log("modelTheater ready, count=" + count + ", name=" + theaterName)
+                windowTitleBar.busy = false
+                modelShowTimes.theaterCode = theaterCode
             }
         }
+    }
+
+    ModelShowTimes {
+        id: modelShowTimes
+        theaterCode: theaterCode
+        showDate: showDate
+    }
+
+    LoadingOverlay {
+        id: pageTheaterLoadingScreeningsOverlay
+        visible: !modelShowTimes.status == XmlListModel.Ready
+        loadingText: "Chargement des séances"
+    }
+
+    LoadingOverlay {
+        id: pageTheaterLoadingTheaterOverlay
+        visible: !modelSearchTheaters.status == XmlListModel.Ready
+        loadingText: "Chargement du cinéma"
     }
 
     ToolBarLayout {
         id: buttonTools
-        ToolIcon { iconId: "toolbar-back"; onClicked: { myPosition.stop(); myMenu.close(); pageStack.pop(); }  }
+        ToolIcon { iconId: "toolbar-back"; onClicked: { myPositionSource.stop(); myMenu.close(); pageStack.pop(); }  }
     }
 
     WindowTitle {
         id: windowTitleBar
-        windowTitle: "Cinéma " + theaterName
+        windowTitle: theaterName ? theaterName : "Cinéma"
+        busy: true
     }
 
-    Component {
-        id: theaterDetails
-
-        Row {
-            anchors.bottomMargin: 16
-
-            // map
-            Map {
-                id: map
-                plugin : Plugin {name : "nokia"}
-                size.height: theaterDetailsText.height
-                size.width: theaterDetailsText.height
-                zoomLevel: 15
-                center: Coordinate {
-                    id: theaterCoordinate
-                    latitude: theaterLatitude
-                    longitude: theaterLongitude
-                }
-
-                MapImage {
-                    id: theaterMarker
-                    //width: 50
-                    //height: 50
-                    offset.x: -71/2
-                    offset.y: -71
-                    source: "Images/pinpoint-theater.png"
-                    coordinate: theaterCoordinate
-                }
-
-                MapImage {
-                    id: meMarker
-                    //width: 50
-                    //height: 50
-                    offset.x: -71/2
-                    offset.y: -71
-                    source: "Images/pinpoint-me.png"
-                    coordinate: myPosition.position.coordinate
-                }
-
-                MouseArea {
-                    id: mapMouseArea
-                    anchors.fill: parent
-                    onPressed: {
-                        //Qt.openUrlExternally("geo:" + theaterCoordinate.latitude + "," + theaterCoordinate.longitude)
-                        var component = Qt.createComponent("PageTheatersMap.qml")
-                        if (component.status == Component.Ready) {
-                            console.log("Opening Map centered on lat=" + theaterCoordinate.latitude + " and long = " + theaterCoordinate.longitude);
-                            if (pageStack.depth > 3) {
-                                pageStack.pop()
-                            } else {
-                                pageStack.push(component, {
-                                     aroundMe: false,
-                                     centerCoordinate: theaterCoordinate
-                                 });
-                            }
-                        } else {
-                            console.log("Error loading component:", component.errorString());
-                         }
-                    }
-                }
-            }
-
-            Column {
-                anchors.margins: 16
-                id: theaterDetailsText
-
-                Label {
-                    id: theaterAddressLabel
-                    text: theaterAddress
-                    color: "ghostwhite"
-                }
-                Label {
-                    id: cityLabel
-                    text: theaterPostalCode + " " + theaterCity
-                    color: "ghostwhite"
-                }
-                Label {
-                    id: distanceLabel
-                    text: (myPosition.position.coordinate.latitude || myPosition.position.coordinate.longitude) ? Helpers.formatdistance(theaterCoordinate.distanceTo(myPosition.position.coordinate)) + " de moi" : "Calcul de la distance..."
-                    color: "gold"
-                }
-
-                Label {
-                    text: "Type: " + theaterCinemaChain
-                    color: "ghostwhite"
-                }
-                Label {
-                    text: "Ecrans: " + theaterScreenCount
-                    color: "ghostwhite"
-                }
-            }
-        }
-
-    }
-
-    LoadingOverlay {
-        id: theaterPageLoadingOverlay
-        visible: true
-        loadingText: "Chargement des séances"
-    }
-
-    ModelTheaterMovies {
-        id: modelTheaterMovies
-        theaterCode: theaterCode
-        showDate: showDate
-        onStatusChanged: {
-            if (status == XmlListModel.Loading){
-                //console.log("modelTheaterMovies loading")
-                theaterPageLoadingOverlay.loadingText = "Chargement des séances"
-            } else if (status == XmlListModel.Ready){
-                //console.log("modelTheaterMovies ready")
-                showDate = new Date();
-                //console.log("Model Ready, today=" + Qt.formatDateTime(showDate, "yyyy-MM-dd"))
-                //console.log("//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\" and movieShowtimesList/movieShowtimes/screenings/scr/@d/string()=\""+ Qt.formatDateTime(showDate, "yyyy-MM-dd") + "\"]/movieShowtimesList/movieShowtimes")
-                if (theaterMovies.model.xml){ // To be sure there is somthing loaded
-                    if (count > 0){
-                        noShow.visible = false
-                        theaterMovies.visible = true
-                    } else {
-                        //console.log("No movie for this theater")
-                        noShow.visible = true
-                        theaterMovies.visible = false
-                    }
-                    theaterPageLoadingOverlay.hide()
-                }
-            }
-        }
-        onCountChanged: {
-            console.log(count + " movies for this theater" )
-        }
-    }
 
     ListView {
         id:theaterMovies
@@ -198,16 +105,27 @@ Page {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.margins: 5
-        model:modelTheaterMovies
-        header: theaterDetails
+        model:modelShowTimes
+        header: ItemTheaterDetails {
+            showMap: true
+            theaterAddress: pageTheater.theaterAddress
+            theaterLatitude: pageTheater.theaterLatitude
+            theaterLongitude: pageTheater.theaterLongitude
+            theaterPostalCode: pageTheater.theaterPostalCode
+            theaterCity: pageTheater.theaterCity
+            theaterCinemaChain: pageTheater.theaterCinemaChain
+            theaterScreenCount: pageTheater.theaterScreenCount
+        }
+
         spacing: 10
         cacheBuffer: 3000
+        visible: !noShow.visible && !pageTheaterLoadingScreeningsOverlay.visible && !pageTheaterLoadingTheaterOverlay.visible
 
         delegate:Component{
 
             Column {
 
-                width: theaterPage.width
+                width: pageTheater.width
 
                 Component.onCompleted: {
                     //console.debug(code +" - "+ mCode)
@@ -267,7 +185,7 @@ Page {
                     id:screening
                     Row{
                         height: dateLabel.height
-                        width : theaterPage.width
+                        width : pageTheater.width
                         visible:   extender.extended
 
                         Component.onCompleted: {
@@ -320,22 +238,30 @@ Page {
     // noShow
     Item {
         id: noShow
-        visible: false
+        visible: modelShowTimes.status == XmlListModel.Ready && modelSearchTheaters.status == XmlListModel.Ready && modelSearchTheaters.count > 0 && modelShowTimes.count == 0
         anchors.top:windowTitleBar.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
+        anchors.margins: 5
 
-        Loader {
-            id: theaterDetailsNoShow
-            sourceComponent: theaterDetails
+        ItemTheaterDetails {
+            id: noShowTheaterDetails
+            showMap: true
+            theaterAddress: pageTheater.theaterAddress
+            theaterLatitude: pageTheater.theaterLatitude
+            theaterLongitude: pageTheater.theaterLongitude
+            theaterPostalCode: pageTheater.theaterPostalCode
+            theaterCity: pageTheater.theaterCity
+            theaterCinemaChain: pageTheater.theaterCinemaChain
+            theaterScreenCount: pageTheater.theaterScreenCount
         }
 
         Rectangle {
-            anchors.top: theaterDetailsNoShow.bottom
-            anchors.bottom: parent.bottom
+            anchors.top: noShowTheaterDetails.bottom
             anchors.left: parent.left
             anchors.right: parent.right
+            anchors.bottom: parent.bottom
             color: "transparent"
 
             Label {
@@ -345,18 +271,5 @@ Page {
             }
         }
 
-    }
-
-
-    PositionSource {
-        id: myPosition
-        updateInterval: 30000
-        active: true
-        onPositionChanged: {
-            if (position) {
-                console.log("lat=" + position.coordinate.latitude)
-                active = false
-            }
-        }
     }
 }

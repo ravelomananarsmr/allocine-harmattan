@@ -1,24 +1,44 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
+/*************************************************************************************
+                AlloCine application for Harmattan
+         This application is released under BSD-2 license
+                   -------------------------
+
+Copyright (c) 2012, Antoine Vacher, Sahobimaholy Ravelomanana
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+  * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+  * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation and/or
+    other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*************************************************************************************/
+
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 import com.nokia.extras 1.1
 import "Helpers.js" as Helpers
-//import com.nokia.symbian 1.1
 
 Page {
-    id: filmsPage
+    id: pageSearchMovies
     tools: buttonTools
 
     function searchMovies(text) {
         //console.log("Search movies with " + text);
         modelSearchMovies.movieQuery = text;
-        modelSearchMovies.reload();
-    }
-
-    InfoBanner {
-        id: noResultFoundBanner
-        text: "Aucun film trouvé"
-//        timeout: 1000
     }
 
     WindowTitle {
@@ -35,8 +55,8 @@ Page {
         id: modelSearchMovies
         onStatusChanged: {
             if (status == XmlListModel.Ready){
-                if (count == 0 && xml){
-                    noResultFoundBanner.show() ;
+                if (count == 0 && movieQuery){
+                    banner.show(windowTitleBar.y,"Pas de film trouvé")
                     console.debug("No result")
                 }
             }
@@ -60,7 +80,7 @@ Page {
 
             anchors.left: parent.left
             anchors.right: parent.right
-            height: searchField.height + currentMovies.height
+            height: searchField.height + currentMovies.height + comingSoonMovies.height
 
             ListComponentSearchField {
                 id: searchField
@@ -75,7 +95,7 @@ Page {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: searchField.bottom
-                icon: "image://theme/icon-m-toolbar-addressbook-selected"
+                icon: "image://theme/icon-m-content-videos-inverse"
                 text: "Tous les films à l'affiche"
                 onClicked: {
                     var component = Qt.createComponent("PageCurrentFilms.qml")
@@ -86,7 +106,23 @@ Page {
                     }
                 }
             }
-
+            // comingSoonMovies
+            ListComponentLink {
+                id: comingSoonMovies
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: currentMovies.bottom
+                icon: "image://theme/icon-m-content-videos-inverse"
+                text: "Tous les films à venir"
+                onClicked: {
+                    var component = Qt.createComponent("PageComingSoonFilms.qml")
+                    if (component.status == Component.Ready) {
+                        pageStack.push(component, {});
+                    } else {
+                        console.log("Error loading component:", component.errorString());
+                    }
+                }
+            }
         }
 
         delegate: ListComponentMovie {

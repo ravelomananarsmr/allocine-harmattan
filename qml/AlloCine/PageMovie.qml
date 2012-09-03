@@ -1,14 +1,42 @@
+/*************************************************************************************
+                AlloCine application for Harmattan
+         This application is released under BSD-2 license
+                   -------------------------
+
+Copyright (c) 2012, Antoine Vacher, Sahobimaholy Ravelomanana
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+  * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+  * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation and/or
+    other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*************************************************************************************/
+
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 import "DateTools.js" as DateTools
 import "Helpers.js" as Helpers
 
 Page {
-    id: filmPage
+    id: pageMovie
     tools: buttonTools
 
-    orientationLock: PageOrientation.LockPortrait
-    property int mCode
+    property string mCode
     property string title
     property string trailerUrlId
     property string movieLinkWeb
@@ -40,23 +68,27 @@ Page {
 
     LoadingOverlay {
         id: filmPageLoadingOverlay
-        onVisibleChanged: {
-            if (visible) {
-                movieListView.visible = false
-            } else {
-                movieListView.visible = true
-            }
-        }
+        visible: modelMovie.xml == "" || !(posterImage.status == Image.Ready && modelMovie.status == XmlListModel.Ready && modelNationality.status == XmlListModel.Ready && modelGenre.status == XmlListModel.Ready)
+        loadingText: "Chargement du film"
     }
 
     ModelMovie {
         id: modelMovie
-        mCode: filmPage.mCode
+        mCode: pageMovie.mCode
         onStatusChanged: {
-            if (status == XmlListModel.Ready && count > 0){
-                filmPageLoadingOverlay.visible = false
+            if (status == XmlListModel.Ready){
+                modelGenre.xml = xml
+                modelNationality.xml = xml
             }
         }
+    }
+
+    ModelGenre {
+        id: modelGenre
+    }
+
+    ModelNationality {
+        id: modelNationality
     }
 
     ListView {
@@ -65,11 +97,9 @@ Page {
         anchors.topMargin: windowTitleBar.height
         anchors.margins: pageMargin
         anchors.fill: parent
-        Component.onCompleted: {
-            filmPageLoadingOverlay.visible = true
-            filmPageLoadingOverlay.loadingText = "Chargement du film"
-        }
+
         model: modelMovie
+        visible: !filmPageLoadingOverlay.visible
 
         delegate: Column {
             width: parent.width
@@ -78,25 +108,22 @@ Page {
                 var RegularExpression = /\/(\d+)$/
                 var filteredTrailerId = RegularExpression.exec(model.trailer)
                 //console.log("Filtered Trailer ID: " + model.trailer + " -> " + filteredTrailerId[1])
-                if (model.trailer)
+                if (model.trailer){
                     trailerUrlId = filteredTrailerId[1]
-                    movieLinkWeb = model.linkWeb
-
-                genreRepeater.model=genreModel.createObject(genreRepeater,{xml:movieListView.model.xml})
-
+                }
+                pageMovie.mCode = model.mCode
+                movieLinkWeb = model.linkWeb
             }
 
+            // header
             Item {
                 width: parent.width
-                height: Math.max(posterBlackOutline.height, mainDetails.height)
+                height: Math.max(itemPoster.height, mainDetails.height)
 
-                // posterImage
-                Rectangle {
-                    id: posterBlackOutline
-                    width: posterImage.width + 7
-                    height: posterImage.height + 7
-                    color: "black"
-                    z:1
+                // poster
+                ItemPoster {
+                    id:itemPoster
+                    url: model.poster
 
                     MouseArea {
                         id: mouseArea
@@ -105,28 +132,10 @@ Page {
                         onClicked: {
                             var component = Qt.createComponent("PagePicture.qml")
                             if (component.status == Component.Ready) {
-                                pageStack.push(component, {imageSource: model.poster? model.poster: "Images/empty.png", title: title});
+                                pageStack.push(component, {imageSource: model.poster? model.poster: "Images/empty.png", title: model.title});
                             } else {
                                 console.log("Error loading component:", component.errorString());
                             }
-                        }
-                    }
-
-                    Rectangle {
-                        id: posterWhiteOutline
-                        width: posterImage.width + 5
-                        height: posterImage.height + 5
-                        anchors.centerIn: parent
-                        color: "white"
-                        z:2
-
-                        Image {
-                            id: posterImage
-                            source: (model.poster? model.poster: "Images/empty.png")
-                            width: 150
-                            fillMode: Image.PreserveAspectFit
-                            anchors.centerIn: parent
-                            z:4
                         }
                     }
                 }
@@ -134,7 +143,7 @@ Page {
                 // mainDetails
                 Column{
                     id: mainDetails
-                    anchors.left: posterBlackOutline.right
+                    anchors.left: itemPoster.right
                     anchors.leftMargin: pageMargin
                     anchors.right: parent.right
                     anchors.top: parent.top
@@ -153,7 +162,7 @@ Page {
                         text: model.movieType
                         color: "gold"
                         visible: text != ""
-                    }                  
+                    }
 
                     // versionRuntimeLabel
                     Row {
@@ -177,30 +186,29 @@ Page {
                 }
             }
 
+            // genre
             Row {
-                Repeater{
-                    id:genreRepeater
-                    width: parent.width
-
-                    Row {
-                        Label {
-                            id: genreLabel
-                            text: model.genreText
-                            elide: Text.ElideRight
-                            color: "ghostwhite"
-                        }
-                        Label {
-                            id: commaLabel
-                            text: ", "
-                            elide: Text.ElideRight
-                            color: "ghostwhite"
-                            visible: (index + 1 != genreRepeater.count)
-                        }
+            Repeater{
+                id:genreRepeater
+                width: parent.width
+                model: modelGenre
+                Row {
+                    Label {
+                        id: genreLabel
+                        text: model.genre
+                        elide: Text.ElideRight
+                        color: "ghostwhite"
                     }
-
+                    Label {
+                        text: ", "
+                        elide: Text.ElideRight
+                        color: "ghostwhite"
+                        visible: (index + 1 != genreRepeater.count)
+                    }
                 }
-            }
 
+            }
+        }
 
             // certificateLabel
             Text {
@@ -273,10 +281,48 @@ Page {
 
             }
 
+            // nationality
+            Item {
+                height: nationalityLabelTitle.height + nationalityRow.height
+                width: parent.width
+                visible: modelNationality.count > 0
+
+                Label {
+                    id: nationalityLabelTitle
+                    text: "Pays"
+                    color: "ghostwhite"
+                    font.weight: Font.Bold
+                }
+
+                Row {
+                    id: nationalityRow
+                    anchors.top: nationalityLabelTitle.bottom
+                    Repeater{
+                        id:nationalityRepeater
+                        width: parent.width
+                        model: modelNationality
+                        Row {
+                            Label {
+                                id: nationalityLabel
+                                text: model.nationality
+                                elide: Text.ElideRight
+                                color: "ghostwhite"
+                            }
+                            Label {
+                                text: ", "
+                                elide: Text.ElideRight
+                                color: "ghostwhite"
+                                visible: (index + 1 != nationalityRepeater.count)
+                            }
+                        }
+                    }
+                }
+            }
+
             // release date
             ListComponentText{
                 width: parent.width
-                title: "Sortie"
+                title: "Sortie " + model.country + ((model.releaseVersion ? " (" + releaseVersion + ")" : ""))
                 content: DateTools.formatDate(new Date(DateTools.getDateFromFormat(model.releaseDate, "yyyy-MM-d")), "dd MMM yyyy")
                 visible: model.releaseDate
             }
@@ -361,6 +407,16 @@ Page {
                     console.log("Opening URL: " + movieLinkWeb)
                 }
             }
+//            MenuItem { text: "Trouver un cinéma";
+//                onClicked: {
+//                    var component = Qt.createComponent("PageMovieShowTimes.qml")
+//                    if (component.status == Component.Ready) {
+//                        pageStack.push(component, {mCode: mCode, title: title});
+//                    } else {
+//                        console.log("Error loading component:", component.errorString());
+//                    }
+//                }
+//            }
         }
     }
 }

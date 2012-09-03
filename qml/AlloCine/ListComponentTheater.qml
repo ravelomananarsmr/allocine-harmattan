@@ -29,22 +29,24 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import QtQuick 1.1
 import com.nokia.meego 1.1
-import "DateTools.js" as DateTools
+import "Helpers.js" as Helpers
+import QtMobility.location 1.2
 
 Item {
+    property string theaterName
+    property string theaterCode
+    property real tlatitude: 0
+    property real tlongitude: 0
+    property string theaterAddress
+    property string theaterCity
 
-    property string personCode
-    property string personName: "Inconnu"
-    property int personGender
-    property string personBirthDate
-    property string personPicture
-
-    height: Math.max(detailsItem.height, posterImageContainer.height) + 20
+    id: listItem
+    height: 100
     width: parent.width
 
     Rectangle {
         id: background
-        anchors.fill: completeRow
+        anchors.fill: parent
         // Fill page borders
         anchors.leftMargin: -parent.anchors.leftMargin
         anchors.rightMargin: -parent.anchors.rightMargin
@@ -53,86 +55,54 @@ Item {
     }
 
     Row {
-        width: parent.width
-        height: posterImageContainer.height
-        spacing: 10
-        id: completeRow
-
-        Rectangle {
-            id: posterImageContainer
-            width: posterImage.width + 8
-            height: Math.max(posterImage.height, 133) + 8
-            anchors.top: parent.top
-            anchors.verticalCenter: parent.verticalCenter
-            color: "black"
-            z:1
-
-            Rectangle {
-                id: posterWhiteOutline
-                width: posterImage.width + 6
-                height: Math.max(posterImage.height, 133) + 6
-                anchors.centerIn: parent
-                color: "white"
-                z:2
-
-                Image {
-                    id: noPosterImage
-                    source: "Images/empty.png"
-                    width: 100
-                    fillMode: Image.PreserveAspectFit
-                    anchors.centerIn: parent
-                    z:3
-                }
-
-                Image {
-                    id: posterImage
-                    source: (personPicture? personPicture: "Images/empty.png")
-                    width: 100
-                    fillMode: Image.PreserveAspectFit
-                    anchors.centerIn: parent
-                    visible: status == Image.Ready
-                    z:4
-                }
-            }
-        }
+        anchors.fill: parent
+        anchors.margins: rootWindow.pageMargin
 
         Column {
-            id: detailsItem
-            width: parent.width - posterImageContainer.width - arrow.width - 20
+            anchors.verticalCenter: parent.verticalCenter
 
             Label {
-                id: nameLabel
-                text: personName
+                id: theaterNameLabel
+                text: theaterName
                 font.weight: Font.Bold
                 font.pixelSize: 26
-                width: parent.width
+                width: listView.width - 30
                 maximumLineCount: 1
-                elide: Text.ElideRight
-                color: "gold"
-            }
-            Label {
-                id: genderLabel
-                text: personGender == "1" ? "Homme" : "Femme"
-                width: parent.width
                 elide: Text.ElideRight
                 color: "ghostwhite"
             }
 
+            Coordinate {
+                id: theaterCoordinate
+                latitude: tlatitude
+                longitude: tlongitude
+            }
+
             Label {
-                id: movieReleaseDateLabel
-                text: personBirthDate ? (personGender == "1" ? "Né" : "Née") + " le "+ DateTools.formatDate(new Date(DateTools.getDateFromFormat(personBirthDate, "yyyy-MM-d")), "dd MMM yyyy") : "Date de naissance inconnue"
+                id: theaterDistanceLabel
+                text: "A " + Helpers.formatdistance(theaterCoordinate.distanceTo(myPositionSource.position.coordinate)) + " de moi"
                 font.weight: Font.Light
                 font.pixelSize: 22
-                color: "ghostwhite"
-                width: parent.width
+                width: listView.width - 30
                 elide: Text.ElideRight
+                color: "ghostwhite"
+                visible: myPositionSource.position.coordinate.latitude && myPositionSource.position.coordinate.longitude
+            }
+
+            Label {
+                id: theaterAddressLabel
+                text: theaterAddress + ", "+ theaterCity
+                font.weight: Font.Light
+                font.pixelSize: 22
+                width: listView.width - 30
+                elide: Text.ElideRight
+                color: "gold"
                 visible: text != ""
             }
         }
     }
 
     Image {
-        id: arrow
         source: "image://theme/icon-m-common-drilldown-arrow" + (theme.inverted ? "-inverse" : "")
         anchors.right: parent.right;
         anchors.verticalCenter: parent.verticalCenter
@@ -142,16 +112,18 @@ Item {
         id: mouseArea
         anchors.fill: background
         onClicked: {
-            var component = Qt.createComponent("PagePerson.qml")
-            if (component.status == Component.Ready) {
-                //console.log("Selected person: ", personCode);
-                pageStack.push(component, {
-                   personCode: personCode,
-                   name: personName
-                 });
-            } else {
-                console.log("Error loading component:", component.errorString());
-             }
+           enabled = false
+           var component = Qt.createComponent("PageTheater.qml")
+           if (component.status == Component.Ready) {
+               pageStack.push(component, {
+                    theaterCode: theaterCode,
+                    theaterName: theaterName
+                });
+               enabled = true
+           } else {
+               console.log("Error loading component:", component.errorString());
+               enabled = true
+            }
          }
     }
 }

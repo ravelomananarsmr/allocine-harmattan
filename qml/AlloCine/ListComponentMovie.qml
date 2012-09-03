@@ -1,6 +1,34 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
+/*************************************************************************************
+                AlloCine application for Harmattan
+         This application is released under BSD-2 license
+                   -------------------------
+
+Copyright (c) 2012, Antoine Vacher, Sahobimaholy Ravelomanana
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+  * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+  * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation and/or
+    other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*************************************************************************************/
+
 import QtQuick 1.1
-import com.nokia.meego 1.0
+import com.nokia.meego 1.1
 import "DateTools.js" as DateTools
 
 Item {
@@ -21,8 +49,8 @@ Item {
         id: background
         anchors.fill: completeRow
         // Fill page borders
-        anchors.leftMargin: -listPage.anchors.leftMargin
-        anchors.rightMargin: -listPage.anchors.rightMargin
+        anchors.leftMargin: -parent.anchors.leftMargin
+        anchors.rightMargin: -parent.anchors.rightMargin
         visible: mouseArea.pressed
         color: "#202020"
     }
@@ -145,9 +173,9 @@ Item {
         id: mouseArea
         anchors.fill: background
         onClicked: {
-            var component = Qt.createComponent("PageFilm.qml")
+            var component = Qt.createComponent("PageMovie.qml")
             if (component.status == Component.Ready) {
-                console.log("Selected movie: ", movieCode);
+                //console.log("Selected movie: ", movieCode);
                 pageStack.push(component, {
                     mCode: movieCode,
                     title: movieTitle ? movieTitle : movieOriginalTitle
