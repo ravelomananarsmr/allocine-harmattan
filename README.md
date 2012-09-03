@@ -20,7 +20,7 @@ Functionnalities included:
 * Filmography of a person
 * Look for a person
 * Share a movie or a person (via sms, twitter, email, ...)
-* Find a showtime for a given movie
+* Find a showtime for a given movie (not yet implemented)
 * Look for incoming movies
 
 license
