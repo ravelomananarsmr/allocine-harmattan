@@ -31,19 +31,61 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 
 XmlListModel {
+    id:root
     property string movieQuery
     property string source: movieQuery ? "http://api.allocine.fr/rest/v3/search?partner="+partner+"&count=50&filter=movie&page=1&format=xml&q=" + movieQuery : ""
-
-    onSourceChanged: {
+    property bool loading:false
+    property bool error:false
+    function callAPI(){
+        error=false
         console.log(source)
         var file = new XMLHttpRequest();
         file.onreadystatechange = function() {
-            if (file.readyState == XMLHttpRequest.DONE) {
-                xml = file.responseText
+            if (file.readyState === XMLHttpRequest.DONE) {
+                if(file.status === 200)
+                    root.xml = file.responseText
+                else
+                {
+                    root.error=true;
+                    root.loading=false
+                }
+                console.debug(file.status)
+                console.debug("XMLHttpRequest.DONE")
             }
+            if (file.readyState === XMLHttpRequest.LOADING) {
+                root.loading=true
+                console.debug("XMLHttpRequest.LOADING")
+            }
+            if (file.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
+                root.loading=true
+                console.debug("XMLHttpRequest.HEADERS_RECEIVED")
+            }
+            if (file.readyState === XMLHttpRequest.UNSENT) {
+                root.loading=true
+                console.debug("XMLHttpRequest.UNSENT")
+            }
+            if (file.readyState === XMLHttpRequest.OPENED) {
+                root.loading=true
+                console.debug("XMLHttpRequest.OPENED")
+            }
+            console.debug(file.readyState)
+
+
         }
         file.open("GET", source);
         file.send();
+    }
+    onSourceChanged: {
+        console.log(source)
+        callAPI()
+    }
+    onStatusChanged: {
+        if (status == XmlListModel.Error || status == XmlListModel.Ready)
+        {
+            loading=false
+            console.debug("XmlListModel.Ready")
+            console.debug(status)
+        }
     }
 
     query: "/feed/movie"
@@ -58,9 +100,6 @@ XmlListModel {
     XmlRole { name: "actors"; query: "castingShort/actors/string()" }
     XmlRole { name: "code"; query: "@code/string()" }
 
-    onStatusChanged: {
-        if (status == XmlListModel.Error) {
-            banner.show(windowTitleBar.y,"Erreur:\nImpossible de charger la liste des films")
-        }
-    }
+
+
 }

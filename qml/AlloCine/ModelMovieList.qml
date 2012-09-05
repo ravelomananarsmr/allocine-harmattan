@@ -31,10 +31,62 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 
 XmlListModel {
-
+id:root
     property string filter: "nowshowing"
     property string order: "datedesc"
+    property bool loading:false
+    property bool error:false
+    function callAPI(){
+        error=false
+        console.log(source)
+        var file = new XMLHttpRequest();
+        file.onreadystatechange = function() {
+            if (file.readyState === XMLHttpRequest.DONE) {
+                if(file.status === 200)
+                    root.xml = file.responseText
+                else
+                {
+                    root.error=true;
+                    root.loading=false
+                }
+                console.debug(file.status)
+                console.debug("XMLHttpRequest.DONE")
+            }
+            if (file.readyState === XMLHttpRequest.LOADING) {
+                root.loading=true
+                console.debug("XMLHttpRequest.LOADING")
+            }
+            if (file.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
+                root.loading=true
+                console.debug("XMLHttpRequest.HEADERS_RECEIVED")
+            }
+            if (file.readyState === XMLHttpRequest.UNSENT) {
+                root.loading=true
+                console.debug("XMLHttpRequest.UNSENT")
+            }
+            if (file.readyState === XMLHttpRequest.OPENED) {
+                root.loading=true
+                console.debug("XMLHttpRequest.OPENED")
+            }
+            console.debug(file.readyState)
 
+
+        }
+        file.open("GET", source);
+        file.send();
+    }
+    onSourceChanged: {
+        console.log(source)
+        callAPI()
+    }
+    onStatusChanged: {
+        if (status == XmlListModel.Error || status == XmlListModel.Ready)
+        {
+            loading=false
+            console.debug("XmlListModel.Ready")
+            console.debug(status)
+        }
+    }
     source: "http://api.allocine.fr/rest/v3/movielist?partner="+partner+"&count=100&filter="+filter+"&page=1&order="+order+"&format=xml&profile=small"
     query: "/feed/movie"
     namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
@@ -52,6 +104,5 @@ XmlListModel {
     XmlRole { name: "actors"; query: "castingShort/actors/string()" }
     XmlRole { name: "code"; query: "@code/string()" }
 
-    onSourceChanged: console.log(source)
 
 }

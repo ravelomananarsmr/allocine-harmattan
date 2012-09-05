@@ -51,9 +51,11 @@ PageStackWindow {
     property int fontSizeLarge: fontSizeSmall * 1.5
     property int fontSizeMedium: fontSizeSmall * 1.25
     property int fontSizeSmall: dummyLabel.font.pointSize
+    property int windowTitleHeight: 70
 
     InfoBanner{
         id:banner
+        y:windowTitleHeight
     }
     showStatusBar: rootWindow.inPortrait
 
@@ -85,18 +87,7 @@ PageStackWindow {
     }
 
     //screeningDateModel
-    Component{
-        id: screeningDateModel
-        XmlListModel {
-            property string theaterCode
-            property string movieCode
-            property string versionCode
-            property string screenFormatCode
-            query: "//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\"]/movieShowtimesList/movieShowtimes[onShow/movie/@code/string()='"+movieCode+"'and version/@code/string()='"+versionCode+"' and screenFormat/@code/string()='"+screenFormatCode+"']/screenings/scr"
-            namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
-            XmlRole { name: "date"; query: '@d/string()' }
-        }
-    }
+
 
     //screeningTimeModel
     Component{
@@ -110,6 +101,12 @@ PageStackWindow {
             query: "//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\"]/movieShowtimesList/movieShowtimes[onShow/movie/@code/string()='"+movieCode+"' and version/@code/string()='"+versionCode+"' and screenFormat/@code/string()='"+screenFormatCode+"']/screenings/scr[@d=\""+screeningDate+"\"]/t"
             namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
             XmlRole { name: "time"; query: 'string()' }
+            Component.onCompleted:
+            {
+                if(screenFormatCode=="")
+                    query="//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\"]/movieShowtimesList/movieShowtimes[onShow/movie/@code/string()='"+movieCode+"' and version/@code/string()='"+versionCode+"' ]/screenings/scr[@d=\""+screeningDate+"\"]/t"
+                console.debug("theaterCode="+theaterCode+" movieCode="+movieCode+ " versionCode="+versionCode+ " screenFormatCode="+screenFormatCode)
+            }
         }
     }
 

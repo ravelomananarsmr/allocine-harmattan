@@ -48,7 +48,7 @@ Page {
 
     LoadingOverlay {
         id: searchFilmsLoadingOverlay
-        visible: !(modelSearchMovies.status == XmlListModel.Ready) && !(modelSearchMovies.status == XmlListModel.Error)
+        visible: modelSearchMovies.loading
     }
 
     ModelSearchMovies {
@@ -60,22 +60,21 @@ Page {
                     banner.show()
                 }
             }
-            if (status == XmlListModel.Error) {
-                banner.text = "Impossible de charger la liste des films"
-                banner.show()
-                moviesListView.visible = false
-                itemRetry.visible = true
-            } else {
-                itemRetry.visible = false
+        }
+        onErrorChanged: {
+            if(error)
+            {
+                banner.text = "Erreur réseau"
+            banner.show()
             }
         }
     }
 
-    ItemRetry{
-        id: itemRetry
-        visible: false
-        onClicked: modelSearchMovies.reload()
-    }
+        ItemRetry{
+            id: itemRetry
+            visible: modelSearchMovies.error || modelSearchMovies.status=== XmlListModel.Error
+            onClicked: modelSearchMovies.callAPI()
+        }
 
     // moviesView
     ListView {
@@ -86,7 +85,7 @@ Page {
         anchors.bottom: parent.bottom
         cacheBuffer: 3000
 
-        visible: moviesListView.model.status == XmlListModel.Ready
+        visible: !searchFilmsLoadingOverlay.visible && !itemRetry.visible
 
         model: modelSearchMovies
 

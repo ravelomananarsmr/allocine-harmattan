@@ -48,7 +48,7 @@ Page {
 
     LoadingOverlay {
         id: pageIncomingFilmsLoadingOverlay
-        visible: !(modelComingSoonMovies.status == XmlListModel.Ready) && !(modelComingSoonMovies.status == XmlListModel.Error)
+        visible: modelComingSoonMovies.loading
         loadingText: "Recherche des films à venir"
     }
 
@@ -58,23 +58,29 @@ Page {
         order: "dateasc"
 
         onStatusChanged: {
-            if (status == XmlListModel.Error) {
-                banner.text = "Impossible de charger la liste des films"
-                banner.show()
-                moviesListView.visible = false
-                itemRetry.visible = true
-            } else {
-                itemRetry.visible = false
+
+            if (status === XmlListModel.Ready){
+                if (count == 0 && movieQuery){
+                    banner.text= "Pas de film trouvé"
+                    banner.show()
+                }
             }
         }
+        onErrorChanged: {
+            if(error)
+            {
+                banner.text = "Erreur réseau"
+            banner.show()
+            }
+        }
+
     }
 
     ItemRetry{
         id: itemRetry
-        visible: false
-        onClicked: modelComingSoonMovies.reload()
+        visible: modelComingSoonMovies.error || modelComingSoonMovies.status=== XmlListModel.Error
+        onClicked: modelComingSoonMovies.callAPI()
     }
-
     // moviesView
     ListView {
         id: moviesListView
@@ -83,7 +89,7 @@ Page {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         cacheBuffer: 3000
-        visible: !pageIncomingFilmsLoadingOverlay.visible
+        visible: !pageIncomingFilmsLoadingOverlay.visible && !itemRetry.visible
 
         model: modelComingSoonMovies
         header: Item {

@@ -57,22 +57,27 @@ Page {
         filter: "nowshowing"
 
         onStatusChanged: {
-            if (status == XmlListModel.Error) {
-                banner.text = "Impossible de charger la liste des films"
-                banner.show()
-                moviesListView.visible = false
-                itemRetry.visible = true
-            } else {
-                itemRetry.visible = false
+            if (status == XmlListModel.Ready){
+                if (count == 0 && movieQuery){
+                    banner.text= "Pas de film trouvé"
+                    banner.show()
+                }
+            }
+        }
+        onErrorChanged: {
+            if(error)
+            {
+                banner.text = "Erreur réseau"
+            banner.show()
             }
         }
     }
 
     ItemRetry{
         id: itemRetry
-        visible: false
-        onClicked: modelCurrentMovies.reload()
-    }
+        visible: modelCurrentMovies.error || modelCurrentMovies.status=== XmlListModel.Error
+        onClicked: modelCurrentMovies.callAPI()
+           }
 
     // moviesListView
     ListView {
@@ -82,7 +87,7 @@ Page {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         cacheBuffer: 3000
-        visible: modelCurrentMovies.status == XmlListModel.Ready
+        visible: !pageCurrentFilmsLoadingOverlay.visible && !itemRetry.visible
 
         model: modelCurrentMovies
         header: Item {

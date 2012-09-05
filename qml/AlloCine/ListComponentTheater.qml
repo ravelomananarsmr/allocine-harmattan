@@ -40,6 +40,7 @@ Item {
     property string theaterAddress
     property string theaterCity
 
+
     id: listItem
     height: 100
     width: parent.width
@@ -76,17 +77,25 @@ Item {
                 id: theaterCoordinate
                 latitude: tlatitude
                 longitude: tlongitude
+                onLatitudeChanged:  {
+                            theaterDistanceLabel.update()
+                    console.debug("tlatitude " +tlatitude)
+                }
+                onLongitudeChanged: theaterDistanceLabel.update()
             }
 
             Label {
                 id: theaterDistanceLabel
-                text: "A " + Helpers.formatdistance(theaterCoordinate.distanceTo(myPositionSource.position.coordinate)) + " de moi"
+                text: ""
                 font.weight: Font.Light
                 font.pixelSize: 22
                 width: listView.width - 30
                 elide: Text.ElideRight
                 color: "ghostwhite"
                 visible: myPositionSource.position.coordinate.latitude && myPositionSource.position.coordinate.longitude
+                function update(){
+                    text="A " + Helpers.formatdistance(theaterCoordinate.distanceTo(myPositionSource.position.coordinate)) + " de moi"
+                }
             }
 
             Label {

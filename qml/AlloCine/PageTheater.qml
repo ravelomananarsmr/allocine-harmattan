@@ -40,8 +40,8 @@ Page {
     property string theaterCode
     property date showDate
 
-    property variant theaterLatitude: 0
-    property variant theaterLongitude: 0
+    property real theaterLatitude: 0
+    property real theaterLongitude: 0
     property string theaterName
     property string theaterAddress
     property string theaterPostalCode
@@ -94,7 +94,6 @@ Page {
     WindowTitle {
         id: windowTitleBar
         windowTitle: theaterName ? theaterName : "Cinéma"
-        busy: true
     }
 
 
@@ -127,10 +126,24 @@ Page {
 
                 width: pageTheater.width
 
-                Component.onCompleted: {
-                    //console.debug(code +" - "+ mCode)
-                    screening.model=screeningDateModel.createObject(screening,{theaterCode:theaterCode,movieCode:mCode, xml:theaterMovies.model.xml, versionCode:versionCode, screenFormatCode:screenFormatCode})
+                ModelScreeningDate{
+                    id:screeningDateModel
+                    theaterCode:pageTheater.theaterCode
+                    movieCode:model.mCode
+                    xml:(extender.extended?theaterMovies.model.xml:"")
+                    versionCode:model.versionCode
+                    screenFormatCode:model.screenFormatCode
+                    onCountChanged: console.debug(count)
+                    onStatusChanged: if(status===XmlListModel.Ready)
+                                         windowTitleBar.busy=false
+                                     else
+                                         windowTitleBar.busy=true
                 }
+
+                //                Component.onCompleted: {
+                //                    //console.debug(code +" - "+ mCode)
+                //                    screening.model=screeningDateModel.createObject(screening,{theaterCode:theaterCode,movieCode:mCode, xml:theaterMovies.model.xml, versionCode:versionCode, screenFormatCode:screenFormatCode})
+                //                }
 
                 ListComponentMovie {
                     movieActors: model.actors
@@ -183,6 +196,8 @@ Page {
                 //screening
                 Repeater{
                     id:screening
+                    visible: status===XmlListModel.Ready
+                    model:screeningDateModel
                     Row{
                         height: dateLabel.height
                         width : pageTheater.width
@@ -212,7 +227,8 @@ Page {
                                 orientation: Qt.Horizontal
                                 anchors{left:dateLabel.right;right: parent.right; rightMargin:20}
                                 id:screeningTime
-                                delegate:Component{Row {
+                                delegate:Component{
+                                    Row {
 
                                         Label{
                                             text: "   "+time
@@ -225,10 +241,13 @@ Page {
                             }
                         }
                     }
+
+
                 }
 
                 ItemExtender {
                     id: extender
+
                 }
 
             }

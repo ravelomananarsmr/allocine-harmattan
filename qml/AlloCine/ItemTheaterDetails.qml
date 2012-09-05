@@ -48,6 +48,8 @@ Item {
         id: theaterCoordinate
         latitude: theaterLatitude
         longitude: theaterLongitude
+        onLatitudeChanged: distanceLabel.update()
+        onLongitudeChanged: distanceLabel.update()
     }
 
     Row {
@@ -113,9 +115,12 @@ Item {
             }
             Label {
                 id: distanceLabel
-                text: (myPositionSource.position.coordinate.latitude && myPositionSource.position.coordinate.longitude) ? Helpers.formatdistance(theaterCoordinate.distanceTo(myPositionSource.position.coordinate)) + " de moi" : "Calcul de la distance..."
+                text: ""
                 color: "gold"
                 visible: myPositionSource.position.coordinate.latitude && myPositionSource.position.coordinate.longitude
+                function update(){
+                    text=(myPositionSource.position.coordinate.latitude!==0 && myPositionSource.position.coordinate.longitude!==0) ? Helpers.formatdistance(theaterCoordinate.distanceTo(myPositionSource.position.coordinate)) + " de moi" : "Calcul de la distance..."
+                }
             }
 
             Label {

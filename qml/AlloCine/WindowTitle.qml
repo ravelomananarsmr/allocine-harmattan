@@ -34,7 +34,7 @@ Item {
     id: windowTitleBar
     anchors.left: parent.left
     anchors.right: parent.right
-    height: 70
+    height: windowTitleHeight
     z: 1000
     property string windowTitle: "AlloCine"
     property string windowTitleBackup: "AlloCine"
