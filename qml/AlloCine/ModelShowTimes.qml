@@ -71,6 +71,7 @@ XmlListModel {
     XmlRole { name: "screenFormatCode"; query: "screenFormat/@code/string()" }
     XmlRole { name: "versionCode"; query: "version/@code/string()" }
 
+
     onStatusChanged: {
         if (status == XmlListModel.Error) {
             banner.show(windowTitleBar.y,"Erreur:\nImpossible de charger la liste des séances")

@@ -39,6 +39,7 @@ Page {
 
     property string theaterCode
     property date showDate
+    property string linkWeb
 
     property real theaterLatitude: 0
     property real theaterLongitude: 0
@@ -89,6 +90,20 @@ Page {
     ToolBarLayout {
         id: buttonTools
         ToolIcon { iconId: "toolbar-back"; onClicked: { myPositionSource.stop(); myMenu.close(); pageStack.pop(); }  }
+        ToolIcon {
+            iconSource: enabled ? "image://theme/icon-m-toolbar-share-white" : "image://theme/icon-m-toolbar-share-dimmed-white"
+            onClicked: {
+                console.log("Sharing " + linkWeb);
+                shareString.title=theaterName
+                shareString.description="Cinéma sur AlloCiné"
+                shareString.mimeType="text/x-url"
+                shareString.text=linkWeb
+                shareString.share();
+            }
+            enabled: linkWeb
+        }
+        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); enabled: linkWeb}
+
     }
 
     WindowTitle {
@@ -290,5 +305,18 @@ Page {
             }
         }
 
+    }
+
+    Menu {
+        id: myMenu
+
+        MenuLayout {
+            MenuItem { text: "Ouvrir dans le navigateur";
+                onClicked: {
+                    Qt.openUrlExternally(linkWeb)
+                    console.log("Opening URL: " + linkWeb)
+                }
+            }
+        }
     }
 }

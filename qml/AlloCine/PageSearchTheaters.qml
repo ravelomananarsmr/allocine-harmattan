@@ -116,6 +116,7 @@ Page {
             tlongitude: model.tlongitude
             theaterAddress: model.address
             theaterCity: model.city
+            linkWeb: model.linkWeb
         }
     }
 

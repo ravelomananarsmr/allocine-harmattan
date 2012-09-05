@@ -38,7 +38,6 @@ Page {
 
     function searchPersons(text) {
         modelSearchPersons.personQuery = text;
-        modelSearchPersons.reload();
     }
 
     WindowTitle {
@@ -48,7 +47,7 @@ Page {
 
     LoadingOverlay {
         id: searchPersonsLoadingOverlay
-        visible: modelSearchPersons.status == XmlListModel.Loading
+        visible: modelSearchPersons.loading
     }
 
     ModelSearchPersons {
@@ -56,9 +55,15 @@ Page {
         onStatusChanged: {
             if (status == XmlListModel.Ready){
                 if (count == 0 && xml){
-                    banner.show(windowTitleBar.y,"Pas de personne trouvée")
-                    console.debug("No result")
+                    banner.text= "Pas de profil trouvé"
+                    banner.show()
                 }
+            }
+        }
+        onErrorChanged: {
+            if(error){
+                banner.text = "Erreur réseau"
+                banner.show()
             }
         }
     }
@@ -73,7 +78,7 @@ Page {
         //anchors.topMargin: 16
         cacheBuffer: 3000
 
-        visible: personsListView.model.status == XmlListModel.Ready
+        visible: !searchPersonsLoadingOverlay.visible && !itemRetry.visible
 
         model: modelSearchPersons
 
@@ -91,6 +96,12 @@ Page {
             personName: model.name
             personPicture: model.picture
         }
+    }
+
+    ItemRetry{
+        id: itemRetry
+        visible: modelSearchPersons.error || modelSearchPersons.status=== XmlListModel.Error
+        onClicked: modelSearchPersons.callAPI()
     }
 
     ScrollDecorator {

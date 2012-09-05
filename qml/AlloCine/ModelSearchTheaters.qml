@@ -67,6 +67,7 @@ XmlListModel {
     XmlRole { name: "tlatitude"; query: "geoloc/@lat/number()" }
     XmlRole { name: "tlongitude"; query: "geoloc/@long/number()" }
     XmlRole { name: "code"; query: "@code/string()" }
+    XmlRole { name: "linkWeb"; query: "linkList/link[@rel='aco:web']/@href/string()"}
 
     onSearchLatChanged: {
         if (searchLat && searchLong)

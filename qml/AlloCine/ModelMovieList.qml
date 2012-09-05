@@ -31,7 +31,7 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 
 XmlListModel {
-id:root
+    id:root
     property string filter: "nowshowing"
     property string order: "datedesc"
     property bool loading:false

@@ -66,6 +66,7 @@ Page {
 
     LoadingOverlay {
         id: pagePictureLoadingOverlay
+        visible: pictureImage.status === Image.Loading
     }
 
     Flickable {

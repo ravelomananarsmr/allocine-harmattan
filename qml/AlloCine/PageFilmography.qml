@@ -49,12 +49,24 @@ Page {
 
     LoadingOverlay {
         id: castingOverlay
-        visible: modelFilmography.status == XmlListModel.Loading
+        visible: modelFilmography.loading
     }
 
     ModelFilmography {
         id: modelFilmography
         personCode: code
+        onErrorChanged: {
+            if(error){
+                banner.text = "Erreur réseau"
+                banner.show()
+            }
+        }
+    }
+
+    ItemRetry{
+        id: itemRetry
+        visible: modelFilmography.error || modelFilmography.status=== XmlListModel.Error
+        onClicked: modelFilmography.callAPI()
     }
 
     ListView {
@@ -64,6 +76,7 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
         model: modelFilmography
+        visible: !castingOverlay.visible && !itemRetry.visible
         delegate: ListComponentMovieParticipation {
             movieCode: model.movieCode
             movieOriginalTitle: model.movieOriginalTitle

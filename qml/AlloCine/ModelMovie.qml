@@ -42,7 +42,6 @@ XmlListModel {
         file.onreadystatechange = function() {
             if (file.readyState == XMLHttpRequest.DONE) {
                 xml = file.responseText
-
             }
         }
         file.open("GET", source);

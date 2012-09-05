@@ -62,19 +62,18 @@ Page {
             }
         }
         onErrorChanged: {
-            if(error)
-            {
+            if(error){
                 banner.text = "Erreur réseau"
-            banner.show()
+                banner.show()
             }
         }
     }
 
-        ItemRetry{
-            id: itemRetry
-            visible: modelSearchMovies.error || modelSearchMovies.status=== XmlListModel.Error
-            onClicked: modelSearchMovies.callAPI()
-        }
+    ItemRetry{
+        id: itemRetry
+        visible: modelSearchMovies.error || modelSearchMovies.status=== XmlListModel.Error
+        onClicked: modelSearchMovies.callAPI()
+    }
 
     // moviesView
     ListView {

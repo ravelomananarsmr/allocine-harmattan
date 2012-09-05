@@ -48,6 +48,12 @@ Page {
                 modelNationality.xml = xml
             }
         }
+        onErrorChanged: {
+            if(error){
+                banner.text = "Erreur réseau"
+                banner.show()
+            }
+        }
     }
 
     ModelNationality {
@@ -83,7 +89,13 @@ Page {
     LoadingOverlay {
         id: pagePersonLoadingOverlay
         loadingText: "Chargement du profil"
-        visible: modelPerson.xml == "" || !(posterImage.status == Image.Ready && modelPerson.status == XmlListModel.Ready && modelNationality.status == XmlListModel.Ready)
+        visible: modelPerson.loading || modelPerson.status=== XmlListModel.Loading
+    }
+
+    ItemRetry{
+        id: itemRetry
+        visible: modelPerson.error || modelPerson.status=== XmlListModel.Error
+        onClicked: modelPerson.callAPI()
     }
 
     ListView {
@@ -93,7 +105,7 @@ Page {
         anchors.margins: pageMargin
         anchors.fill: parent
         model: modelPerson
-        visible: !pagePersonLoadingOverlay.visible
+        visible: !pagePersonLoadingOverlay.visible && !itemRetry.visible
 
         delegate: Column {
             width: parent.width

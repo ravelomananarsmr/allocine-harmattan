@@ -39,6 +39,7 @@ Item {
     property real tlongitude: 0
     property string theaterAddress
     property string theaterCity
+    property string linkWeb
 
 
     id: listItem
@@ -126,7 +127,8 @@ Item {
            if (component.status == Component.Ready) {
                pageStack.push(component, {
                     theaterCode: theaterCode,
-                    theaterName: theaterName
+                    theaterName: theaterName,
+                    linkWeb: linkWeb
                 });
                enabled = true
            } else {

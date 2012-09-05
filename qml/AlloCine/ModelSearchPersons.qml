@@ -31,23 +31,64 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 
 XmlListModel {
-
+    id:root
     property string personQuery
-    property string source: personQuery ? "http://api.allocine.fr/rest/v3/search?partner="+partner+"&count=50&filter=person&page=1&format=xml&q=" + personQuery : ""
 
-    onSourceChanged: {
+    property bool loading:false
+    property bool error:false
+    function callAPI(){
+        error=false
         console.log(source)
         var file = new XMLHttpRequest();
         file.onreadystatechange = function() {
-            if (file.readyState == XMLHttpRequest.DONE) {
-                xml = file.responseText
-
+            if (file.readyState === XMLHttpRequest.DONE) {
+                if(file.status === 200)
+                    root.xml = file.responseText
+                else
+                {
+                    root.error=true;
+                    root.loading=false
+                }
+                console.debug(file.status)
+                console.debug("XMLHttpRequest.DONE")
             }
+            if (file.readyState === XMLHttpRequest.LOADING) {
+                root.loading=true
+                console.debug("XMLHttpRequest.LOADING")
+            }
+            if (file.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
+                root.loading=true
+                console.debug("XMLHttpRequest.HEADERS_RECEIVED")
+            }
+            if (file.readyState === XMLHttpRequest.UNSENT) {
+                root.loading=true
+                console.debug("XMLHttpRequest.UNSENT")
+            }
+            if (file.readyState === XMLHttpRequest.OPENED) {
+                root.loading=true
+                console.debug("XMLHttpRequest.OPENED")
+            }
+            console.debug(file.readyState)
+
+
         }
         file.open("GET", source);
         file.send();
     }
+    onSourceChanged: {
+        console.log(source)
+        callAPI()
+    }
+    onStatusChanged: {
+        if (status == XmlListModel.Error || status == XmlListModel.Ready)
+        {
+            loading=false
+            console.debug("XmlListModel.Ready")
+            console.debug(status)
+        }
+    }
 
+    property string source: personQuery ? "http://api.allocine.fr/rest/v3/search?partner="+partner+"&count=50&filter=person&page=1&format=xml&q=" + personQuery : ""
     query: "/feed/person"
     namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
 
@@ -58,9 +99,4 @@ XmlListModel {
     XmlRole { name: "picture"; query: "picture/@href/string()" }
     XmlRole { name: "code"; query: "@code/string()" }
 
-    onStatusChanged: {
-        if (status == XmlListModel.Error) {
-            banner.show(windowTitleBar.y,"Erreur:\nImpossible de charger la liste des personnes")
-        }
-    }
 }
