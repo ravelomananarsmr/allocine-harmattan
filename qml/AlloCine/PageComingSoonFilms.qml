@@ -48,7 +48,7 @@ Page {
 
     LoadingOverlay {
         id: pageIncomingFilmsLoadingOverlay
-        visible: !(modelComingSoonMovies.status == XmlListModel.Ready)
+        visible: !(modelComingSoonMovies.status == XmlListModel.Ready) && !(modelComingSoonMovies.status == XmlListModel.Error)
         loadingText: "Recherche des films à venir"
     }
 
@@ -56,6 +56,23 @@ Page {
         id: modelComingSoonMovies
         filter: "comingsoon"
         order: "dateasc"
+
+        onStatusChanged: {
+            if (status == XmlListModel.Error) {
+                banner.text = "Impossible de charger la liste des films"
+                banner.show()
+                moviesListView.visible = false
+                itemRetry.visible = true
+            } else {
+                itemRetry.visible = false
+            }
+        }
+    }
+
+    ItemRetry{
+        id: itemRetry
+        visible: false
+        onClicked: modelComingSoonMovies.reload()
     }
 
     // moviesView

@@ -54,10 +54,4 @@ XmlListModel {
 
     onSourceChanged: console.log(source)
 
-    onStatusChanged: {
-        if (status == XmlListModel.Error) {
-            banner.show(windowTitleBar.y,"Erreur:\nImpossible de charger la liste des films")
-        }
-    }
-
 }

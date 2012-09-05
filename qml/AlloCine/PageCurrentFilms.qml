@@ -48,16 +48,33 @@ Page {
 
     LoadingOverlay {
         id: pageCurrentFilmsLoadingOverlay
-        visible: !(modelCurrentMovies.status == XmlListModel.Ready)
+        visible: !(modelCurrentMovies.status == XmlListModel.Ready) && !(modelCurrentMovies.status == XmlListModel.Error)
         loadingText: "Recherche des films à l'affiche"
     }
 
     ModelMovieList {
         id: modelCurrentMovies
         filter: "nowshowing"
+
+        onStatusChanged: {
+            if (status == XmlListModel.Error) {
+                banner.text = "Impossible de charger la liste des films"
+                banner.show()
+                moviesListView.visible = false
+                itemRetry.visible = true
+            } else {
+                itemRetry.visible = false
+            }
+        }
     }
 
-    // moviesView
+    ItemRetry{
+        id: itemRetry
+        visible: false
+        onClicked: modelCurrentMovies.reload()
+    }
+
+    // moviesListView
     ListView {
         id: moviesListView
         anchors.top: windowTitleBar.bottom
@@ -65,7 +82,7 @@ Page {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         cacheBuffer: 3000
-        visible: !pageCurrentFilmsLoadingOverlay.visible
+        visible: modelCurrentMovies.status == XmlListModel.Ready
 
         model: modelCurrentMovies
         header: Item {

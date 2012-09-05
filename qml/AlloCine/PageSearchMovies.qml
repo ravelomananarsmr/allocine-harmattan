@@ -48,7 +48,7 @@ Page {
 
     LoadingOverlay {
         id: searchFilmsLoadingOverlay
-        visible: modelSearchMovies.status == XmlListModel.Loading
+        visible: !(modelSearchMovies.status == XmlListModel.Ready) && !(modelSearchMovies.status == XmlListModel.Error)
     }
 
     ModelSearchMovies {
@@ -56,11 +56,25 @@ Page {
         onStatusChanged: {
             if (status == XmlListModel.Ready){
                 if (count == 0 && movieQuery){
-                    banner.show(windowTitleBar.y,"Pas de film trouvé")
-                    console.debug("No result")
+                    banner.text= "Pas de film trouvé"
+                    banner.show()
                 }
             }
+            if (status == XmlListModel.Error) {
+                banner.text = "Impossible de charger la liste des films"
+                banner.show()
+                moviesListView.visible = false
+                itemRetry.visible = true
+            } else {
+                itemRetry.visible = false
+            }
         }
+    }
+
+    ItemRetry{
+        id: itemRetry
+        visible: false
+        onClicked: modelSearchMovies.reload()
     }
 
     // moviesView

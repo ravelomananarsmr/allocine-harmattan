@@ -85,10 +85,4 @@ XmlListModel {
     onSearchZipChanged: {
         searchQuery = "zip="+searchZip
     }
-
-    onStatusChanged: {
-        if (status == XmlListModel.Error) {
-            banner.show(windowTitleBar.y,"Erreur:\nImpossible de charger la liste des cinémas")
-        }
-    }
 }
