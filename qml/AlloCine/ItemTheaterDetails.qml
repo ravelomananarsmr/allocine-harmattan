@@ -78,7 +78,7 @@ Item {
                 id: meMarker
                 offset.x: -71/2
                 offset.y: -71
-                source: qrc:///images/pinpoint-m"
+                source: "qrc:///images/pinpoint-me"
                 coordinate: myPositionSource.position.coordinate
             }
 
