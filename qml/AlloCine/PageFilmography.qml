@@ -50,6 +50,7 @@ Page {
     LoadingOverlay {
         id: castingOverlay
         visible: modelFilmography.loading
+        loadingText: "Chargement de la filmographie"
     }
 
     ModelFilmography {

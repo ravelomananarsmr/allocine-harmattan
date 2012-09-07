@@ -116,7 +116,7 @@ Page {
 
                         Image {
                             id: noPosterImage
-                            source: "Images/empty.png"
+                            source: "qrc:///images/empty"
                             width: 100
                             fillMode: Image.PreserveAspectFit
                             anchors.centerIn: parent
@@ -125,7 +125,7 @@ Page {
 
                         Image {
                             id: posterImage
-                            source: (model.picture? model.picture: "Images/empty.png")
+                            source: (model.picture? model.picture: "qrc:///images/empty")
                             width: 100
                             fillMode: Image.PreserveAspectFit
                             anchors.centerIn: parent

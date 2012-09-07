@@ -57,7 +57,7 @@ Page {
             }
             enabled: movieLinkWeb
         }
-        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); enabled: movieLinkWeb}
+        ToolIcon { iconSource: enabled ? "image://theme/icon-m-toolbar-view-menu-white" : "image://theme/icon-m-toolbar-view-menu-dimmed" ; onClicked: myMenu.open(); enabled: movieLinkWeb}
     }
 
     WindowTitle {
@@ -132,7 +132,7 @@ Page {
                         onClicked: {
                             var component = Qt.createComponent("PagePicture.qml")
                             if (component.status == Component.Ready) {
-                                pageStack.push(component, {imageSource: model.poster? model.poster: "Images/empty.png", title: model.title});
+                                pageStack.push(component, {imageSource: model.poster? model.poster: "qrc:///images/empty", title: model.title});
                             } else {
                                 console.log("Error loading component:", component.errorString());
                             }

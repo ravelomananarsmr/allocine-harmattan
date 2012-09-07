@@ -76,7 +76,7 @@ Page {
             }
             enabled: personLinkWeb
         }
-        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); enabled: personLinkWeb}    }
+        ToolIcon { iconSource: enabled ? "image://theme/icon-m-toolbar-view-menu-white" : "image://theme/icon-m-toolbar-view-menu-dimmed" ; onClicked: myMenu.open(); enabled: personLinkWeb}    }
 
     WindowTitle {
         id: windowTitleBar
@@ -89,7 +89,7 @@ Page {
     LoadingOverlay {
         id: pagePersonLoadingOverlay
         loadingText: "Chargement du profil"
-        visible: modelPerson.loading || modelPerson.status=== XmlListModel.Loading
+        visible: modelPerson.xml == "" || !(posterImage.status == Image.Ready && modelPerson.status == XmlListModel.Ready)
     }
 
     ItemRetry{
@@ -129,7 +129,7 @@ Page {
                         onClicked: {
                             var component = Qt.createComponent("PagePicture.qml")
                             if (component.status == Component.Ready) {
-                                pageStack.push(component, {imageSource: model.picture? model.picture: "Images/empty.png", title: model.name});
+                                pageStack.push(component, {imageSource: model.picture? model.picture: "qrc:///images/empty", title: model.name});
                             } else {
                                 console.log("Error loading component:", component.errorString());
                             }

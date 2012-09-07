@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="main-logo">artwork/allocine.png</file>
+        <file alias="background">artwork/background.png</file>
+        <file alias="empty">artwork/empty.png</file>
+        <file alias="pinpoint-me">artwork/pinpoint-me.png</file>
+        <file alias="pinpoint-theater">artwork/pinpoint-theater.png</file>
+        <file alias="rating-indicator">artwork/ratingIndicator.svg</file>
+        <file alias="rating-indicator-selected">artwork/ratingIndicator-selected.svg</file>
+    </qresource>
+</RCC>

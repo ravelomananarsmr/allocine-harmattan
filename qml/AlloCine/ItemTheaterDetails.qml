@@ -70,7 +70,7 @@ Item {
                 id: theaterMarker
                 offset.x: -71/2
                 offset.y: -71
-                source: "Images/pinpoint-theater.png"
+                source: "qrc:///images/pinpoint-theater"
                 coordinate: theaterCoordinate
             }
 
@@ -78,7 +78,7 @@ Item {
                 id: meMarker
                 offset.x: -71/2
                 offset.y: -71
-                source: "Images/pinpoint-me.png"
+                source: qrc:///images/pinpoint-m"
                 coordinate: myPositionSource.position.coordinate
             }
 

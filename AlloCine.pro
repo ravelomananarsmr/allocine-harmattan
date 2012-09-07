@@ -46,7 +46,8 @@ OTHER_FILES += \
     qtc_packaging/debian_harmattan/compat \
     qtc_packaging/debian_harmattan/changelog
 
-RESOURCES +=
+RESOURCES += \
+    artwork.qrc
 CONFIG += shareuiinterface-maemo-meegotouch share-ui-plugin share-ui-common
 
 HEADERS +=     sharestring.h

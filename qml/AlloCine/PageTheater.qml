@@ -102,7 +102,7 @@ Page {
             }
             enabled: linkWeb
         }
-        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); enabled: linkWeb}
+        ToolIcon { iconSource: enabled ? "image://theme/icon-m-toolbar-view-menu-white" : "image://theme/icon-m-toolbar-view-menu-dimmed" ; onClicked: myMenu.open(); enabled: linkWeb}
 
     }
 

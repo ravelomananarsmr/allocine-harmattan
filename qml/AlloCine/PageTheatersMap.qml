@@ -158,7 +158,7 @@ Page {
             //! Icon to display the current position
             MapImage {
                 id: mapPlacer
-                source: "Images/pinpoint-me.png"
+                source: "qrc:///images/pinpoint-me"
                 coordinate: myPositionSource.position.coordinate
                 visible: myPositionSource.position.coordinate.latitude && myPositionSource.position.coordinate.longitude
 

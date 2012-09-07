@@ -38,7 +38,7 @@ MapImage {
     property variant theaterCode
     property variant theaterName
 
-    source: "Images/pinpoint-theater.png"
+    source: "qrc:///images/pinpoint-theater"
     coordinate: Coordinate{}
     /*!
          * We want that bottom middle edge of icon points to the location, so using offset parameter

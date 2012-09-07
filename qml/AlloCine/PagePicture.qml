@@ -55,7 +55,7 @@ Page {
             }
             enabled: imageSource
         }
-        ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
+        ToolIcon { iconSource: enabled ? "image://theme/icon-m-toolbar-view-menu-white" : "image://theme/icon-m-toolbar-view-menu-dimmed" ; onClicked: myMenu.open(); }
     }
 
     Rectangle {

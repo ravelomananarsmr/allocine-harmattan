@@ -62,8 +62,7 @@ PageStackWindow {
     Component.onCompleted: theme.inverted = true
 
     platformStyle: PageStackWindowStyle {
-        //background: 'Images/background.png'
-        background: 'image://theme/meegotouch-video-background'
+        background: 'qrc:///images/background'
         backgroundFillMode: Image.Stretch
     }
 

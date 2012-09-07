@@ -44,7 +44,7 @@ Item {
             Image {
                 width: sourceSize.width
                 height: sourceSize.height
-                source: (ratingValue*5/maximumValue>index ? "Images/ratingIndicator-selected.svg":"Images/ratingIndicator.svg")
+                source: (ratingValue*5/maximumValue>index ? "qrc:///images/rating-indicator-selected":"qrc:///images/rating-indicator")
                 fillMode: Image.PreserveAspectCrop
             }
         }

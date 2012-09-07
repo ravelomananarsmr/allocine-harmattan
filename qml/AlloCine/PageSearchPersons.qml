@@ -48,6 +48,7 @@ Page {
     LoadingOverlay {
         id: searchPersonsLoadingOverlay
         visible: modelSearchPersons.loading
+        loadingText: "Recherche de profils"
     }
 
     ModelSearchPersons {

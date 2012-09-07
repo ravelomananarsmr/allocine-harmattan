@@ -53,7 +53,7 @@ Item {
 
             Image {
                 id: posterImage
-                source: (url)? url : "Images/empty.png"
+                source: (url)? url : "qrc:///images/empty"
                 width: 150
                 fillMode: Image.PreserveAspectFit
                 anchors.centerIn: parent

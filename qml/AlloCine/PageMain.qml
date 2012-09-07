@@ -80,7 +80,7 @@ Page {
             width: pageMain.width * 0.9
             smooth: true
             fillMode: Image.PreserveAspectFit
-            source: "Images/allocine.png"
+            source: "qrc:///images/main-logo"
         }
 
         delegate:  Item {

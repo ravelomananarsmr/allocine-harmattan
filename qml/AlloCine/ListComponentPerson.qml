@@ -77,7 +77,7 @@ Item {
 
                 Image {
                     id: noPosterImage
-                    source: "Images/empty.png"
+                    source: "qrc:///images/empty"
                     width: 100
                     fillMode: Image.PreserveAspectFit
                     anchors.centerIn: parent
@@ -86,7 +86,7 @@ Item {
 
                 Image {
                     id: posterImage
-                    source: (personPicture? personPicture: "Images/empty.png")
+                    source: (personPicture? personPicture: "qrc:///images/empty")
                     width: 100
                     fillMode: Image.PreserveAspectFit
                     anchors.centerIn: parent
