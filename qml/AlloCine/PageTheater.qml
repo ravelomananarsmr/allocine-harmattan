@@ -67,23 +67,42 @@ Page {
                 modelShowTimes.theaterCode = theaterCode
             }
         }
+        onErrorChanged: {
+            if(error){
+                banner.text = "Erreur réseau"
+                banner.show()
+            }
+        }
+    }
+
+    ItemRetry{
+        id: itemRetry
+        visible: modelSearchTheaters.error || modelSearchTheaters.status=== XmlListModel.Error
+        onClicked: modelSearchTheaters.callAPI()
     }
 
     ModelShowTimes {
         id: modelShowTimes
         theaterCode: theaterCode
         showDate: showDate
+
+        onErrorChanged: {
+            if(error){
+                banner.text = "Erreur réseau"
+                banner.show()
+            }
+        }
     }
 
     LoadingOverlay {
         id: pageTheaterLoadingScreeningsOverlay
-        visible: !modelShowTimes.status == XmlListModel.Ready
+        visible: !pageTheaterLoadingTheaterOverlay.visible && modelShowTimes.loading
         loadingText: "Chargement des séances"
     }
 
     LoadingOverlay {
         id: pageTheaterLoadingTheaterOverlay
-        visible: !modelSearchTheaters.status == XmlListModel.Ready
+        visible: modelSearchTheaters.loading
         loadingText: "Chargement du cinéma"
     }
 
@@ -133,7 +152,7 @@ Page {
 
         spacing: 10
         cacheBuffer: 3000
-        visible: !noShow.visible && !pageTheaterLoadingScreeningsOverlay.visible && !pageTheaterLoadingTheaterOverlay.visible
+        visible: !noShow.visible && !pageTheaterLoadingScreeningsOverlay.visible && !pageTheaterLoadingTheaterOverlay.visible && !itemRetry.visible
 
         delegate:Component{
 
@@ -272,7 +291,7 @@ Page {
     // noShow
     Item {
         id: noShow
-        visible: modelShowTimes.status == XmlListModel.Ready && modelSearchTheaters.status == XmlListModel.Ready && modelSearchTheaters.count > 0 && modelShowTimes.count == 0
+        visible: !pageTheaterLoadingScreeningsOverlay.visible && !pageTheaterLoadingTheaterOverlay.visible && modelShowTimes.count == 0
         anchors.top:windowTitleBar.bottom
         anchors.left: parent.left
         anchors.right: parent.right

@@ -72,7 +72,7 @@ Page {
     LoadingOverlay {
         id: theatersPageSearchTheaterLoadingOverlay
         loadingText: "Recherche de salles"
-        visible: modelSearchTheaters.status == XmlListModel.Loading
+        visible: modelSearchTheaters.loading
     }
 
     LoadingOverlay {
@@ -86,6 +86,19 @@ Page {
 
         searchLat: (myPositionSource.position.coordinate.latitude && positionRequested) ? myPositionSource.position.coordinate.latitude : ""
         searchLong: (myPositionSource.position.coordinate.longitude && positionRequested) ? myPositionSource.position.coordinate.longitude : ""
+
+        onErrorChanged: {
+            if(error){
+                banner.text = "Erreur réseau"
+                banner.show()
+            }
+        }
+    }
+
+    ItemRetry{
+        id: itemRetry
+        visible: modelSearchTheaters.error || modelSearchTheaters.status=== XmlListModel.Error
+        onClicked: modelSearchTheaters.callAPI()
     }
 
     // theaterListView
@@ -96,7 +109,7 @@ Page {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         model: modelSearchTheaters
-        visible: (!theatersPageLocateMeLoadingOverlay.visible && !theatersPageSearchTheaterLoadingOverlay.visible)
+        visible: !theatersPageSearchTheaterLoadingOverlay.visible && !theatersPageLocateMeLoadingOverlay.visible &&  !itemRetry.visible
         header: ListComponentSearchField {
             id: searchField
             placeholderText: "Ville ou code postal"

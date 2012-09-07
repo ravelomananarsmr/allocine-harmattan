@@ -84,12 +84,10 @@ Page {
         windowTitleBackup: "Illustre Inconnu"
     }
 
-
-
     LoadingOverlay {
         id: pagePersonLoadingOverlay
         loadingText: "Chargement du profil"
-        visible: modelPerson.xml == "" || !(posterImage.status == Image.Ready && modelPerson.status == XmlListModel.Ready)
+        visible: modelPerson.loading || !posterImage.status == Image.Ready
     }
 
     ItemRetry{
