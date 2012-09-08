@@ -48,7 +48,7 @@ Page {
     }
 
     LoadingOverlay {
-        id: castingOverlay
+        id: filmographyOverlay
         visible: modelFilmography.loading
         loadingText: "Chargement de la filmographie"
     }
@@ -66,8 +66,8 @@ Page {
 
     ItemRetry{
         id: itemRetry
-        visible: modelFilmography.error || modelFilmography.status=== XmlListModel.Error
-        onClicked: modelFilmography.callAPI()
+        visible: modelFilmography.error
+        onClicked: modelFilmography.api.call()
     }
 
     ListView {
@@ -76,8 +76,8 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        model: modelFilmography
-        visible: !castingOverlay.visible && !itemRetry.visible
+        model: modelFilmography.model
+        visible: !filmographyOverlay.visible && !itemRetry.visible
         delegate: ListComponentMovieParticipation {
             movieCode: model.movieCode
             movieOriginalTitle: model.movieOriginalTitle

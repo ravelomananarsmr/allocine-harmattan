@@ -30,24 +30,44 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import QtQuick 1.1
 import com.nokia.meego 1.1
 
-XmlListModel {
+Item {
+    property bool loading: api.loading || model.status === XmlListModel.Loading
+    property bool error: api.error || model.error === XmlListModel.Error
+
+    property alias api: api
+    property alias model: model
+
     property string mCode
 
-    source: mCode ? "http://api.allocine.fr/rest/v3/movie?partner="+partner+"&q=61282&format=xml&code="+mCode : ""
-    query: "/movie/casting/castMember"
-    namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
+    //onLoadingChanged: console.debug("ModelMovie loading=" + loading)
+    //onErrorChanged: console.debug("ModelMovie error=" + loading)
 
-    XmlRole { name: "personCode"; query: 'person/@code/string()' }
-    XmlRole { name: "name"; query: 'person/name/string()' }
-    XmlRole { name: "activity"; query: 'activity/string()' }
-    XmlRole { name: "picture"; query: 'picture/@href/string()' }
-    XmlRole { name: "role"; query: 'role/string()' }
+    APICaller {
+        id: api
+        source: mCode ? "http://api.allocine.fr/rest/v3/movie?partner="+partner+"&q=61282&format=xml&code="+mCode : ""
+        onResponseTextChanged: model.xml=responseText
+    }
 
-    onSourceChanged: console.log(source)
-
-    onStatusChanged: {
-        if (status == XmlListModel.Error) {
-            banner.show(windowTitleBar.y,"Erreur:\nImpossible de charger le casting")
+    XmlListModel {
+        id: model
+        onStatusChanged: {
+            if (status == XmlListModel.Error)
+                console.debug("XmlListModel.Ready")
+            if (status == XmlListModel.Null)
+                console.debug("XmlListModel.Null")
+            if (status == XmlListModel.Loading)
+                console.debug("XmlListModel.Loading")
+            if (status == XmlListModel.Ready)
+                console.debug("XmlListModel.Ready count=" + count + " source=" + api.source)
         }
+
+        query: "/movie/casting/castMember"
+        namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
+
+        XmlRole { name: "personCode"; query: 'person/@code/string()' }
+        XmlRole { name: "name"; query: 'person/name/string()' }
+        XmlRole { name: "activity"; query: 'activity/string()' }
+        XmlRole { name: "picture"; query: 'picture/@href/string()' }
+        XmlRole { name: "role"; query: 'role/string()' }
     }
 }

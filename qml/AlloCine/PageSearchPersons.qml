@@ -53,12 +53,10 @@ Page {
 
     ModelSearchPersons {
         id: modelSearchPersons
-        onStatusChanged: {
-            if (status == XmlListModel.Ready){
-                if (count == 0 && xml){
-                    banner.text= "Pas de profil trouvé"
-                    banner.show()
-                }
+        onLoadingChanged:{
+            if (!loading && model.count == 0 && model.xml){
+                banner.text= "Pas de film trouvé"
+                banner.show()
             }
         }
         onErrorChanged: {
@@ -81,7 +79,7 @@ Page {
 
         visible: !searchPersonsLoadingOverlay.visible && !itemRetry.visible
 
-        model: modelSearchPersons
+        model: modelSearchPersons.model
 
         header: ListComponentSearchField {
             id: searchField
@@ -101,8 +99,8 @@ Page {
 
     ItemRetry{
         id: itemRetry
-        visible: modelSearchPersons.error || modelSearchPersons.status=== XmlListModel.Error
-        onClicked: modelSearchPersons.callAPI()
+        visible: modelSearchPersons.error
+        onClicked: modelSearchPersons.api.call()
     }
 
     ScrollDecorator {
@@ -112,15 +110,5 @@ Page {
     ToolBarLayout {
         id: buttonTools
         ToolIcon { iconId: "toolbar-back"; onClicked: { /*myMenu.close();*/ pageStack.pop(); }  }
-        //ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
     }
-
-
-//    Menu {
-//        id: myMenu
-
-//        MenuLayout {
-//            MenuItem { text: "Test"; }
-//        }
-//    }
 }

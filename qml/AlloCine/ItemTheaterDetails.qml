@@ -90,8 +90,9 @@ Item {
                     if (component.status == Component.Ready) {
                         console.log("Opening Map centered on lat=" + theaterCoordinate.latitude + " and long = " + theaterCoordinate.longitude);
                         pageStack.push(component, {
-                             aroundMe: false,
-                             centerCoordinate: theaterCoordinate
+                             searchAroundMe: false,
+                             centerCoordinate: theaterCoordinate,
+                             theaterCoordinate: theaterCoordinate
                          });
                     } else {
                         console.log("Error loading component:", component.errorString());

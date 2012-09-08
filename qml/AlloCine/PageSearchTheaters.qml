@@ -56,6 +56,7 @@ Page {
                         modelSearchTheaters.searchLong = ""
                         modelSearchTheaters.searchLat = myPositionSource.position.coordinate.latitude
                         modelSearchTheaters.searchLong = myPositionSource.position.coordinate.longitude
+                        modelSearchTheaters.api.call()
                     }
                 }
             }
@@ -86,7 +87,12 @@ Page {
 
         searchLat: (myPositionSource.position.coordinate.latitude && positionRequested) ? myPositionSource.position.coordinate.latitude : ""
         searchLong: (myPositionSource.position.coordinate.longitude && positionRequested) ? myPositionSource.position.coordinate.longitude : ""
-
+        onLoadingChanged:{
+            if (!loading && model.count == 0 && model.xml){
+                banner.text= "Pas de cinéma trouvé"
+                banner.show()
+            }
+        }
         onErrorChanged: {
             if(error){
                 banner.text = "Erreur réseau"
@@ -97,8 +103,8 @@ Page {
 
     ItemRetry{
         id: itemRetry
-        visible: modelSearchTheaters.error || modelSearchTheaters.status=== XmlListModel.Error
-        onClicked: modelSearchTheaters.callAPI()
+        visible: modelSearchTheaters.error
+        onClicked: modelSearchTheaters.api.call()
     }
 
     // theaterListView
@@ -108,7 +114,7 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        model: modelSearchTheaters
+        model: modelSearchTheaters.model
         visible: !theatersPageSearchTheaterLoadingOverlay.visible && !theatersPageLocateMeLoadingOverlay.visible &&  !itemRetry.visible
         header: ListComponentSearchField {
             id: searchField
@@ -120,6 +126,7 @@ Page {
                 } else {
                     modelSearchTheaters.searchLocation = text
                 }
+                modelSearchTheaters.api.call()
             }
         }
         delegate: ListComponentTheater {

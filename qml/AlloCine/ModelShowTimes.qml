@@ -30,8 +30,13 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import QtQuick 1.1
 import com.nokia.meego 1.1
 
-XmlListModel {
-    id:root
+Item {
+    property bool loading: api.loading || model.status === XmlListModel.Loading
+    property bool error: api.error || model.error === XmlListModel.Error
+
+    property alias api: api
+    property alias model: model
+
     property string theaterCode
     property date showDate
     property string searchLat
@@ -40,78 +45,6 @@ XmlListModel {
     property string mCode
     property string searchZip
     property string searchLocation
-
-    property string showTimeQuery
-    property string source: showTimeQuery ? "http://api.allocine.fr/rest/v3/showtimelist?partner="+partner+"&format=xml&"+showTimeQuery+"&movie="+mCode : ""
-
-    property bool loading:false
-    property bool error:false
-    function callAPI(){
-        error=false
-        console.log(source)
-        var file = new XMLHttpRequest();
-        file.onreadystatechange = function() {
-            if (file.readyState === XMLHttpRequest.DONE) {
-                if(file.status === 200)
-                    root.xml = file.responseText
-                else
-                {
-                    root.error=true;
-                    root.loading=false
-                }
-                console.debug(file.status)
-                console.debug("XMLHttpRequest.DONE")
-            }
-            if (file.readyState === XMLHttpRequest.LOADING) {
-                root.loading=true
-                console.debug("XMLHttpRequest.LOADING")
-            }
-            if (file.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-                root.loading=true
-                console.debug("XMLHttpRequest.HEADERS_RECEIVED")
-            }
-            if (file.readyState === XMLHttpRequest.UNSENT) {
-                root.loading=true
-                console.debug("XMLHttpRequest.UNSENT")
-            }
-            if (file.readyState === XMLHttpRequest.OPENED) {
-                root.loading=true
-                console.debug("XMLHttpRequest.OPENED")
-            }
-            console.debug(file.readyState)
-
-
-        }
-        file.open("GET", source);
-        file.send();
-    }
-    onSourceChanged: {
-        console.log(source)
-        callAPI()
-    }
-    onStatusChanged: {
-        if (status == XmlListModel.Error || status == XmlListModel.Ready)
-        {
-            loading=false
-            console.debug("XmlListModel.Ready")
-            console.debug(status)
-        }
-    }
-
-    query: "//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\"]/movieShowtimesList/movieShowtimes"
-
-    namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
-    XmlRole { name: "title"; query: 'onShow/movie/title/string()' }
-    XmlRole { name: "mCode"; query: 'onShow/movie/@code/string()' }
-    XmlRole { name: "poster"; query: "onShow/movie/poster/@href/string()" }
-    XmlRole { name: "releaseDate"; query: "onShow/movie/release/releaseDate/string()" }
-    XmlRole { name: "version"; query: "version/string()" }
-    XmlRole { name: "screenFormat"; query: "screenFormat/string()" }
-    XmlRole { name: "runtime"; query: "onShow/movie/runtime/number()" }
-    XmlRole { name: "directors"; query: "onShow/movie/castingShort/directors/string()" }
-    XmlRole { name: "actors"; query: "onShow/movie/castingShort/actors/string()" }
-    XmlRole { name: "screenFormatCode"; query: "screenFormat/@code/string()" }
-    XmlRole { name: "versionCode"; query: "version/@code/string()" }
 
     onSearchLatChanged: {
         if (searchLat && searchLong)
@@ -132,5 +65,45 @@ XmlListModel {
     onSearchLocationChanged: {
         if (searchLocation)
             showTimeQuery = "location=" + searchLocation
+    }
+
+    property string showTimeQuery
+
+    //onLoadingChanged: console.debug("ModelMovie loading=" + loading)
+    //onErrorChanged: console.debug("ModelMovie error=" + loading)
+
+    APICaller {
+        id: api
+        source: showTimeQuery ? "http://api.allocine.fr/rest/v3/showtimelist?partner="+partner+"&format=xml&"+showTimeQuery+"&movie="+mCode : ""
+        onResponseTextChanged: model.xml=responseText
+    }
+
+    XmlListModel {
+        id: model
+        onStatusChanged: {
+            if (status == XmlListModel.Error)
+                console.debug("XmlListModel.Ready")
+            if (status == XmlListModel.Null)
+                console.debug("XmlListModel.Null")
+            if (status == XmlListModel.Loading)
+                console.debug("XmlListModel.Loading")
+            if (status == XmlListModel.Ready)
+                console.debug("XmlListModel.Ready count=" + count + " source=" + api.source)
+        }
+
+        query: "//feed/theaterShowtimes[place/theater/@code/string()=\""+theaterCode+"\"]/movieShowtimesList/movieShowtimes"
+
+        namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
+        XmlRole { name: "title"; query: 'onShow/movie/title/string()' }
+        XmlRole { name: "mCode"; query: 'onShow/movie/@code/string()' }
+        XmlRole { name: "poster"; query: "onShow/movie/poster/@href/string()" }
+        XmlRole { name: "releaseDate"; query: "onShow/movie/release/releaseDate/string()" }
+        XmlRole { name: "version"; query: "version/string()" }
+        XmlRole { name: "screenFormat"; query: "screenFormat/string()" }
+        XmlRole { name: "runtime"; query: "onShow/movie/runtime/number()" }
+        XmlRole { name: "directors"; query: "onShow/movie/castingShort/directors/string()" }
+        XmlRole { name: "actors"; query: "onShow/movie/castingShort/actors/string()" }
+        XmlRole { name: "screenFormatCode"; query: "screenFormat/@code/string()" }
+        XmlRole { name: "versionCode"; query: "version/@code/string()" }
     }
 }

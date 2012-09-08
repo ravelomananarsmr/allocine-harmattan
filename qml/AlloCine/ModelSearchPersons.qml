@@ -30,73 +30,45 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import QtQuick 1.1
 import com.nokia.meego 1.1
 
-XmlListModel {
-    id:root
+Item {
+    property bool loading: api.loading || model.status === XmlListModel.Loading
+    property bool error: api.error || model.error === XmlListModel.Error
+
+    property alias api: api
+    property alias model: model
+
     property string personQuery
 
-    property bool loading:false
-    property bool error:false
-    function callAPI(){
-        error=false
-        console.log(source)
-        var file = new XMLHttpRequest();
-        file.onreadystatechange = function() {
-            if (file.readyState === XMLHttpRequest.DONE) {
-                if(file.status === 200)
-                    root.xml = file.responseText
-                else
-                {
-                    root.error=true;
-                    root.loading=false
-                }
-                console.debug(file.status)
-                console.debug("XMLHttpRequest.DONE")
-            }
-            if (file.readyState === XMLHttpRequest.LOADING) {
-                root.loading=true
-                console.debug("XMLHttpRequest.LOADING")
-            }
-            if (file.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-                root.loading=true
-                console.debug("XMLHttpRequest.HEADERS_RECEIVED")
-            }
-            if (file.readyState === XMLHttpRequest.UNSENT) {
-                root.loading=true
-                console.debug("XMLHttpRequest.UNSENT")
-            }
-            if (file.readyState === XMLHttpRequest.OPENED) {
-                root.loading=true
-                console.debug("XMLHttpRequest.OPENED")
-            }
-            console.debug(file.readyState)
+    //onLoadingChanged: console.debug("ModelMovie loading=" + loading)
+    //onErrorChanged: console.debug("ModelMovie error=" + loading)
 
+    APICaller {
+        id: api
+        source: personQuery ? "http://api.allocine.fr/rest/v3/search?partner="+partner+"&count=50&filter=person&page=1&format=xml&q=" + personQuery : ""
+        onResponseTextChanged: model.xml=responseText
+    }
 
+    XmlListModel {
+        id: model
+        onStatusChanged: {
+            if (status == XmlListModel.Error)
+                console.debug("XmlListModel.Ready")
+            if (status == XmlListModel.Null)
+                console.debug("XmlListModel.Null")
+            if (status == XmlListModel.Loading)
+                console.debug("XmlListModel.Loading")
+            if (status == XmlListModel.Ready)
+                console.debug("XmlListModel.Ready count=" + count + " source=" + api.source)
         }
-        file.open("GET", source);
-        file.send();
-    }
-    onSourceChanged: {
-        console.log(source)
-        callAPI()
-    }
-    onStatusChanged: {
-        if (status == XmlListModel.Error || status == XmlListModel.Ready)
-        {
-            loading=false
-            console.debug("XmlListModel.Ready")
-            console.debug(status)
-        }
-    }
 
-    property string source: personQuery ? "http://api.allocine.fr/rest/v3/search?partner="+partner+"&count=50&filter=person&page=1&format=xml&q=" + personQuery : ""
-    query: "/feed/person"
-    namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
+        query: "/feed/person"
+        namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
 
-    XmlRole { name: "name"; query: "name/string()" }
-    XmlRole { name: "gender"; query: "gender/number()" }
-    XmlRole { name: "birthDate"; query: "birthDate/string()" }
-    XmlRole { name: "releaseDate"; query: "release/releaseDate/string()" }
-    XmlRole { name: "picture"; query: "picture/@href/string()" }
-    XmlRole { name: "code"; query: "@code/string()" }
-
+        XmlRole { name: "name"; query: "name/string()" }
+        XmlRole { name: "gender"; query: "gender/number()" }
+        XmlRole { name: "birthDate"; query: "birthDate/string()" }
+        XmlRole { name: "releaseDate"; query: "release/releaseDate/string()" }
+        XmlRole { name: "picture"; query: "picture/@href/string()" }
+        XmlRole { name: "code"; query: "@code/string()" }
+    }
 }

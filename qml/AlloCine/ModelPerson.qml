@@ -30,80 +30,52 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import QtQuick 1.1
 import com.nokia.meego 1.1
 
+Item {
+    property bool loading: api.loading || model.status === XmlListModel.Loading
+    property bool error: api.error || model.error === XmlListModel.Error
 
-XmlListModel {
-    id:root
+    property alias api: api
+    property alias model: model
+
     property string personCode
-    property string source: personCode ? "http://api.allocine.fr/rest/v3/person?partner=" + partner + "&profile=large&code=" + personCode + "&format=xml   " : ""
 
-    property bool loading:false
-    property bool error:false
-    function callAPI(){
-        error=false
-        console.log(source)
-        var file = new XMLHttpRequest();
-        file.onreadystatechange = function() {
-            if (file.readyState === XMLHttpRequest.DONE) {
-                if(file.status === 200)
-                    root.xml = file.responseText
-                else
-                {
-                    root.error=true;
-                    root.loading=false
-                }
-                console.debug(file.status)
-                console.debug("XMLHttpRequest.DONE")
-            }
-            if (file.readyState === XMLHttpRequest.LOADING) {
-                root.loading=true
-                console.debug("XMLHttpRequest.LOADING")
-            }
-            if (file.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-                root.loading=true
-                console.debug("XMLHttpRequest.HEADERS_RECEIVED")
-            }
-            if (file.readyState === XMLHttpRequest.UNSENT) {
-                root.loading=true
-                console.debug("XMLHttpRequest.UNSENT")
-            }
-            if (file.readyState === XMLHttpRequest.OPENED) {
-                root.loading=true
-                console.debug("XMLHttpRequest.OPENED")
-            }
-            console.debug(file.readyState)
+    onLoadingChanged: console.debug("ModelPerson loading=" + loading)
+    onErrorChanged: console.debug("ModelPerson error=" + loading)
 
+    APICaller {
+        id: api
+        source: personCode ? "http://api.allocine.fr/rest/v3/person?partner=" + partner + "&profile=large&code=" + personCode + "&format=xml   " : ""
+        onResponseTextChanged: model.xml=responseText
+    }
 
+    XmlListModel {
+        id: model
+        onStatusChanged: {
+            if (status == XmlListModel.Error)
+                console.debug("XmlListModel.Ready")
+            if (status == XmlListModel.Null)
+                console.debug("XmlListModel.Null")
+            if (status == XmlListModel.Loading)
+                console.debug("XmlListModel.Loading")
+            if (status == XmlListModel.Ready)
+                console.debug("XmlListModel.Ready count=" + count + " source=" + api.source)
         }
-        file.open("GET", source);
-        file.send();
-    }
-    onSourceChanged: {
-        console.log(source)
-        callAPI()
-    }
-    onStatusChanged: {
-        if (status == XmlListModel.Error || status == XmlListModel.Ready)
-        {
-            loading=false
-            console.debug("XmlListModel.Ready")
-            console.debug(status)
-        }
-    }
 
-    query: "/person"
-    namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
+        query: "/person"
+        namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
 
-    XmlRole { name: "givenName"; query: "name/@given/string()" }
-    XmlRole { name: "realName"; query: "realName/string()" }
-    XmlRole { name: "gender"; query: "gender/number()" }
-    XmlRole { name: "familyName"; query: "name/@family/string()" }
-    XmlRole { name: "activityShort"; query: "activityShort/string()" }
-    XmlRole { name: "biographyShort"; query: "biographyShort/string()" }
-    XmlRole { name: "biography"; query: "biography/string()" }
-    XmlRole { name: "birthDate"; query: "birthDate/string()" }
-    XmlRole { name: "birthPlace"; query: "birthPlace/string()" }
-    XmlRole { name: "picture"; query: "picture/@href/string()" }
-    XmlRole { name: "code"; query: "@code/string()" }
+        XmlRole { name: "givenName"; query: "name/@given/string()" }
+        XmlRole { name: "realName"; query: "realName/string()" }
+        XmlRole { name: "gender"; query: "gender/number()" }
+        XmlRole { name: "familyName"; query: "name/@family/string()" }
+        XmlRole { name: "activityShort"; query: "activityShort/string()" }
+        XmlRole { name: "biographyShort"; query: "biographyShort/string()" }
+        XmlRole { name: "biography"; query: "biography/string()" }
+        XmlRole { name: "birthDate"; query: "birthDate/string()" }
+        XmlRole { name: "birthPlace"; query: "birthPlace/string()" }
+        XmlRole { name: "picture"; query: "picture/@href/string()" }
+        XmlRole { name: "code"; query: "@code/string()" }
 
-    XmlRole { name: "linkWeb"; query: "linkList/link[@rel='aco:web']/@href/string()"}
+        XmlRole { name: "linkWeb"; query: "linkList/link[@rel='aco:web']/@href/string()"}
+    }
 }

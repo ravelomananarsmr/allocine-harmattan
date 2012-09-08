@@ -37,7 +37,6 @@ Page {
     tools: buttonTools
 
     function searchMovies(text) {
-        //console.log("Search movies with " + text);
         modelSearchMovies.movieQuery = text;
     }
 
@@ -49,16 +48,15 @@ Page {
     LoadingOverlay {
         id: searchFilmsLoadingOverlay
         visible: modelSearchMovies.loading
+        loadingText: "Recherche de films"
     }
 
     ModelSearchMovies {
         id: modelSearchMovies
-        onStatusChanged: {
-            if (status == XmlListModel.Ready){
-                if (count == 0 && movieQuery){
-                    banner.text= "Pas de film trouvé"
-                    banner.show()
-                }
+        onLoadingChanged:{
+            if (!loading && model.count == 0 && model.xml){
+                banner.text= "Pas de film trouvé"
+                banner.show()
             }
         }
         onErrorChanged: {
@@ -71,8 +69,8 @@ Page {
 
     ItemRetry{
         id: itemRetry
-        visible: modelSearchMovies.error || modelSearchMovies.status=== XmlListModel.Error
-        onClicked: modelSearchMovies.callAPI()
+        visible: modelSearchMovies.error
+        onClicked: modelSearchMovies.api.call()
     }
 
     // moviesView
@@ -86,7 +84,7 @@ Page {
 
         visible: !searchFilmsLoadingOverlay.visible && !itemRetry.visible
 
-        model: modelSearchMovies
+        model: modelSearchMovies.model
 
         header: Item {
 
@@ -156,15 +154,5 @@ Page {
     ToolBarLayout {
         id: buttonTools
         ToolIcon { iconId: "toolbar-back"; onClicked: { /*myMenu.close();*/ pageStack.pop(); }  }
-        //ToolIcon { iconId: "toolbar-view-menu" ; onClicked: myMenu.open(); }
     }
-
-
-//    Menu {
-//        id: myMenu
-
-//        MenuLayout {
-//            MenuItem { text: "Test"; }
-//        }
-//    }
 }

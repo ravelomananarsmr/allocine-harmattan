@@ -37,6 +37,7 @@ MapImage {
 
     property variant theaterCode
     property variant theaterName
+    property variant linkWeb
 
     source: "qrc:///images/pinpoint-theater"
     coordinate: Coordinate{}
@@ -59,7 +60,9 @@ MapImage {
 
                 pageStack.push(component, {
                      theaterCode: theaterCode,
-                     theaterName: theaterName
+                     theaterName: theaterName,
+                     linkWeb: linkWeb
+
                  });
                 enabled = true
             } else {

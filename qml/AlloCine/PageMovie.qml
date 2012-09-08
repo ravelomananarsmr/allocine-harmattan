@@ -41,24 +41,6 @@ Page {
     property string trailerUrlId
     property string movieLinkWeb
 
-    ToolBarLayout {
-        id: buttonTools
-
-        ToolIcon { iconId: "toolbar-back"; onClicked: {pageStack.pop(); }  }
-        ToolIcon {
-            iconSource: enabled ? "image://theme/icon-m-toolbar-share-white" : "image://theme/icon-m-toolbar-share-dimmed-white"
-            onClicked: {
-                console.log("Sharing " + movieLinkWeb);
-                shareString.title=title
-                shareString.description="Film sur AlloCiné"
-                shareString.mimeType="text/x-url"
-                shareString.text=movieLinkWeb
-                shareString.share();
-            }
-            enabled: movieLinkWeb
-        }
-        ToolIcon { iconSource: enabled ? "image://theme/icon-m-toolbar-view-menu-white" : "image://theme/icon-m-toolbar-view-menu-dimmed" ; onClicked: myMenu.open(); enabled: movieLinkWeb}
-    }
 
     WindowTitle {
         id: windowTitleBar
@@ -68,27 +50,30 @@ Page {
 
     LoadingOverlay {
         id: filmPageLoadingOverlay
-        visible: modelMovie.xml == "" || !(posterImage.status == Image.Ready && modelMovie.status == XmlListModel.Ready && modelNationality.status == XmlListModel.Ready && modelGenre.status == XmlListModel.Ready)
+        visible: modelMovie.loading || !(posterImage.status == Image.Ready && modelNationality.status == XmlListModel.Ready && modelGenre.status == XmlListModel.Ready)
         loadingText: "Chargement du film"
     }
 
     ModelMovie {
         id: modelMovie
         mCode: pageMovie.mCode
-        onStatusChanged: {
-            if (status == XmlListModel.Ready){
-                modelGenre.xml = xml
-                modelNationality.xml = xml
+        onErrorChanged: {
+            if(error){
+                banner.text = "Erreur réseau"
+                banner.show()
             }
         }
     }
 
+
     ModelGenre {
         id: modelGenre
+        xml: (!modelMovie.api.loading) ? modelMovie.api.responseText : ""
     }
 
     ModelNationality {
         id: modelNationality
+        xml: (!modelMovie.api.loading) ? modelMovie.api.responseText : ""
     }
 
     ListView {
@@ -98,8 +83,8 @@ Page {
         anchors.margins: pageMargin
         anchors.fill: parent
 
-        model: modelMovie
-        visible: !filmPageLoadingOverlay.visible
+        model: modelMovie.model
+        visible: !filmPageLoadingOverlay.visible && !itemRetry.visible
 
         delegate: Column {
             width: parent.width
@@ -352,7 +337,7 @@ Page {
                 onClicked: {
                     var component = Qt.createComponent("PageCasting.qml")
                     if (component.status == Component.Ready) {
-                        pageStack.push(component, {title: title});
+                        pageStack.push(component, {title: title, mCode: mCode});
                     } else {
                         console.log("Error loading component:", component.errorString());
                     }
@@ -397,6 +382,12 @@ Page {
         flickableItem: movieListView
     }
 
+    ItemRetry{
+        id: itemRetry
+        visible: modelMovie.error
+        onClicked: modelMovie.api.call()
+    }
+
     Menu {
         id: myMenu
 
@@ -419,4 +410,24 @@ Page {
 //            }
         }
     }
+
+    ToolBarLayout {
+        id: buttonTools
+
+        ToolIcon { iconId: "toolbar-back"; onClicked: {pageStack.pop(); }  }
+        ToolIcon {
+            iconSource: enabled ? "image://theme/icon-m-toolbar-share-white" : "image://theme/icon-m-toolbar-share-dimmed-white"
+            onClicked: {
+                console.log("Sharing " + movieLinkWeb);
+                shareString.title=title
+                shareString.description="Film sur AlloCiné"
+                shareString.mimeType="text/x-url"
+                shareString.text=movieLinkWeb
+                shareString.share();
+            }
+            enabled: movieLinkWeb
+        }
+        ToolIcon { iconSource: enabled ? "image://theme/icon-m-toolbar-view-menu-white" : "image://theme/icon-m-toolbar-view-menu-dimmed" ; onClicked: myMenu.open(); enabled: movieLinkWeb}
+    }
+
 }

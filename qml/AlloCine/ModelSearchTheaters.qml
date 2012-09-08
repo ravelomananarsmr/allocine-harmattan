@@ -30,85 +30,20 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import QtQuick 1.1
 import com.nokia.meego 1.1
 
+Item {
+    property bool loading: api.loading || model.status === XmlListModel.Loading
+    property bool error: api.error || model.error === XmlListModel.Error
 
-XmlListModel {
-    id:root
+    property alias api: api
+    property alias model: model
+
     property string searchLat
     property string searchLong
     property string searchCode
     property string searchZip
     property string searchLocation
     property int searchRadius: 10
-    property string source: searchQuery ? "http://api.allocine.fr/rest/v3/theaterlist?partner="+partner+"&count=200&page=1&format=xml&"+searchQuery+"&radius="+searchRadius : ""
     property string searchQuery
-
-    property bool loading:false
-    property bool error:false
-    function callAPI(){
-        error=false
-        console.log(source)
-        var file = new XMLHttpRequest();
-        file.onreadystatechange = function() {
-            if (file.readyState === XMLHttpRequest.DONE) {
-                if(file.status === 200)
-                    root.xml = file.responseText
-                else
-                {
-                    root.error=true;
-                    root.loading=false
-                }
-                console.debug(file.status)
-                console.debug("XMLHttpRequest.DONE")
-            }
-            if (file.readyState === XMLHttpRequest.LOADING) {
-                root.loading=true
-                console.debug("XMLHttpRequest.LOADING")
-            }
-            if (file.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-                root.loading=true
-                console.debug("XMLHttpRequest.HEADERS_RECEIVED")
-            }
-            if (file.readyState === XMLHttpRequest.UNSENT) {
-                root.loading=true
-                console.debug("XMLHttpRequest.UNSENT")
-            }
-            if (file.readyState === XMLHttpRequest.OPENED) {
-                root.loading=true
-                console.debug("XMLHttpRequest.OPENED")
-            }
-            console.debug(file.readyState)
-
-
-        }
-        file.open("GET", source);
-        file.send();
-    }
-    onSourceChanged: {
-        console.log(source)
-        callAPI()
-    }
-    onStatusChanged: {
-        if (status == XmlListModel.Error || status == XmlListModel.Ready)
-        {
-            loading=false
-            console.debug("XmlListModel.Ready")
-            console.debug(status)
-        }
-    }
-
-    query: searchCode ? "/feed/theater[@code=\""+ searchCode + "\"]" : "/feed/theater"
-    namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
-
-    XmlRole { name: "name"; query: "name/string()" }
-    XmlRole { name: "address"; query: "address/string()" }
-    XmlRole { name: "city"; query: "city/string()" }
-    XmlRole { name: "postalCode"; query: "postalCode/string()" }
-    XmlRole { name: "cinemaChain"; query: "cinemaChain/string()" }
-    XmlRole { name: "screenCount"; query: "screenCount/string()" }
-    XmlRole { name: "tlatitude"; query: "geoloc/@lat/number()" }
-    XmlRole { name: "tlongitude"; query: "geoloc/@long/number()" }
-    XmlRole { name: "code"; query: "@code/string()" }
-    XmlRole { name: "linkWeb"; query: "linkList/link[@rel='aco:web']/@href/string()"}
 
     onSearchLatChanged: {
         if (searchLat && searchLong)
@@ -126,6 +61,43 @@ XmlListModel {
     }
     onSearchZipChanged: {
         searchQuery = "zip="+searchZip
+    }
+
+    //onLoadingChanged: console.debug("ModelMovie loading=" + loading)
+    //onErrorChanged: console.debug("ModelMovie error=" + loading)
+
+    APICaller {
+        id: api
+        source: searchQuery ? "http://api.allocine.fr/rest/v3/theaterlist?partner="+partner+"&count=200&page=1&format=xml&"+searchQuery+"&radius="+searchRadius : ""
+        onResponseTextChanged: model.xml=responseText
+    }
+
+    XmlListModel {
+        id: model
+        onStatusChanged: {
+            if (status == XmlListModel.Error)
+                console.debug("XmlListModel.Ready")
+            if (status == XmlListModel.Null)
+                console.debug("XmlListModel.Null")
+            if (status == XmlListModel.Loading)
+                console.debug("XmlListModel.Loading")
+            if (status == XmlListModel.Ready)
+                console.debug("XmlListModel.Ready count=" + count + " source=" + api.source)
+        }
+
+        query: searchCode ? "/feed/theater[@code=\""+ searchCode + "\"]" : "/feed/theater"
+        namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
+
+        XmlRole { name: "name"; query: "name/string()" }
+        XmlRole { name: "address"; query: "address/string()" }
+        XmlRole { name: "city"; query: "city/string()" }
+        XmlRole { name: "postalCode"; query: "postalCode/string()" }
+        XmlRole { name: "cinemaChain"; query: "cinemaChain/string()" }
+        XmlRole { name: "screenCount"; query: "screenCount/string()" }
+        XmlRole { name: "tlatitude"; query: "geoloc/@lat/number()" }
+        XmlRole { name: "tlongitude"; query: "geoloc/@long/number()" }
+        XmlRole { name: "code"; query: "@code/string()" }
+        XmlRole { name: "linkWeb"; query: "linkList/link[@rel='aco:web']/@href/string()"}
     }
 }
 
