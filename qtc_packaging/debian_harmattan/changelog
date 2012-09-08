@@ -1,20 +1,9 @@
-allocine (0.9.3) unstable; urgency=low
+allocine (0.9.4) unstable; urgency=low
   * <Add change description here>
+
+ -- Antoine Vacher <tigre-bleu@unknown>  Sat, 08 Sep 2012 05:18:30 +0200
+
+allocine (0.9.3) unstable; urgency=low
+  * First public package
 
  -- Antoine Vacher <tigre-bleu@unknown>  Thu, 06 Sep 2012 00:58:42 +0200
-
-allocine (0.9.2) unstable; urgency=low
-  * <Add change description here>
-
- -- Antoine Vacher <tigre-bleu@unknown>  Wed, 05 Sep 2012 13:13:35 +0200
-
-allocine (0.9.1) unstable; urgency=low
-  * <Add change description here>
-
- -- Antoine Vacher <tigre-bleu@unknown>  Wed, 05 Sep 2012 13:13:33 +0200
-
-allocine (0.0.1) unstable; urgency=low
-
-  * Initial Release.
-
- -- Antoine Vacher <tigre-bleu@unknown>  Fri, 24 Feb 2012 18:58:37 +0100

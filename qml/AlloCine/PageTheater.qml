@@ -54,18 +54,23 @@ Page {
         id: modelSearchTheaters
         searchCode:  theaterCode
 
-        onStatusChanged: {
-            if (status == XmlListModel.Ready && count > 0){
-                theaterAddress = get(0).address
-                theaterLatitude = get(0).tlatitude
-                theaterLongitude = get(0).tlongitude
-                theaterPostalCode = get(0).postalCode
-                theaterCity = get(0).city
-                theaterCinemaChain = get(0).cinemaChain
-                theaterScreenCount = get(0).screenCount
+        onLoadingChanged: {
+            if (!loading && model.count > 0){
+                theaterAddress = model.get(0).address
+                theaterLatitude = model.get(0).tlatitude
+                theaterLongitude = model.get(0).tlongitude
+                theaterPostalCode = model.get(0).postalCode
+                theaterCity = model.get(0).city
+                theaterCinemaChain = model.get(0).cinemaChain
+                theaterScreenCount = model.get(0).screenCount
                 windowTitleBar.busy = false
                 modelShowTimes.theaterCode = theaterCode
             }
+            if (!loading && model.count == 0){
+                banner.text= "Cinéma inconnu"
+                banner.show()
+            }
+
         }
         onErrorChanged: {
             if(error){
@@ -77,8 +82,8 @@ Page {
 
     ItemRetry{
         id: itemRetry
-        visible: modelSearchTheaters.error || modelSearchTheaters.status=== XmlListModel.Error
-        onClicked: modelSearchTheaters.callAPI()
+        visible: modelSearchTheaters.error
+        onClicked: modelSearchTheaters.api.call()
     }
 
     ModelShowTimes {
@@ -91,6 +96,13 @@ Page {
                 banner.text = "Erreur réseau"
                 banner.show()
             }
+        }
+        onLoadingChanged: {
+            if (!loading && model.count == 0 && model.xml){
+                banner.text= "Aucune séance"
+                banner.show()
+            }
+
         }
     }
 
@@ -138,7 +150,7 @@ Page {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.margins: 5
-        model:modelShowTimes
+        model:modelShowTimes.model
         header: ItemTheaterDetails {
             showMap: true
             theaterAddress: pageTheater.theaterAddress
@@ -173,11 +185,6 @@ Page {
                                      else
                                          windowTitleBar.busy=true
                 }
-
-                //                Component.onCompleted: {
-                //                    //console.debug(code +" - "+ mCode)
-                //                    screening.model=screeningDateModel.createObject(screening,{theaterCode:theaterCode,movieCode:mCode, xml:theaterMovies.model.xml, versionCode:versionCode, screenFormatCode:screenFormatCode})
-                //                }
 
                 ListComponentMovie {
                     movieActors: model.actors
@@ -291,7 +298,7 @@ Page {
     // noShow
     Item {
         id: noShow
-        visible: !pageTheaterLoadingScreeningsOverlay.visible && !pageTheaterLoadingTheaterOverlay.visible && modelShowTimes.count == 0
+        visible: !pageTheaterLoadingScreeningsOverlay.visible && !pageTheaterLoadingTheaterOverlay.visible && modelShowTimes.model.count == 0
         anchors.top:windowTitleBar.bottom
         anchors.left: parent.left
         anchors.right: parent.right

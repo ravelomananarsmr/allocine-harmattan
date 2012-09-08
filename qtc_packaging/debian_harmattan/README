@@ -1,6 +1,12 @@
 The Debian Package allocine
 ----------------------------
 
-Comments regarding the Package
+The goal of this application for MeeGo Harmattan is to access to popular french website AlloCine with a native application. It is somewhat comparable in functionnalities to Android or iPhone applications. The information is accessed through the AlloCine API for wich information can be found here: http://wiki.gromez.fr/dev/api/allocine_v3
+
+Note that this is not an official application, and we are in no way related to AlloCine company.
+
+Application is only available in french as AlloCine is a french service, and the API text returned is in french only. Translating application menus and keeping french content would not make much sense.
+
+For more information, see project homepage: http://tigre-bleu.github.com/allocine-harmattan/
 
  -- Antoine Vacher <tigre-bleu@unknown>  Fri, 24 Feb 2012 18:58:37 +0100

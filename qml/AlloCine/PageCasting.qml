@@ -35,6 +35,7 @@ Page {
     tools: buttonTools
 
     property string title
+    property string mCode
 
     ToolBarLayout {
         id: buttonTools
@@ -48,12 +49,19 @@ Page {
 
     LoadingOverlay {
         id: castingOverlay
-        visible: modelCasting.status == XmlListModel.Loading
+        visible: modelCasting.loading
         loadingText: "Chargement du casting"
     }
 
     ModelCasting {
         id: modelCasting
+        mCode: mCode
+        onErrorChanged: {
+            if(error){
+                banner.text = "Erreur réseau"
+                banner.show()
+            }
+        }
     }
 
     ListView {
@@ -62,7 +70,7 @@ Page {
         anchors.topMargin: windowTitleBar.height
         anchors.fill: parent
         Component.onCompleted: modelCasting.mCode = mCode
-        model: modelCasting
+        model: modelCasting.model
 
         delegate: Item {
             id: listItem
@@ -191,4 +199,9 @@ Page {
         flickableItem: castingListView
     }
 
+    ItemRetry{
+        id: itemRetry
+        visible: modelCasting.error
+        onClicked: modelCasting.api.call()
+    }
 }

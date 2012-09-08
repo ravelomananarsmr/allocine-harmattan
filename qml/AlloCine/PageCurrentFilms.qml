@@ -36,9 +36,8 @@ Page {
     tools: buttonTools
 
     function filterMovies(text) {
-        console.log("Filtering movies on " + text);
-        modelCurrentMovies.query = "/feed/movie[contains(lower-case(child::title),lower-case(\""+text+"\"))]";
-        modelCurrentMovies.reload();
+        modelCurrentMovies.model.query = "/feed/movie[contains(lower-case(child::title),lower-case(\""+text+"\"))]";
+        modelCurrentMovies.model.reload();
     }
 
     WindowTitle {
@@ -48,7 +47,7 @@ Page {
 
     LoadingOverlay {
         id: pageCurrentFilmsLoadingOverlay
-        visible: !(modelCurrentMovies.status == XmlListModel.Ready) && !(modelCurrentMovies.status == XmlListModel.Error)
+        visible: modelCurrentMovies.loading
         loadingText: "Recherche des films à l'affiche"
     }
 
@@ -56,27 +55,25 @@ Page {
         id: modelCurrentMovies
         filter: "nowshowing"
 
-        onStatusChanged: {
-            if (status == XmlListModel.Ready){
-                if (count == 0 && movieQuery){
-                    banner.text= "Pas de film trouvé"
-                    banner.show()
-                }
+        onLoadingChanged:{
+            if (!loading && model.count == 0){
+                banner.text= "Pas de film trouvé"
+                banner.show()
             }
         }
         onErrorChanged: {
             if(error)
             {
                 banner.text = "Erreur réseau"
-            banner.show()
+                banner.show()
             }
         }
     }
 
     ItemRetry{
         id: itemRetry
-        visible: modelCurrentMovies.error || modelCurrentMovies.status=== XmlListModel.Error
-        onClicked: modelCurrentMovies.callAPI()
+        visible: modelCurrentMovies.error
+        onClicked: modelCurrentMovies.api.call()
            }
 
     // moviesListView
@@ -89,7 +86,7 @@ Page {
         cacheBuffer: 3000
         visible: !pageCurrentFilmsLoadingOverlay.visible && !itemRetry.visible
 
-        model: modelCurrentMovies
+        model: modelCurrentMovies.model
         header: Item {
             anchors.left: parent.left
             anchors.right: parent.right

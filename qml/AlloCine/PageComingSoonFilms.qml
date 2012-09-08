@@ -37,8 +37,8 @@ Page {
 
     function filterMovies(text) {
         console.log("Filtering movies on " + text);
-        modelComingSoonMovies.query = "/feed/movie[contains(lower-case(child::title),lower-case(\""+text+"\"))]";
-        modelComingSoonMovies.reload();
+        modelComingSoonMovies.model.query = "/feed/movie[contains(lower-case(child::title),lower-case(\""+text+"\"))]";
+        modelComingSoonMovies.model.reload();
     }
 
     WindowTitle {
@@ -57,20 +57,16 @@ Page {
         filter: "comingsoon"
         order: "dateasc"
 
-        onStatusChanged: {
-
-            if (status === XmlListModel.Ready){
-                if (count == 0 && movieQuery){
-                    banner.text= "Pas de film trouvé"
-                    banner.show()
-                }
+        onLoadingChanged:{
+            if (!loading && model.count == 0){
+                banner.text= "Pas de film trouvé"
+                banner.show()
             }
         }
         onErrorChanged: {
-            if(error)
-            {
+            if(error){
                 banner.text = "Erreur réseau"
-            banner.show()
+                banner.show()
             }
         }
 
@@ -78,8 +74,8 @@ Page {
 
     ItemRetry{
         id: itemRetry
-        visible: modelComingSoonMovies.error || modelComingSoonMovies.status=== XmlListModel.Error
-        onClicked: modelComingSoonMovies.callAPI()
+        visible: modelComingSoonMovies.error
+        onClicked: modelComingSoonMovies.api.call()
     }
     // moviesView
     ListView {
@@ -91,7 +87,7 @@ Page {
         cacheBuffer: 3000
         visible: !pageIncomingFilmsLoadingOverlay.visible && !itemRetry.visible
 
-        model: modelComingSoonMovies
+        model: modelComingSoonMovies.model
         header: Item {
             anchors.left: parent.left
             anchors.right: parent.right

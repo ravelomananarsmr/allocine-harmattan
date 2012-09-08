@@ -35,10 +35,13 @@ Page {
     id: pageTheatersMap
     tools: buttonTools
 
-    property int nb_of_theaters: 0
-    property Coordinate centerCoordinate : myPositionSource.position.coordinate// Coordinate to open the map centered on. If not defined, my position
+    property int nb_of_theaters: pinpointModel.model.count
+    property Coordinate centerCoordinate : aroundMeButton ? myPositionSource.position.coordinate : theaterCoordinate// Coordinate to open the map centered on. If not defined, my position
+    property Coordinate theaterCoordinate
     property string searchLat : searchLat ? searchLat :  ""
     property string searchLong : searchLong ? searchLong : ""
+
+    property bool searchAroundMe: true
 
     // buttonTools
     ToolBarLayout {
@@ -50,10 +53,12 @@ Page {
                 id: aroundMeButton
                 checkable: myPositionSource.position.coordinate.latitude && myPositionSource.position.coordinate.longitude
                 checked: false
-                text: "Centrer sur moi";
+                text: "Autour de moi";
                 onCheckedChanged: {
                     console.log("Auto center: " + aroundMeButton.checked);
                     myPositionSource.active = checked
+                    if (checked)
+                        searchAroundMe = true
                 }
             }
         }
@@ -97,7 +102,7 @@ Page {
 
     LoadingOverlay {
         id: theatersMapPageSearchingOverlay
-        visible: pinpointModel.status == XmlListModel.Loading
+        visible: pinpointModel.loading && !aroundMeButton.checked
         loadingText: "Recherche de salles à proximité"
     }
 
@@ -178,38 +183,32 @@ Page {
 
             ModelSearchTheaters {
                 id:pinpointModel
-                query : "/feed/theater"
+                model.query : "/feed/theater"
 
-                searchLat: (myPositionSource.position.coordinate.latitude && !pageTheatersMap.searchLat) ? myPositionSource.position.coordinate.latitude : pageTheatersMap.searchLat
-                searchLong: (myPositionSource.position.coordinate.longitude && !pageTheatersMap.searchLong) ? myPositionSource.position.coordinate.longitude : pageTheatersMap.searchLong
+                searchLat: (searchAroundMe && myPositionSource.position.coordinate.latitude) ? myPositionSource.position.coordinate.latitude : pageTheatersMap.theaterCoordinate.latitude
+                searchLong: (searchAroundMe && myPositionSource.position.coordinate.longitude) ? myPositionSource.position.coordinate.longitude : pageTheatersMap.theaterCoordinate.longitude
 
-                onStatusChanged: {
-                    if (status == XmlListModel.Loading){
-                        console.log("Model Loading")
-                    } else if (status == XmlListModel.Ready && xml){
-                        console.log("Model Ready")
+                onLoadingChanged: {
+                    if (!loading){
                         windowTitleBar.windowTitle = nb_of_theaters + " salles dans un rayon de " + pinpointModel.searchRadius + " km"
 
-                        for(var i=0; i<count;i++)
+                        for(var i=0; i<model.count;i++)
                         {
                             // Direct list access
                             var component = Qt.createComponent("ItemTheaterMap.qml");
                             if (component.status == Component.Ready) {
-                                 var pin =component.createObject(map);
-                                pin.coordinate.latitude=parseFloat(get(i).tlatitude)
-                                pin.coordinate.longitude=parseFloat(get(i).tlongitude)
-                                pin.theaterCode=get(i).code
-                                pin.theaterName=get(i).name
+                                var pin =component.createObject(map);
+                                pin.coordinate.latitude=parseFloat(model.get(i).tlatitude)
+                                pin.coordinate.longitude=parseFloat(model.get(i).tlongitude)
+                                pin.theaterCode=model.get(i).code
+                                pin.theaterName=model.get(i).name
+                                pin.linkWeb=model.get(i).linkWeb
                                 map.addMapObject(pin)
                             }
                         }
-
+                        aroundMeButton.checked = false
 
                     }
-                }
-                onCountChanged: {
-                    console.log(count + " theater found" )
-                    nb_of_theaters = count
                 }
             }
         }

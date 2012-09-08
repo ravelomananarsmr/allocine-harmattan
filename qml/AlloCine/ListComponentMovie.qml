@@ -173,6 +173,7 @@ Item {
         id: mouseArea
         anchors.fill: background
         onClicked: {
+            enabled = false
             var component = Qt.createComponent("PageMovie.qml")
             if (component.status == Component.Ready) {
                 //console.log("Selected movie: ", movieCode);
@@ -180,8 +181,10 @@ Item {
                     mCode: movieCode,
                     title: movieTitle ? movieTitle : movieOriginalTitle
                  });
+                enabled = true
             } else {
                 console.log("Error loading component:", component.errorString());
+                enabled = true
              }
          }
     }

@@ -40,44 +40,6 @@ Page {
     property string name
     property string personLinkWeb
 
-    ModelPerson {
-        id: modelPerson
-        personCode: pagePerson.personCode
-        onStatusChanged: {
-            if (status == XmlListModel.Ready){
-                modelNationality.xml = xml
-            }
-        }
-        onErrorChanged: {
-            if(error){
-                banner.text = "Erreur réseau"
-                banner.show()
-            }
-        }
-    }
-
-    ModelNationality {
-        id: modelNationality
-    }
-
-    ToolBarLayout {
-        id: buttonTools
-
-        ToolIcon { iconId: "toolbar-back"; onClicked: {pageStack.pop(); }  }
-        ToolIcon {
-            iconSource: enabled ? "image://theme/icon-m-toolbar-share-white" : "image://theme/icon-m-toolbar-share-dimmed-white"
-            onClicked: {
-                console.log("Sharing " + personLinkWeb);
-                shareString.title=name
-                shareString.description="Profil sur AlloCiné"
-                shareString.mimeType="text/x-url"
-                shareString.text=personLinkWeb
-                shareString.share();
-            }
-            enabled: personLinkWeb
-        }
-        ToolIcon { iconSource: enabled ? "image://theme/icon-m-toolbar-view-menu-white" : "image://theme/icon-m-toolbar-view-menu-dimmed" ; onClicked: myMenu.open(); enabled: personLinkWeb}    }
-
     WindowTitle {
         id: windowTitleBar
         windowTitle: name
@@ -90,11 +52,23 @@ Page {
         visible: modelPerson.loading || !posterImage.status == Image.Ready
     }
 
-    ItemRetry{
-        id: itemRetry
-        visible: modelPerson.error || modelPerson.status=== XmlListModel.Error
-        onClicked: modelPerson.callAPI()
+    ModelPerson {
+        id: modelPerson
+        personCode: pagePerson.personCode
+        onErrorChanged: {
+            if(error){
+                banner.text = "Erreur réseau"
+                banner.show()
+            }
+        }
     }
+
+    ModelNationality {
+        id: modelNationality
+        xml: (!modelPerson.api.loading) ? modelPerson.api.responseText : ""
+
+    }
+
 
     ListView {
         id: personListView
@@ -102,7 +76,7 @@ Page {
         anchors.topMargin: windowTitleBar.height
         anchors.margins: pageMargin
         anchors.fill: parent
-        model: modelPerson
+        model: modelPerson.model
         visible: !pagePersonLoadingOverlay.visible && !itemRetry.visible
 
         delegate: Column {
@@ -285,6 +259,12 @@ Page {
         flickableItem: personListView
     }
 
+    ItemRetry{
+        id: itemRetry
+        visible: modelPerson.error
+        onClicked: modelPerson.api.call()
+    }
+
     Menu {
         id: myMenu
         MenuLayout {
@@ -296,4 +276,23 @@ Page {
             }
         }
     }
+
+    ToolBarLayout {
+        id: buttonTools
+
+        ToolIcon { iconId: "toolbar-back"; onClicked: {pageStack.pop(); }  }
+        ToolIcon {
+            iconSource: enabled ? "image://theme/icon-m-toolbar-share-white" : "image://theme/icon-m-toolbar-share-dimmed-white"
+            onClicked: {
+                console.log("Sharing " + personLinkWeb);
+                shareString.title=name
+                shareString.description="Profil sur AlloCiné"
+                shareString.mimeType="text/x-url"
+                shareString.text=personLinkWeb
+                shareString.share();
+            }
+            enabled: personLinkWeb
+        }
+        ToolIcon { iconSource: enabled ? "image://theme/icon-m-toolbar-view-menu-white" : "image://theme/icon-m-toolbar-view-menu-dimmed" ; onClicked: myMenu.open(); enabled: personLinkWeb}    }
+
 }

@@ -30,68 +30,77 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import QtQuick 1.1
 import com.nokia.meego 1.1
 
+Item {
+    property bool loading: api.loading || model.status === XmlListModel.Loading
+    property bool error: api.error || model.error === XmlListModel.Error
 
-XmlListModel {
+    property alias api: api
+    property alias model: model
 
     property string mCode
-    property string source: mCode ? "http://api.allocine.fr/rest/v3/movie?partner="+partner+"&q=61282&format=xml&code="+mCode : ""
 
-    onSourceChanged: {
-        console.log(source)
-        var file = new XMLHttpRequest();
-        file.onreadystatechange = function() {
-            if (file.readyState == XMLHttpRequest.DONE) {
-                xml = file.responseText
-            }
-        }
-        file.open("GET", source);
-        file.send();
+    //onLoadingChanged: console.debug("ModelMovie loading=" + loading)
+    //onErrorChanged: console.debug("ModelMovie error=" + loading)
+
+    APICaller {
+        id: api
+        source: mCode ? "http://api.allocine.fr/rest/v3/movie?partner="+partner+"&q=61282&format=xml&code="+mCode : ""
+        onResponseTextChanged: model.xml=responseText
     }
 
-    query: "/movie"
-    namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
-
-    XmlRole { name: "mCode"; query: '@code/string()' }
-    XmlRole { name: "movieType"; query: 'movieType/string()' }
-    XmlRole { name: "originalTitle"; query: 'originalTitle/string()' }
-    XmlRole { name: "title"; query: 'title/string()' }
-    XmlRole { name: "productionYear"; query: 'productionYear/string()' }
-
-    XmlRole { name: "releaseDate"; query: "release/releaseDate/string()" }
-    XmlRole { name: "distributor"; query: "release/distributor/@name/string()" }
-    XmlRole { name: "country"; query: 'release/country/string()' }
-    XmlRole { name: "releaseVersion"; query: 'release/releaseVersion/string()' }
-
-    XmlRole { name: "runtime"; query: "runtime/number()" }
-    XmlRole { name: "synopsis"; query: "synopsis/string()" }
-    XmlRole { name: "synopsisShort"; query: "synopsisShort/string()" }
-
-    XmlRole { name: "directors"; query: "castingShort/directors/string()" }
-    XmlRole { name: "actors"; query: "castingShort/actors/string()" }
-
-    XmlRole { name: "certificate"; query: "movieCertificate/certificate/string()" }
-
-    XmlRole { name: "poster"; query: "poster/@href/string()" }
-    XmlRole { name: "trailer"; query: "trailer/@href/string()" }
-
-    XmlRole { name: "pressRating"; query: "statistics/pressRating/number()" }
-    XmlRole { name: "pressReviewCount"; query: "statistics/pressReviewCount/number()" }
-    XmlRole { name: "userRating"; query: "statistics/userRating/number()" }
-    XmlRole { name: "userReviewCount"; query: "statistics/userReviewCount/number()" }
-    XmlRole { name: "userRatingCount"; query: "statistics/userRatingCount/number()" }
-    XmlRole { name: "commentCount"; query: "statistics/commentCount/number()" }
-    XmlRole { name: "fanCount"; query: "statistics/fanCount/number()" }
-    XmlRole { name: "theaterCount"; query: "statistics/theaterCount/number()" }
-    XmlRole { name: "theaterCountOnRelease"; query: "statistics/theaterCountOnRelease/number()" }
-    XmlRole { name: "releaseWeekPosition"; query: "statistics/releaseWeekPosition/number()" }
-
-    XmlRole { name: "linkWeb"; query: "linkList/link[@rel='aco:web']/@href/string()"}
-
-    onStatusChanged: {
-        if (status == XmlListModel.Error) {
-            console.log("Error: " + errorString())
-            banner.show(windowTitleBar.y,"Erreur:\nImpossible de charger le film")
+    XmlListModel {
+        id: model
+        onStatusChanged: {
+            if (status == XmlListModel.Error)
+                console.debug("XmlListModel.Ready")
+            if (status == XmlListModel.Null)
+                console.debug("XmlListModel.Null")
+            if (status == XmlListModel.Loading)
+                console.debug("XmlListModel.Loading")
+            if (status == XmlListModel.Ready)
+                console.debug("XmlListModel.Ready count=" + count + " source=" + api.source)
         }
+
+        query: "/movie"
+        namespaceDeclarations: "declare default element namespace 'http://www.allocine.net/v6/ns/';"
+
+        XmlRole { name: "mCode"; query: '@code/string()' }
+        XmlRole { name: "movieType"; query: 'movieType/string()' }
+        XmlRole { name: "originalTitle"; query: 'originalTitle/string()' }
+        XmlRole { name: "title"; query: 'title/string()' }
+        XmlRole { name: "productionYear"; query: 'productionYear/string()' }
+
+        XmlRole { name: "releaseDate"; query: "release/releaseDate/string()" }
+        XmlRole { name: "distributor"; query: "release/distributor/@name/string()" }
+        XmlRole { name: "country"; query: 'release/country/string()' }
+        XmlRole { name: "releaseVersion"; query: 'release/releaseVersion/string()' }
+
+        XmlRole { name: "runtime"; query: "runtime/number()" }
+        XmlRole { name: "synopsis"; query: "synopsis/string()" }
+        XmlRole { name: "synopsisShort"; query: "synopsisShort/string()" }
+
+        XmlRole { name: "directors"; query: "castingShort/directors/string()" }
+        XmlRole { name: "actors"; query: "castingShort/actors/string()" }
+
+        XmlRole { name: "certificate"; query: "movieCertificate/certificate/string()" }
+
+        XmlRole { name: "poster"; query: "poster/@href/string()" }
+        XmlRole { name: "trailer"; query: "trailer/@href/string()" }
+
+        XmlRole { name: "pressRating"; query: "statistics/pressRating/number()" }
+        XmlRole { name: "pressReviewCount"; query: "statistics/pressReviewCount/number()" }
+        XmlRole { name: "userRating"; query: "statistics/userRating/number()" }
+        XmlRole { name: "userReviewCount"; query: "statistics/userReviewCount/number()" }
+        XmlRole { name: "userRatingCount"; query: "statistics/userRatingCount/number()" }
+        XmlRole { name: "commentCount"; query: "statistics/commentCount/number()" }
+        XmlRole { name: "fanCount"; query: "statistics/fanCount/number()" }
+        XmlRole { name: "theaterCount"; query: "statistics/theaterCount/number()" }
+        XmlRole { name: "theaterCountOnRelease"; query: "statistics/theaterCountOnRelease/number()" }
+        XmlRole { name: "releaseWeekPosition"; query: "statistics/releaseWeekPosition/number()" }
+
+        XmlRole { name: "linkWeb"; query: "linkList/link[@rel='aco:web']/@href/string()"}
+
     }
 
 }
+
